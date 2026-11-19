@@ -72,7 +72,7 @@ const LENS_L = V3(0.09, -0.07, 0.04), LENS = DET.clone().add(LENS_L);
 const lensMat = new THREE.MeshBasicMaterial({ color: 0x050410, toneMapped: false });
 const lens = new THREE.Mesh(new THREE.SphereGeometry(0.022, 16, 12), lensMat); lens.position.copy(LENS_L); det.add(lens);
 // glint: hot white core + 4-point star on the lens
-const mGl = new THREE.MeshBasicMaterial({ color: new THREE.Color(WHITE).multiplyScalar(3.2), toneMapped: false, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false });
+const mGl = new THREE.MeshBasicMaterial({ color: new THREE.Color(WHITE).multiplyScalar(2.4), toneMapped: false, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false });
 const gl = new THREE.Group(); gl.position.copy(LENS).add(V3(0, 0, 0.03)); scene.add(gl);
 gl.add(new THREE.Mesh(new THREE.SphereGeometry(0.028, 12, 10), mGl), new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.01, 0.002), mGl), new THREE.Mesh(new THREE.BoxGeometry(0.01, 0.46, 0.002), mGl));
 
@@ -88,7 +88,7 @@ function cone(hex, k) {
 const camCone = cone(RED, 1.0), BEDC = V3(0, 0.6, -1.7);
 const bedPatch = patch(1.6, 1.7, RED, 1.2); bedPatch.position.set(0, 0.65, -1.75);
 const beamCone = cone(WHITE, 0.9);
-const spotDisk = new THREE.Mesh(new THREE.CircleGeometry(0.2, 32), new THREE.MeshBasicMaterial({ color: new THREE.Color(0xfff4e0).multiplyScalar(1.1), toneMapped: false, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }));
+const spotDisk = new THREE.Mesh(new THREE.CircleGeometry(0.12, 32), new THREE.MeshBasicMaterial({ color: new THREE.Color(0xfff4e0).multiplyScalar(1.1), toneMapped: false, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }));
 spotDisk.renderOrder = 7; scene.add(spotDisk);
 const LIGHTS = []; scene.traverse((o) => { if (o.isLight) LIGHTS.push([o, o.intensity]); });
 const spot = new THREE.SpotLight(0xfff4e0, 0, 12, 0.2, 0.6, 1); scene.add(spot, spot.target);
@@ -137,7 +137,7 @@ const SH = [
   // "smoke detector": close on it, headboard below
   { at: T.smoke - 0.1, K: st([0.25, 2.0, -0.4, 0, 2.3, -2.9, 42], [0.2, 2.05, -0.8, 0, 2.35, -2.9, 40]) },
   // s2: high three-quarter, red view cone from the detector onto the bed
-  { at: T.s2, K: st([2.8, 2.8, 1.2, 0, 1.4, -1.9, 48], [2.5, 2.9, 0.8, 0, 1.45, -1.9, 48]) },
+  { at: T.s2, K: st([2.8, 2.8, 1.2, 0, 1.95, -1.9, 50], [2.5, 2.9, 0.8, 0, 2.0, -1.9, 50]) },
   // "hide a camera": the lens
   { at: T.hide - 0.1, K: st([0.35, 2.25, -1.7, 0.05, 2.45, -2.9, 36], [0.3, 2.28, -1.9, 0.06, 2.45, -2.9, 34]) },
   // s3: lights out, curtains close
@@ -151,13 +151,13 @@ const SH = [
   // "look for it": behind the guest
   { at: T.look - 0.1, K: st([1.5, 1.95, 2.3, 0.1, 1.9, -2.9, 44], [1.4, 1.95, 2.0, 0.1, 1.95, -2.9, 44]) },
   // s6: the guest from the front, phone up, hands off
-  { at: T.s6, K: st([1.75, 1.7, -0.75, 0.7, 1.5, 0.7, 46], [1.7, 1.72, -0.6, 0.7, 1.5, 0.7, 46]) },
+  { at: T.s6, K: st([2.4, 1.6, -1.3, 0.7, 1.35, 0.7, 50], [2.3, 1.62, -1.15, 0.7, 1.35, 0.7, 50]) },
   // "take a photo": over the shoulder at the detector
   { at: T.photo - 0.15, K: st([1.4, 1.9, 1.8, 0.1, 2.1, -2.9, 40], [1.35, 1.9, 1.6, 0.1, 2.15, -2.9, 40]) },
   // "leave the room": wide, the guest walks to the glowing door
   { at: T.leave - 0.1, K: st([0.5, 2.3, 4.2, -1.2, 1.2, -1.4, 54], [0.4, 2.35, 4.4, -1.3, 1.2, -1.5, 54]) },
   // s7-s8: calm wide, lights off
-  { at: T.s7, calm: 1, K: [[0, [0.3, 2.3, 4.4, -0.2, 1.3, -2.0, 52]], [5, [0.3, 2.6, 5.2, -0.2, 1.3, -2.0, 52]]] },
+  { at: T.s7, calm: 1, K: [[0, [0.3, 2.3, 4.4, -0.2, 2.0, -2.0, 52]], [5, [0.3, 2.6, 5.2, -0.2, 2.0, -2.0, 52]]] },
 ];
 
 run("smoke-detector", (t) => {
@@ -193,8 +193,8 @@ run("smoke-detector", (t) => {
   ph.updateWorldMatrix(true, false); ph.getWorldPosition(hp);
   const tg = target(t);
   beamCone.set(hp, tg, 0.22, 0.13 * on);
-  spotDisk.visible = on > 0.01; spotDisk.position.copy(tg).add(V3(0, 0, 0.02)); spotDisk.lookAt(hp); spotDisk.material.opacity = 0.55 * on;
-  spot.intensity = 14 * on; spot.position.copy(hp); spot.target.position.copy(tg); spot.target.updateMatrixWorld();
+  spotDisk.visible = on > 0.01; spotDisk.position.copy(tg).add(V3(0, 0, 0.02)); spotDisk.lookAt(hp); spotDisk.material.opacity = 0.28 * on;
+  spot.intensity = 4 * on; spot.position.copy(hp); spot.target.position.copy(tg); spot.target.updateMatrixWorld();
 
   // glint: the lens throws the flashlight back
   const prox = Math.exp(-tg.distanceToSquared(LENS) / 0.02) * on;
