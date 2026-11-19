@@ -1,0 +1,8 @@
+s1|Got a big hospital bill? Never pay the first one they send.
+s2|The first bill is a summary. A few totals and an amount due.
+s3|Pay it, and you never see what you were charged for.
+s4|Instead, call the billing office and ask for the itemized bill.
+s5|It lists every charge on its own line. Check each one.
+s6|See the same charge twice? Dispute it in writing before you pay.
+s7|Ask for the itemized bill. Then check every line.
+s8|Follow Red Pen for more ways to lower a hospital bill.
