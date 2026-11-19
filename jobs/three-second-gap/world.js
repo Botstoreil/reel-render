@@ -79,15 +79,15 @@ const SH = [
   // s4: at the sign, looking back at the car coming
   { at: T4, f: fSign, noRot: 1, K: [[0, [1.8, 3.2, -9, -3.5, 1.2, 8, 52]], [2.5, [1.4, 3.0, -8, -3.5, 1.2, 8, 52]]] },
   // car passes the sign: high chase behind the bike, the whole gap in view
-  { at: Tp - 0.25, f: fBikeB, noRot: 1, K: [[0, [2.5, 8.0, 16, 0, 0, -9, 50]], [4.2, [2.2, 9.0, 17, 0, 0, -10, 50]]] },
+  { at: Tp - 0.25, f: fBikeB, noRot: 1, K: [[0, [2.5, 8.0, 16, 0, 0, -5, 50]], [4.2, [2.2, 9.0, 17, 0, 0, -6, 50]]] },
   // after "three": side-high at the sign as the bike crosses it
   { at: g("s5", "three") - 0.15, f: fSign, noRot: 1, K: [[0, [6, 5.5, 5, -3.2, 0.6, -2, 50]], [1.5, [6.5, 6, 3.5, -3.2, 0.6, -3, 50]]] },
   // "back off": chase again
-  { at: g("s5", "back") - 0.1, f: fBikeB, noRot: 1, K: [[0, [2.4, 6.0, 12, 0, 0.5, -12, 50]], [1.2, [2.2, 6.4, 12.5, 0, 0.5, -12, 50]]] },
+  { at: g("s5", "back") - 0.1, f: fBikeB, noRot: 1, K: [[0, [2.4, 6.0, 12, 0, 0.5, -6, 50]], [1.2, [2.2, 6.4, 12.5, 0, 0.5, -6, 50]]] },
   // s6: rain, chase, the car pulls away
-  { at: S.s6[0], f: fBikeB, noRot: 1, K: [[0, [2.2, 5.0, 11, 0, 0.5, -14, 50]], [3.5, [2.0, 6.5, 13, 0, 0.5, -16, 50]]] },
+  { at: S.s6[0], f: fBikeB, noRot: 1, K: [[0, [2.2, 5.0, 11, 0, 0.5, -8, 50]], [3.5, [2.0, 6.5, 13, 0, 0.5, -10, 50]]] },
   // s7-s8: calm, high behind
-  { at: S.s7[0], f: fBikeB, noRot: 1, calm: 1, K: [[0, [2.0, 6.5, 13, 0, 0.5, -16, 50]], [5, [2.0, 9, 16, 0, 0, -18, 50]]] },
+  { at: S.s7[0], f: fBikeB, noRot: 1, calm: 1, K: [[0, [2.0, 6.5, 13, 0, 0.5, -10, 50]], [5, [2.0, 9, 16, 0, 0, -12, 50]]] },
 ];
 
 run("three-second-gap", (t) => {
