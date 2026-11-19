@@ -1,0 +1,8 @@
+s1|Leaves on the road? Never brake or lean on them.
+s2|Wet leaves are slippery. Brake on them, and the front wheel slides.
+s3|Lean on them in a corner, and the bike goes down.
+s4|Instead, look far ahead, and spot the leaves early.
+s5|Slow down before them, while the road is still clean.
+s6|Roll over them upright and smooth. No sudden moves.
+s7|Brake before the leaves. Cross them upright.
+s8|Download APEX. The link is in our bio.
