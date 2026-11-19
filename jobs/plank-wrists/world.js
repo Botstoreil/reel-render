@@ -99,7 +99,7 @@ const heelPatch = HANDS.map(() => { const p = patch(0.16, 0.12, RED, 1.4); retur
 
 // ---------- guides ----------
 const OFF = V3(0.36, 0, 0); // floats on the camera side of the body
-const loadLine = beam(RED, 2.2, 0.03), stackLine = beam(GREEN, 2.2, 0.03);
+const loadLine = beam(RED, 2.2, 0.03), stackLine = beam(GREEN, 1.3, 0.025); // (round 1: green at 2.2 bloomed white)
 const A0 = V3(0, 0, 0), A1 = V3(0, 0, 0), W = V3(0, 0, 0);
 
 // ---------- text ----------
@@ -120,10 +120,13 @@ endCard([["SPREAD FINGERS", 1], ["PRESS KNUCKLES", 1]]);
 
 // ---------- shots: [cx, cy, cz, lookx, looky, lookz, fov]; side view from +x, the face toward -z ----------
 const st = (a, b = a) => [[0, a], [3, b]];
-const HANDCAM = [[0, [1.0, 0.42, -1.05, 0.25, 0.04, -0.52, 36]], [3, [0.92, 0.4, -1.0, 0.25, 0.04, -0.52, 36]]];
+// (round 1: hand cams looked down at the bright mat, red titles on violet were unreadable -> low cams, dark backdrop above)
+const HANDCAM = [[0, [0.95, 0.24, -1.05, 0.25, 0.1, -0.5, 36]], [3, [0.88, 0.23, -1.0, 0.25, 0.1, -0.5, 36]]];
+const FRONT = [[0, [0.65, 0.22, -1.25, 0.27, 0.1, -0.55, 36]], [3, [0.6, 0.21, -1.2, 0.27, 0.1, -0.55, 36]]];
 const SH = [
   // hook: wide side view, the whole plank
-  { at: 0, K: [[0, [3.4, 0.8, 0.1, 0, 0.4, 0.05, 46]], [2.0, [3.1, 0.78, 0.05, 0, 0.4, 0.0, 46]]] },
+  // (round 1: head cut off at the right edge -> farther back, aimed at the middle of the body)
+  { at: 0, K: [[0, [4.5, 0.9, -0.05, 0, 0.35, -0.05, 46]], [2.0, [4.2, 0.88, -0.05, 0, 0.35, -0.05, 46]]] },
   // "sink": closer on shoulders and hands
   { at: T.sink - 0.15, K: st([2.2, 0.55, -0.7, 0, 0.35, -0.55, 42], [2.05, 0.55, -0.68, 0, 0.35, -0.55, 42]) },
   // s2: side on the arm, the red load line
@@ -131,16 +134,16 @@ const SH = [
   // "pressure ... spot": close on the hand, the heel
   { at: T.pressure - 0.15, K: HANDCAM },
   // s3: from the front, the flat closed hand
-  { at: T.s3, K: st([0.6, 0.45, -1.25, 0.27, 0.03, -0.55, 36], [0.55, 0.43, -1.2, 0.27, 0.03, -0.55, 36]) },
+  { at: T.s3, K: FRONT },
   // s4: front on the hands, fingers fan out
-  { at: T.s4, K: st([0.6, 0.45, -1.25, 0.27, 0.03, -0.55, 36], [0.55, 0.45, -1.2, 0.27, 0.03, -0.55, 36]) },
+  { at: T.s4, K: FRONT },
   // "stack": side, shoulders over wrists
   { at: T.stack - 0.15, K: st([2.2, 0.55, -0.5, 0, 0.36, -0.5, 44], [2.05, 0.55, -0.5, 0, 0.36, -0.5, 44]) },
   // s5: close on the hand, knuckles and pads
   { at: T.s5, K: HANDCAM },
-  { at: T.gripping - 0.15, K: st([0.6, 0.45, -1.25, 0.27, 0.03, -0.55, 36], [0.55, 0.43, -1.2, 0.27, 0.03, -0.55, 36]) },
-  // s6: wide side, knees drop, then forearms
-  { at: T.s6, K: st([3.0, 0.8, 0.1, 0, 0.35, 0.05, 46], [2.85, 0.78, 0.1, 0, 0.35, 0.05, 46]) },
+  { at: T.gripping - 0.15, K: FRONT },
+  // s6: wide side, knees drop, then forearms (round 1: head cut off -> farther, aimed at the body middle)
+  { at: T.s6, K: st([4.2, 0.85, -0.05, 0, 0.3, -0.05, 46], [4.0, 0.83, -0.05, 0, 0.3, -0.05, 46]) },
   // s7-s8: calm wide, person low in frame under the end card
   { at: T.s7, calm: 1, K: [[0, [3.6, 1.7, 0.2, 0, 1.0, 0.0, 48]], [5, [4.0, 1.85, 0.2, 0, 1.05, 0.0, 48]]] },
 ];
@@ -187,7 +190,7 @@ run("plank-wrists", (t) => {
   const ll = sm(T.weight - 0.1, T.weight + 0.15, t) * (1 - sm(T.pressure - 0.15, T.pressure, t));
   A0.copy(J.SHO).add(OFF); W.copy(J.HAND).add(OFF); W.z += 0.06; loadLine.set(A0, W, ll * (0.85 + 0.15 * Math.sin(t * 8)));
   const sl = sm(T.stack - 0.05, T.stack + 0.2, t) * (1 - sm(T.s5 - 0.05, T.s5 + 0.2, t));
-  A1.copy(J.HAND).add(OFF); A0.set(A1.x, J.SHO.y, J.SHO.z); stackLine.set(A0, A1, sl * (0.85 + 0.4 * flash(t, T.wrists)));
+  A1.copy(J.HAND).add(OFF); A0.set(A1.x, J.SHO.y, J.SHO.z); stackLine.set(A0, A1, sl * (0.8 + 0.2 * flash(t, T.wrists)));
 
   const { punch } = shoot(SH, t);
   unclip();
