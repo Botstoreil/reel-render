@@ -65,11 +65,11 @@ function pose(a, cave, t) {
 const redShin = beam(RED, 2.4, 0.035);
 const ring = new THREE.Mesh(new THREE.TorusGeometry(0.11, 0.012, 8, 40), new THREE.MeshBasicMaterial({ color: new THREE.Color(RED).multiplyScalar(2.4), toneMapped: false, transparent: true, opacity: 0 }));
 scene.add(ring);
-const plumb = beam(GREEN, 1.4, 0.016), toeLine = beam(GREEN, 1.5, 0.018);
+const plumb = beam(GREEN, 1.0, 0.011), toeLine = beam(GREEN, 1.5, 0.018);
 // the plumb line draws on top of the shin (it used to sit inside it and vanish)
 plumb.material.depthTest = false; plumb.renderOrder = 20;
-const dotMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(GREEN).multiplyScalar(1.6), toneMapped: false, transparent: true, opacity: 0, depthTest: false });
-const kneeDot = new THREE.Mesh(new THREE.SphereGeometry(0.022, 16, 12), dotMat), ankDot = new THREE.Mesh(new THREE.SphereGeometry(0.022, 16, 12), dotMat);
+const dotMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(GREEN).multiplyScalar(1.2), toneMapped: false, transparent: true, opacity: 0, depthTest: false });
+const kneeDot = new THREE.Mesh(new THREE.SphereGeometry(0.018, 16, 12), dotMat), ankDot = new THREE.Mesh(new THREE.SphereGeometry(0.018, 16, 12), dotMat);
 kneeDot.renderOrder = ankDot.renderOrder = 21; scene.add(kneeDot, ankDot);
 const PT = V3(0, 0, 0), PB = V3(0, 0, 0);
 const mEdge = new THREE.MeshBasicMaterial({ color: new THREE.Color(GREEN).multiplyScalar(2.2), toneMapped: false, transparent: true, opacity: 0 });
@@ -98,16 +98,17 @@ const SH = [
   // "cave": the knee from the front foot's side (the inward roll reads left-right here)
   // (close shots kept low with a narrower lens so the torso stays above the frame, clear of the titles)
   // level camera at shin height, ~0.75 m of frame: knee ~30% from the top (under the title band), hips above the frame
-  { at: T.cave - 0.15, K: st([2.0, 0.36, -0.95, 0.35, 0.34, 0, 23], [1.85, 0.36, -0.85, 0.35, 0.34, 0, 24]) },
-  // s2: same side, the twisted shin
-  { at: T.s2, K: st([2.1, 0.4, -1.1, 0.35, 0.34, 0, 22], [1.9, 0.4, -0.95, 0.35, 0.34, 0, 23]) },
-  { at: T.twists - 0.1, K: st([1.7, 0.36, -1.35, 0.35, 0.33, 0, 23], [1.6, 0.36, -1.2, 0.35, 0.33, 0, 24]) },
+  // (round 2 tried tighter framing here: knee + ring went under the titles; back to the round-1 framing)
+  { at: T.cave - 0.15, K: st([2.0, 0.95, -0.95, 0.35, 0.5, 0, 42], [1.85, 0.9, -0.85, 0.35, 0.5, 0, 40]) },
+  // s2: same side, a little higher, the twisted shin
+  { at: T.s2, K: st([2.1, 1.25, -1.1, 0.35, 0.45, 0, 44], [1.9, 1.2, -0.95, 0.35, 0.45, 0, 42]) },
+  { at: T.twists - 0.1, K: st([1.7, 0.8, -1.35, 0.35, 0.42, 0, 42], [1.6, 0.78, -1.2, 0.35, 0.42, 0, 40]) },
   // s3: high three-quarter, the stance grows (person low in frame, under the caption)
   { at: T.s3, K: st([1.5, 2.4, -3.4, -0.1, 1.0, 0, 52], [1.3, 2.3, -3.1, -0.1, 1.0, 0, 52]) },
   // s4: front close and low, knee comes back over the ankle; torso stays above the frame (no body under the title)
-  { at: T.s4, K: st([0.62, 0.36, -1.55, 0.4, 0.34, 0, 27], [0.6, 0.36, -1.45, 0.4, 0.34, 0, 28]) },
-  // s5: from the front foot's side, knee -> middle toes, outer edge; same level framing
-  { at: T.s5, K: st([1.85, 0.36, -0.9, 0.4, 0.34, 0, 25], [1.75, 0.36, -0.8, 0.4, 0.34, 0, 26]) },
+  { at: T.s4, K: st([0.62, 0.44, -1.55, 0.4, 0.44, 0, 27], [0.6, 0.44, -1.45, 0.4, 0.44, 0, 28]) },
+  // s5: from the front foot's side, knee -> middle toes, outer edge; knee kept below the title band
+  { at: T.s5, K: st([1.85, 0.44, -0.9, 0.4, 0.42, 0, 26], [1.75, 0.44, -0.8, 0.4, 0.42, 0, 27]) },
   // "press into the outer edge": low and close on the foot
   // (from above, so the shin is end-on and nothing of the body sits under the title)
   { at: T.press - 0.15, K: st([0.62, 1.3, 0.5, 0.6, 0.04, 0.03, 34], [0.62, 1.2, 0.46, 0.6, 0.04, 0.03, 33]) },
