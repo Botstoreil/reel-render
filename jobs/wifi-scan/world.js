@@ -132,7 +132,8 @@ const SH = [
   // "can't match ... in the room": laptop matched (check), charger not (cross)
   { at: T.match - 0.2, K: st([0.6, 1.6, 0.4, -0.4, 0.8, -2.2, 50], [0.5, 1.55, 0.2, -0.4, 0.8, -2.2, 50]) },
   // s6 "miss ... offline": the clock camera, no line to the router
-  { at: T.miss - 0.1, K: st([-0.95, 0.95, -1.8, -1.3, 0.66, -2.66, 38], [-1.0, 0.93, -1.9, -1.3, 0.66, -2.66, 36]) },
+  // (round 2: looks higher and wider so the wall charger sits below the cap; round 1 covered "SCANS CAN MISS")
+  { at: T.miss - 0.1, K: st([-0.9, 1.05, -1.6, -1.3, 0.84, -2.66, 42], [-0.95, 1.03, -1.7, -1.3, 0.84, -2.66, 40]) },
   // "check the room": guest's flashlight on the nightstand
   { at: T.check - 0.15, K: st([0.6, 1.8, 1.6, -0.9, 0.75, -2.6, 46], [0.5, 1.75, 1.4, -0.9, 0.75, -2.6, 46]) },
   // s7-s8: calm wide
