@@ -1,0 +1,3 @@
+{"type":"words","model":"small.en","words":[{"text":"A","start":0,"end":0.061},{"text":"camera","start":0.061,"end":0.424},{"text":"lens","start":0.424,"end":0.666},{"text":"can","start":0.666,"end":0.847},{"text":"throw","start":0.847,"end":1.15},{"text":"back","start":1.15,"end":1.392},{"text":"a","start":1.392,"end":1.452},{"text":"small","start":1.452,"end":1.755},{"text":"sharp","start":1.755,"end":2.057},{"text":"glint.","start":2.057,"end":2.42}],"through":2.42}
+{"type":"words","model":"small.en","words":[{"text":"Check","start":2.42,"end":2.685},{"text":"anything","start":2.685,"end":3.11},{"text":"that","start":3.11,"end":3.322},{"text":"sparkles.","start":3.322,"end":3.8}],"through":3.8}
+{"type":"words","model":"small.en","words":[],"through":3.885125}
