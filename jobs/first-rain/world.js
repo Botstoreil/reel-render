@@ -45,7 +45,7 @@ function gapPatch(p, sFront, sBack, x, a) { const len = Math.max(0.05, sFront - 
 // painted arrow (long bar + head) and a round metal cover
 const mPaint = glow(0xffffff, 0.9), mCover = glow(VIOLET, 1.0);
 scene.add(box(0.35, 0.02, 3.2, LANE, 0.02, -PAINT, mPaint, false), box(1.0, 0.02, 0.35, LANE, 0.02, -(PAINT + 1.7), mPaint, false));
-const cover = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.03, 28), mCover); cover.position.set(LANE, 0.02, -COVER); scene.add(cover);
+const cover = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.03, 28), mCover); cover.position.set(LANE, 0.02, -COVER); scene.add(cover);
 // rain around the camera's subject
 const NR = 480, rain = new THREE.InstancedMesh(new THREE.BoxGeometry(0.022, 0.7, 0.022), glow(VIOLET, 1.0), NR);
 rain.frustumCulled = false; scene.add(rain);
@@ -75,13 +75,13 @@ const SH = [
   // s2: high behind, the orange patches spread on the road ahead
   { at: S.s2[0], f: fBikeA, noRot: 1, K: [[0, [3.0, 6.5, 7.5, 0.5, 0, -9, 50]], [3.0, [2.6, 7.2, 7.0, 0.5, 0, -10, 50]]] },
   // s3: high and close at the slide spot
-  { at: Tbr - 0.3, f: fSlide, noRot: 1, K: [[0, [5.0, 4.5, 7.0, 0, 0.5, 0, 52]], [3.0, [5.5, 5.5, 4.0, 0.4, 0.3, 0, 52]]] },
+  { at: Tbr - 0.3, f: fBikeA, noRot: 1, K: [[0, [4.5, 4.2, 5.0, 0, 0.5, -1.5, 52]], [3.0, [5.0, 5.0, 3.5, 0.4, 0.3, -0.5, 52]]] },
   // s4: high chase, the whole green gap to the car
   { at: T4, f: fBikeB, noRot: 1, K: [[0, [2.6, 8.0, 15, 0, 0, -7, 50]], [2.0, [2.4, 8.6, 16, 0, 0, -8, 50]]] },
   // s5: low side, the bike stays upright while it slows
-  { at: S.s5[0], f: fBikeB, noRot: 1, K: [[0, [5.0, 2.4, 3.0, 0, 0.8, -2, 48]], [2.2, [5.0, 2.6, 1.5, 0, 0.8, -2.5, 48]]] },
+  { at: S.s5[0], f: fBikeB, noRot: 1, K: [[0, [6.0, 3.0, 4.5, 0, 0.7, -1.5, 48]], [2.2, [6.0, 3.2, 3.5, 0, 0.7, -2.0, 48]]] },
   // s6: high behind, the arrow and the cover ahead, the bike passes left of them
-  { at: S6, f: fBikeB, noRot: 1, K: [[0, [3.2, 6.5, 8.0, 0.4, 0, -8, 50]], [3.2, [3.0, 7.0, 7.5, 0.4, 0, -8, 50]]] },
+  { at: S6, f: fBikeB, noRot: 1, K: [[0, [0.6, 6.5, 8.5, -0.4, 0, -7, 50]], [3.2, [0.4, 7.0, 8.0, -0.6, 0, -7, 50]]] },
   // s7-s8: calm, high behind
   { at: S.s7[0], f: fBikeB, noRot: 1, calm: 1, K: [[0, [2.0, 6.5, 13, 0, 0.5, -10, 50]], [5, [2.0, 9, 16, 0, 0, -12, 50]]] },
 ];
@@ -101,11 +101,11 @@ run("first-rain", (t) => {
   skid.set(A && t >= Tsl ? sm(Tsl, Tsl + 0.3, t) : 0);
 
   // part B: the green gap, the hazards flash red on their words
-  gapPatch(gapP, carB(t) - 2.15, bikeB(t) + 0.85, LANE, !A && t < S6 ? sm(g("s4", "bigger") - 0.1, g("s4", "bigger") + 0.3, t) : 0);
+  gapPatch(gapP, carB(t) - 2.15, bikeB(t) + 0.85, LANE, !A && t < S.s5[0] + 0.2 ? sm(g("s4", "bigger") - 0.1, g("s4", "bigger") + 0.3, t) : 0);
   const pf = !A ? Math.max(0, 1 - Math.abs(t - g("s6", "painted") - 0.2) / 0.7) + 0.6 * Math.max(0, 1 - Math.abs(t - g("s6", "slippery") - 0.2) / 0.7) : 0;
   const cf = !A ? Math.max(0, 1 - Math.abs(t - g("s6", "metal") - 0.2) / 0.7) + 0.6 * Math.max(0, 1 - Math.abs(t - g("s6", "slippery") - 0.2) / 0.7) : 0;
-  mPaint.color.set(0xffffff).lerp(new THREE.Color(RED), Math.min(1, pf)).multiplyScalar(0.9 + 1.6 * Math.min(1, pf));
-  mCover.color.set(VIOLET).lerp(new THREE.Color(RED), Math.min(1, cf)).multiplyScalar(1.0 + 1.8 * Math.min(1, cf));
+  mPaint.color.set(0xffffff).lerp(new THREE.Color(RED), Math.min(1, pf)).multiplyScalar(0.7 + 0.4 * Math.min(1, pf));
+  mCover.color.set(VIOLET).lerp(new THREE.Color(RED), Math.min(1, cf)).multiplyScalar(1.2 + 0.6 * Math.min(1, cf));
 
   // rain the whole time, around the bike
   if (st) {
