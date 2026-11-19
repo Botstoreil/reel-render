@@ -57,14 +57,14 @@ const SH = [
   { at: 0, f: fBikeA, noRot: 1, K: [[0, [0.6, 3.4, 7.0, -1.6, 0.8, -2.5, 50]], [2.4, [0.2, 3.8, 6.2, -1.6, 0.8, -2.5, 50]]] },
   // s2: high, right-rear of the car: the mirror cone goes straight back, the bike sits outside it in red
   { at: S.s2[0], f: fCar, noRot: 1, K: [[0, [5.5, 6.5, 7.5, 1.4, 0.5, 1.8, 50]], [2.0, [5.0, 7.0, 6.5, 1.4, 0.5, 1.8, 50]]] },
-  // s3: front-right, high: the car swings over into the bike
-  { at: Tc - 0.25, f: fCar, noRot: 1, K: [[0, [5.0, 5.0, -4.0, 1.6, 0.5, 2.2, 52]], [2.0, [5.8, 5.8, -2.5, 1.8, 0.4, 2.2, 52]]] },
-  // s4: high chase behind both: the bike falls back out of the red zone
-  { at: T4, f: fCar, noRot: 1, K: [[0, [3.0, 7.5, 13, 1.2, 0, -1, 50]], [3.0, [3.4, 8.5, 16, 1.4, 0, -2, 50]]] },
-  // s5: over the rider's shoulder, looking up the lane at the car's right mirror
-  { at: S.s5[0], f: fBikeB, noRot: 1, K: [[0, [0.5, 2.1, 2.6, -2.4, 1.0, -11, 44]], [2.3, [0.4, 2.0, 1.8, -2.4, 1.0, -11, 40]]] },
-  // s6: high side view: the green line runs both ways between rider and mirror
-  { at: S.s6[0], f: fCar, noRot: 1, K: [[0, [6.5, 5.5, 6.0, 1.5, 0.6, 4.5, 52]], [1.8, [7.0, 6.0, 7.0, 1.5, 0.6, 4.5, 52]]] },
+  // s3: high right-rear (like s2), framed on car + bike: the car swings over into the bike
+  { at: Tc - 0.25, f: fCar, noRot: 1, K: [[0, [7.0, 7.0, 9.5, 2.2, 0.4, 1.8, 50]], [2.0, [6.5, 7.5, 8.5, 2.4, 0.4, 2.2, 50]]] },
+  // s4: high chase far enough back that the bike stays in frame after it drops back
+  { at: T4, f: fCar, noRot: 1, K: [[0, [2.8, 9.0, 24, 1.0, 0, 3, 50]], [3.0, [3.0, 9.5, 25, 1.0, 0, 2, 50]]] },
+  // s5: behind and right of the rider, a little high: the green line runs from the helmet up to the car's mirror
+  { at: S.s5[0], f: fBikeB, noRot: 1, K: [[0, [1.6, 2.8, 3.6, -1.8, 1.0, -8, 46]], [2.3, [1.4, 2.7, 3.0, -1.8, 1.0, -8, 44]]] },
+  // s6: high side view, wide enough for the whole line, the car and the bike
+  { at: S.s6[0], f: fCar, noRot: 1, K: [[0, [9.0, 9.5, 13, 1.8, 0.5, 6.0, 50]], [1.8, [9.5, 10, 14, 1.8, 0.5, 6.0, 50]]] },
   // s7-s8: calm, high behind
   { at: S.s7[0], f: fCar, noRot: 1, calm: 1, K: [[0, [2.5, 8.5, 17, 1.0, 0, -2, 50]], [5, [2.5, 10, 20, 1.0, 0, -4, 50]]] },
 ];
