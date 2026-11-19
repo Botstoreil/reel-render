@@ -1,0 +1,8 @@
+s1|Booked an Airbnb? Never skip the Wi-Fi scan.
+s2|Many cheap hidden cameras send their video over the Wi-Fi.
+s3|So they can show up as devices on the same network you join.
+s4|Join the Wi-Fi, then scan for every connected device.
+s5|Look for a camera name, or a device you can't match to anything in the room.
+s6|A scan can miss cameras that record offline, so check the room too.
+s7|Join the Wi-Fi. Scan it first.
+s8|Download Hidden Cam. The link is in our bio.
