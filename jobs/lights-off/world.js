@@ -43,12 +43,13 @@ scene.add(box(0.34, 0.14, 0.12, 1.3, 0.62, -2.72, mat(0x15123f, 0.1)));
 }
 // lamps on both nightstands (bright room, go out at "lights off")
 const mLamp = glow(0xffd8a0, 1.3);
-for (const x of [1.42, -1.5]) {
+// (round 1: a second lamp at x=-1.5 blew out the charger close-ups and covered the titles -> right lamp only)
+for (const x of [1.42]) {
   scene.add(tube([x, 0.55, -2.82], [x, 0.95, -2.82], 0.025, mat(0x15123f)));
   const shade = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.16, 0.2, 24, 1, true), mLamp); shade.position.set(x, 1.02, -2.82); scene.add(shade);
 }
 // ceiling light
-const mCeil = glow(0xfff0d8, 1.4);
+const mCeil = glow(0xfff0d8, 0.9);
 scene.add(box(0.9, 0.04, 0.9, 0, 3.2, -1.2, mCeil, false));
 // window with two curtains that close at "curtains"
 const WX = 2.9, mGlass = glow(0x6a7cff, 0.9);
@@ -125,7 +126,8 @@ const SH = [
   // "tiny lens ... blends": close on the charger
   { at: T.lensW - 0.1, K: st([-1.08, 0.98, -2.1, -1.3, 0.95, -2.88, 36], [-1.1, 0.98, -2.2, -1.3, 0.95, -2.88, 34]) },
   // s3: over the guest, looking right at it
-  { at: T.s3, K: st([0.2, 1.8, 1.6, -1.1, 0.95, -2.8, 46], [0.1, 1.75, 1.3, -1.1, 0.95, -2.8, 46]) },
+  // (round 1: right behind the head, the head filled the frame -> three-quarter from the right, guest and charger both in)
+  { at: T.s3, K: st([1.0, 1.7, 1.0, -0.9, 0.85, -1.7, 46], [0.9, 1.68, 0.8, -0.9, 0.85, -1.7, 46]) },
   // s4: wide, lights go out, curtains close
   { at: T.s4, K: st([0.9, 2.1, 2.6, 1.0, 1.2, -2.6, 52], [0.8, 2.0, 2.3, 1.0, 1.2, -2.6, 52]) },
   // s5: behind the guest, the beam sweeps from the window
@@ -143,7 +145,7 @@ run("lights-off", (t) => {
   const dark = sm(T.off - 0.05, T.off + 0.3, t) * (1 - 0.5 * sm(T.s8, T.s8 + 0.6, t));
   for (const [l, i0] of LIGHTS) l.intensity = i0 * (1.15 - 0.85 * dark);
   mLamp.color.set(0xffd8a0).multiplyScalar(1.3 * (1 - 0.95 * dark));
-  mCeil.color.set(0xfff0d8).multiplyScalar(1.4 * (1 - 0.97 * dark));
+  mCeil.color.set(0xfff0d8).multiplyScalar(0.9 * (1 - 0.97 * dark));
   // curtains slide shut at "curtains", window light goes
   const cl = sm(T.curtains - 0.15, T.curtains + 0.45, t);
   for (const [c, s] of CUR) c.position.x = WX + s * (0.95 - 0.6 * cl);
@@ -166,7 +168,7 @@ run("lights-off", (t) => {
   const u = sm(T.fl, T.sharp - 0.1, t);
   const B = sweep(u);
   ph.updateWorldMatrix(true, false); ph.getWorldPosition(hp);
-  beamCone.set(hp, B, 0.22, 0.08 * on);
+  beamCone.set(hp, B, 0.22, 0.05 * on); // (round 1: 0.08 greyed out the close-ups)
   spot.intensity = 1.2 * on; spot.position.copy(hp); spot.target.position.copy(B); spot.target.updateMatrixWorld();
   const hit = sm(0.85, 1.0, u);
   const gA = on * hit * (0.6 + 0.4 * flash(t, T.glint));
