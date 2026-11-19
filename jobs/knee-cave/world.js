@@ -65,7 +65,7 @@ function pose(a, cave, t) {
 const redShin = beam(RED, 2.4, 0.035);
 const ring = new THREE.Mesh(new THREE.TorusGeometry(0.11, 0.012, 8, 40), new THREE.MeshBasicMaterial({ color: new THREE.Color(RED).multiplyScalar(2.4), toneMapped: false, transparent: true, opacity: 0 }));
 scene.add(ring);
-const plumb = beam(GREEN, 2.4, 0.03), toeLine = beam(GREEN, 2.4, 0.03);
+const plumb = beam(GREEN, 1.8, 0.022), toeLine = beam(GREEN, 1.5, 0.018);
 const mEdge = new THREE.MeshBasicMaterial({ color: new THREE.Color(GREEN).multiplyScalar(2.2), toneMapped: false, transparent: true, opacity: 0 });
 const edge = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.02, 0.025), mEdge); scene.add(edge);
 const stancePatch = patch(1, 0.5, RED, 1.1), goodPatch = patch(1, 0.5, GREEN, 1.0);
@@ -88,23 +88,24 @@ endCard([["KNEE OVER ANKLE", 1], ["TO MIDDLE TOES", 1]]);
 const st = (a, b = a) => [[0, a], [3, b]];
 const SH = [
   // hook: wide front, warrior two
-  { at: 0, K: [[0, [0.5, 1.35, -3.6, 0, 0.95, 0, 48]], [2.0, [0.4, 1.25, -3.0, 0.05, 0.9, 0, 48]]] },
-  // "cave": the knee from the front foot's side
-  { at: T.cave - 0.15, K: st([2.0, 0.9, -0.95, 0.35, 0.45, 0, 42], [1.85, 0.85, -0.85, 0.35, 0.45, 0, 40]) },
-  // s2: close from the front, the twisted shin
-  { at: T.s2, K: st([0.75, 0.75, -1.55, 0.35, 0.42, 0, 44], [0.7, 0.72, -1.35, 0.35, 0.42, 0, 42]) },
-  // s3: high three-quarter, the stance grows
-  { at: T.s3, K: st([1.4, 2.3, -2.7, -0.1, 0.55, 0, 50], [1.2, 2.2, -2.4, -0.1, 0.55, 0, 50]) },
+  { at: 0, K: [[0, [0.5, 1.5, -4.6, 0, 1.15, 0, 50]], [2.0, [0.4, 1.45, -4.0, 0.05, 1.1, 0, 50]]] },
+  // "cave": the knee from the front foot's side (the inward roll reads left-right here)
+  { at: T.cave - 0.15, K: st([2.0, 0.95, -0.95, 0.35, 0.5, 0, 42], [1.85, 0.9, -0.85, 0.35, 0.5, 0, 40]) },
+  // s2: same side, a little higher, the twisted shin
+  { at: T.s2, K: st([2.1, 1.25, -1.1, 0.35, 0.45, 0, 44], [1.9, 1.2, -0.95, 0.35, 0.45, 0, 42]) },
+  { at: T.twists - 0.1, K: st([1.7, 0.8, -1.35, 0.35, 0.42, 0, 42], [1.6, 0.78, -1.2, 0.35, 0.42, 0, 40]) },
+  // s3: high three-quarter, the stance grows (person low in frame, under the caption)
+  { at: T.s3, K: st([1.5, 2.4, -3.4, -0.1, 1.0, 0, 52], [1.3, 2.3, -3.1, -0.1, 1.0, 0, 52]) },
   // s4: front close, knee comes back over the ankle
   { at: T.s4, K: st([0.6, 0.8, -1.6, 0.35, 0.42, 0, 44], [0.55, 0.78, -1.45, 0.35, 0.42, 0, 42]) },
   // s5: from the front foot's side, knee -> middle toes, outer edge
   { at: T.s5, K: st([1.95, 0.85, -0.9, 0.38, 0.35, 0, 42], [1.8, 0.8, -0.75, 0.38, 0.33, 0, 40]) },
   // "press into the outer edge": low and close on the foot
-  { at: T.press - 0.15, K: st([1.2, 0.45, 0.75, 0.42, 0.08, 0, 42], [1.1, 0.42, 0.65, 0.42, 0.08, 0, 40]) },
+  { at: T.press - 0.15, K: st([1.6, 0.75, 1.2, 0.42, 0.08, 0, 42], [1.5, 0.72, 1.1, 0.42, 0.08, 0, 40]) },
   // s6: wide front, shorter stance
-  { at: T.s6, K: st([0.4, 1.3, -3.2, 0, 0.9, 0, 48], [0.35, 1.25, -2.9, 0, 0.9, 0, 48]) },
+  { at: T.s6, K: st([0.4, 1.5, -4.2, 0, 1.15, 0, 50], [0.35, 1.45, -3.9, 0, 1.15, 0, 50]) },
   // s7-s8: calm wide
-  { at: T.s7, calm: 1, K: [[0, [0.3, 1.4, -3.4, 0, 1.0, 0, 50]], [5, [0.3, 1.6, -4.0, 0, 1.0, 0, 50]]] },
+  { at: T.s7, calm: 1, K: [[0, [0.3, 1.5, -4.4, 0, 1.2, 0, 50]], [5, [0.3, 1.7, -5.0, 0, 1.2, 0, 50]]] },
 ];
 
 run("knee-cave", (t) => {
@@ -130,9 +131,9 @@ run("knee-cave", (t) => {
   goodPatch.set(sm(T.shorten - 0.05, T.shorten + 0.3, t) * (1 - sm(T.s7 - 0.1, T.s7 + 0.3, t)));
 
   // right: plumb line knee -> ankle, then knee -> middle toes, outer edge glow
-  const ok = sm(T.ankle - 0.35, T.ankle, t) * (1 - sm(T.s7 - 0.1, T.s7 + 0.3, t));
+  const ok = sm(T.ankle - 0.35, T.ankle, t) * (1 - sm(T.middle - 0.3, T.middle, t));
   plumb.set(K, V3(K.x, 0.02, K.z), ok * (0.8 + 0.4 * flash(t, T.ankle)));
-  const tl = sm(T.middle - 0.15, T.middle + 0.1, t) * (1 - sm(T.s6 - 0.1, T.s6 + 0.2, t));
+  const tl = sm(T.middle - 0.15, T.middle + 0.1, t) * (1 - sm(T.press - 0.25, T.press, t));
   toeLine.set(K, TOES, tl);
   edge.position.set(ANK.x + 0.08, 0.03, 0.065);
   mEdge.opacity = sm(T.outer - 0.1, T.outer + 0.15, t) * (1 - sm(T.s6 + 0.3, T.s6 + 0.6, t)) * (0.75 + 0.25 * Math.sin(t * 8));
