@@ -1,0 +1,8 @@
+s1|Following a car? Never ride on its bumper.
+s2|The car brakes hard. You are too close, and there is no time to stop.
+s3|You hit the back of the car before your brakes can save you.
+s4|Instead, pick a fixed point, like a sign. When the car passes it, start counting.
+s5|One thousand one, one thousand two, one thousand three. Reach the sign first? Back off.
+s6|In the rain or at night, double the gap.
+s7|Three seconds behind. More in the rain.
+s8|Download APEX. The link is in our bio.
