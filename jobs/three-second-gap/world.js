@@ -38,7 +38,7 @@ const bike = makeBike(), car = makeCar();
 const mBrake = glow(RED, 1);
 car.g.add(box(0.46, 0.16, 0.06, -0.62, 0.74, 2.2, mBrake, false), box(0.46, 0.16, 0.06, 0.62, 0.74, 2.2, mBrake, false));
 // the sign: post + glowing panel at the right roadside
-const SX = 5.0, mSign = glow(GREEN, 1.2);
+const SX = 5.0, mSign = glow(GREEN, 0.45);
 scene.add(box(0.14, 3.0, 0.14, SX, 1.5, -SIGN, mFrame, false), box(1.4, 0.9, 0.1, SX, 3.3, -SIGN, mSign));
 const signLine = patch(7.4, 0.5, GREEN, 1.4); signLine.position.set(0, 0.03, -SIGN);
 // gap patches: red (too close) and green (three seconds); length set by scale.y
@@ -72,22 +72,22 @@ const fSign = () => P0(SIGN, SX), fBikeB = (t) => P0(bikeB(t));
 const SH = [
   // hook: low behind the bike, the car's bumper right in front of it
   { at: 0, f: fBikeA, noRot: 1, K: [[0, [2.6, 2.0, 6.5, 0, 0.9, -7, 50]], [2.2, [1.8, 2.5, 5.4, 0, 0.9, -7, 50]]] },
-  // s2: side view, brake lights and the shrinking gap
-  { at: S.s2[0], f: fMidA, noRot: 1, K: [[0, [8, 3.0, 1.5, 0, 0.7, -0.5, 46]], [3.4, [6.8, 3.4, -0.5, 0, 0.7, -0.5, 46]]] },
+  // s2: high three-quarter from behind-right: brake lights, the bike and the shrinking red gap all in frame
+  { at: S.s2[0], f: fMidA, noRot: 1, K: [[0, [5.0, 6.0, 8.0, 0, 0.4, -1.5, 50]], [3.4, [4.2, 6.6, 7.0, 0, 0.4, -1.5, 50]]] },
   // the hit, high and close
   { at: Tcr - 0.35, f: fCrash, noRot: 1, K: [[0, [4.5, 4.0, 5.0, 0, 0.6, 0, 52]], [3.0, [5.5, 5.5, 2.5, 0, 0.4, 0, 52]]] },
   // s4: at the sign, looking back at the car coming
   { at: T4, f: fSign, noRot: 1, K: [[0, [1.8, 3.2, -9, -3.5, 1.2, 8, 52]], [2.5, [1.4, 3.0, -8, -3.5, 1.2, 8, 52]]] },
   // car passes the sign: high chase behind the bike, the whole gap in view
-  { at: Tp - 0.25, f: fBikeB, noRot: 1, K: [[0, [3.0, 7.0, 9, 0, 0, -22, 50]], [4.2, [2.4, 9.0, 11, 0, 0, -24, 48]]] },
+  { at: Tp - 0.25, f: fBikeB, noRot: 1, K: [[0, [2.5, 8.0, 16, 0, 0, -9, 50]], [4.2, [2.2, 9.0, 17, 0, 0, -10, 50]]] },
   // after "three": side-high at the sign as the bike crosses it
   { at: g("s5", "three") - 0.15, f: fSign, noRot: 1, K: [[0, [6, 5.5, 5, -3.2, 0.6, -2, 50]], [1.5, [6.5, 6, 3.5, -3.2, 0.6, -3, 50]]] },
   // "back off": chase again
-  { at: g("s5", "back") - 0.1, f: fBikeB, noRot: 1, K: [[0, [2.4, 4.5, 8, 0, 1, -22, 50]], [1.2, [2.2, 5, 8.5, 0, 1, -22, 50]]] },
-  // s6: rain, low chase, the car pulls away
-  { at: S.s6[0], f: fBikeB, noRot: 1, K: [[0, [2.2, 3.2, 7.5, 0, 1.2, -20, 52]], [3.5, [2.0, 5.0, 10, 0, 1, -26, 50]]] },
+  { at: g("s5", "back") - 0.1, f: fBikeB, noRot: 1, K: [[0, [2.4, 6.0, 12, 0, 0.5, -12, 50]], [1.2, [2.2, 6.4, 12.5, 0, 0.5, -12, 50]]] },
+  // s6: rain, chase, the car pulls away
+  { at: S.s6[0], f: fBikeB, noRot: 1, K: [[0, [2.2, 5.0, 11, 0, 0.5, -14, 50]], [3.5, [2.0, 6.5, 13, 0, 0.5, -16, 50]]] },
   // s7-s8: calm, high behind
-  { at: S.s7[0], f: fBikeB, noRot: 1, calm: 1, K: [[0, [2.0, 5.0, 10, 0, 1, -26, 50]], [5, [2.0, 9, 14, 0, 0, -30, 50]]] },
+  { at: S.s7[0], f: fBikeB, noRot: 1, calm: 1, K: [[0, [2.0, 6.5, 13, 0, 0.5, -16, 50]], [5, [2.0, 9, 16, 0, 0, -18, 50]]] },
 ];
 
 run("three-second-gap", (t) => {
@@ -107,7 +107,7 @@ run("three-second-gap", (t) => {
 
   // part B: sign, the line across the road when the car passes, the green gap after "three"
   const sp = A ? 0 : sm(g("s4", "sign") - 0.15, g("s4", "sign") + 0.2, t);
-  mSign.color.set(GREEN).multiplyScalar(1.2 + 1.6 * sp);
+  mSign.color.set(GREEN).multiplyScalar(0.45 + 0.35 * sp);
   const crossA = Math.max(Math.exp(-Math.abs(t - Tp) / 0.25) * (t > Tp - 0.3 ? 1 : 0), Math.exp(-Math.abs(t - Tq) / 0.25) * (t > Tq - 0.3 ? 1 : 0));
   signLine.set(A ? 0 : 0.25 + 0.75 * crossA);
   gapPatch(greenGap, carB(t) - 2.15, bikeB(t) + 0.85, !A && t < S.s8[0] ? sm(g("s5", "three") - 0.1, g("s5", "three") + 0.3, t) : 0);
