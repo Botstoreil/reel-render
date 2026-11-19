@@ -61,7 +61,8 @@ function pose(k, sink, HT, t) {
   HIP.set(0, lerp(0.99, 0.8, k) + br, lerp(0.05, 0.14, k));
   hips.position.set(0, HIP.y, HIP.z);
   // torso direction: hanging and steep when wrong (steeper with sink), long and forward when right
-  D.set(0, lerp(-0.94 - 0.04 * sink, -0.53, k), lerp(-0.35 + 0.15 * sink, -0.85, k)).normalize();
+  // (round 2: the wrong torso hangs further forward; round 1 hung it straight over the legs and hid the locked knees)
+  D.set(0, lerp(-0.8 - 0.08 * sink, -0.53, k), lerp(-0.6 + 0.14 * sink, -0.85, k)).normalize();
   SHO.copy(HIP).addScaledVector(D, TORSO);
   spine.quaternion.setFromUnitVectors(UP, D);
   // back normal (away from the legs)
@@ -117,16 +118,18 @@ endCard([["SOFT KNEES", 1], ["HINGE FROM HIPS", 1]]);
 const st = (a, b = a) => [[0, a], [3, b]];
 const SH = [
   // hook: wide side view, the whole fold
-  { at: 0, K: [[0, [3.6, 1.05, -0.15, 0, 0.5, -0.15, 46]], [2.0, [3.3, 1.0, -0.15, 0, 0.5, -0.15, 46]]] },
-  // "lock": the straight legs and knees
-  { at: T.lock - 0.15, K: st([2.1, 0.75, 0.7, 0, 0.5, 0.0, 44], [1.95, 0.72, 0.65, 0, 0.5, 0.0, 44]) },
-  // s2: from in front and above, the rounded back
-  { at: T.s2, K: st([2.2, 0.75, 0.7, 0, 0.5, 0.0, 44], [2.05, 0.72, 0.65, 0, 0.5, 0.0, 44]) },
+  // (round 2: low pure side views so the straight legs read and nothing reaches the title band)
+  { at: 0, K: [[0, [3.6, 0.75, -0.15, 0, 0.55, -0.15, 46]], [2.0, [3.3, 0.72, -0.15, 0, 0.55, -0.15, 46]]] },
+  // "lock": the straight legs and knees, side
+  { at: T.lock - 0.15, K: st([2.5, 0.55, 0.15, 0, 0.55, 0.0, 44], [2.35, 0.55, 0.12, 0, 0.55, 0.0, 44]) },
+  // s2: side, a little from behind the legs
+  { at: T.s2, K: st([2.5, 0.6, 0.5, 0, 0.55, -0.05, 44], [2.35, 0.6, 0.45, 0, 0.55, -0.05, 44]) },
   { at: T.rounded - 0.15, K: st([2.5, 1.45, -0.9, 0, 0.6, -0.05, 44], [2.35, 1.4, -0.85, 0, 0.6, -0.05, 44]) },
   // "low": closer on the low back
   { at: T.low - 0.15, K: st([2.0, 1.35, -0.3, 0, 0.8, 0.0, 42], [1.9, 1.3, -0.28, 0, 0.8, 0.0, 42]) },
   // s3: low from the hands side, reaching for the floor
-  { at: T.s3, K: st([2.0, 0.5, -1.4, 0, 0.28, -0.3, 46], [1.85, 0.48, -1.3, 0, 0.28, -0.3, 46]) },
+  // (round 2: pulled back and aimed higher; round 1 put the torso over "FORCING THE FLOOR")
+  { at: T.s3, K: st([2.6, 0.6, -1.6, 0, 0.5, -0.25, 46], [2.45, 0.58, -1.5, 0, 0.5, -0.25, 46]) },
   { at: T.rounds - 0.15, K: st([3.2, 0.95, -0.1, 0, 0.5, -0.1, 46], [3.0, 0.92, -0.1, 0, 0.5, -0.1, 46]) },
   // s4: knees, three-quarter from behind the legs, then side for the hinge
   { at: T.s4, K: st([2.2, 0.7, 0.9, 0, 0.45, -0.05, 46], [2.05, 0.7, 0.85, 0, 0.45, -0.05, 46]) },
@@ -135,7 +138,7 @@ const SH = [
   { at: T.s5, K: st([2.6, 0.85, -0.15, 0, 0.5, -0.15, 44], [2.45, 0.82, -0.15, 0, 0.5, -0.15, 44]) },
   { at: T.spine - 0.15, K: st([3.1, 1.0, -0.2, 0, 0.5, -0.2, 46], [2.95, 0.98, -0.2, 0, 0.5, -0.2, 46]) },
   // s6: low three-quarter from the front, the blocks; then side for the shins
-  { at: T.s6, K: st([2.0, 0.55, -1.5, 0, 0.3, -0.45, 46], [1.85, 0.52, -1.4, 0, 0.3, -0.45, 46]) },
+  { at: T.s6, K: st([2.5, 0.6, -1.7, 0, 0.45, -0.4, 46], [2.35, 0.58, -1.6, 0, 0.45, -0.4, 46]) },
   { at: T.shins - 0.15, K: st([2.5, 0.65, 0.1, 0, 0.38, -0.2, 44], [2.35, 0.62, 0.08, 0, 0.38, -0.2, 44]) },
   // s7-s8: calm wide, person low in frame under the end card
   { at: T.s7, calm: 1, K: [[0, [3.6, 1.7, 0.1, 0, 1.0, -0.15, 48]], [5, [4.0, 1.85, 0.1, 0, 1.05, -0.15, 48]]] },
