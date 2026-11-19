@@ -71,7 +71,7 @@ dotRing.position.copy(LENS_L).add(V3(0, 0, 0.004)); chg.add(dotRing);
 // glint on the lens
 const mGl = new THREE.MeshBasicMaterial({ color: new THREE.Color(WHITE).multiplyScalar(2.4), toneMapped: false, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false });
 const gl = new THREE.Group(); scene.add(gl);
-gl.add(new THREE.Mesh(new THREE.SphereGeometry(0.02, 12, 10), mGl), new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.008, 0.002), mGl), new THREE.Mesh(new THREE.BoxGeometry(0.008, 0.34, 0.002), mGl));
+gl.add(new THREE.Mesh(new THREE.SphereGeometry(0.012, 12, 10), mGl), new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.004, 0.002), mGl), new THREE.Mesh(new THREE.BoxGeometry(0.004, 0.16, 0.002), mGl));
 const chgPatch = patch(0.6, 0.45, GREEN, 1.2); chgPatch.position.set(-1.3, 0.56, -2.6);
 
 // ---------- light cones: red camera view (s2-s3), white phone flashlight (s5) ----------
@@ -131,11 +131,13 @@ const SH = [
   // s3: high three-quarter, red sight cone from the charger onto the bed
   { at: T.s3, K: st([2.6, 2.4, 1.4, -0.5, 0.8, -1.9, 50], [2.4, 2.4, 1.1, -0.5, 0.8, -1.9, 50]) },
   // s4: close on the front, tiny dark dot
-  { at: T.s4, K: st([-1.12, 0.9, -2.3, -1.3, 0.85, -2.88, 26], [-1.17, 0.88, -2.45, -1.3, 0.855, -2.88, 24]) },
+  // (round 1: too tight, the charger sat under the TINY HOLE title -> wider lens, look point raised so it sits lower)
+  { at: T.s4, K: st([-1.08, 0.98, -2.1, -1.3, 0.95, -2.88, 36], [-1.1, 0.98, -2.2, -1.3, 0.95, -2.88, 34]) },
   // s5: behind the guest, lights off, the flashlight finds the charger
   { at: T.s5, K: st([0.6, 1.9, 2.2, -1.1, 0.9, -2.8, 48], [0.5, 1.85, 1.8, -1.1, 0.9, -2.8, 48]) },
   // "lens glint": close
-  { at: T.lens - 0.15, K: st([-1.0, 0.95, -2.0, -1.3, 0.85, -2.88, 30], [-1.05, 0.93, -2.15, -1.3, 0.85, -2.88, 28]) },
+  // (round 1: this shot BLOWN white -> farther, wider, and the glint/spot are toned down below)
+  { at: T.lens - 0.15, K: st([-0.85, 1.05, -1.7, -1.3, 0.95, -2.88, 38], [-0.9, 1.04, -1.8, -1.3, 0.95, -2.88, 36]) },
   // s6: the charger comes out of the wall and turns to face it
   { at: T.unplug - 0.1, K: st([-0.55, 1.15, -1.4, -1.3, 0.72, -2.75, 40], [-0.6, 1.12, -1.55, -1.3, 0.7, -2.75, 40]) },
   // s7-s8: calm wide
@@ -176,9 +178,9 @@ run("usb-charger", (t) => {
   // s5: flashlight on the charger
   const on = sm(T.fl - 0.25, T.fl + 0.05, t) * (1 - sm(T.s6 + 0.2, T.s6 + 0.5, t));
   ph.updateWorldMatrix(true, false); ph.getWorldPosition(hp);
-  beamCone.set(hp, LENS, 0.2, 0.13 * on);
-  spot.intensity = 4 * on; spot.position.copy(hp); spot.target.position.copy(LENS); spot.target.updateMatrixWorld();
-  const gA = on * (0.75 + 0.6 * flash(t, T.glint)) * (1 - up);
+  beamCone.set(hp, LENS, 0.2, 0.07 * on);
+  spot.intensity = 1.2 * on; spot.position.copy(hp); spot.target.position.copy(LENS); spot.target.updateMatrixWorld();
+  const gA = on * (0.6 + 0.4 * flash(t, T.glint)) * (1 - up);
   gl.visible = gA > 0.02; gl.position.copy(LENS).add(V3(0, 0, 0.02));
   gl.scale.setScalar(Math.max(0.01, gA * (1 + 0.15 * Math.sin(t * 17)))); gl.rotation.z = 0.3 * Math.sin(t * 1.3);
   const shot = flash(t, T.glint);
