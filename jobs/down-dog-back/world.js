@@ -111,12 +111,13 @@ endCard([["BEND THE KNEES", 1], ["KEEP THE SPINE LONG", 1]]);
 const st = (a, b = a) => [[0, a], [3, b]];
 const SH = [
   // hook: wide side view, the whole pose
-  { at: 0, K: [[0, [3.6, 1.0, 0.2, 0, 0.3, -0.14, 46]], [2.0, [3.2, 0.95, 0.1, 0, 0.32, -0.14, 46]]] },
-  // "round": closer on the back, slightly above it
-  { at: T.round - 0.15, K: st([2.4, 1.3, 0.35, 0, 0.55, -0.15, 44], [2.2, 1.25, 0.3, 0, 0.55, -0.15, 44]) },
+  // (round 2: pulled back and centred on the body; round 1 cut the head and hands off the right edge)
+  { at: 0, K: [[0, [4.5, 1.1, -0.2, 0, 0.35, -0.2, 46]], [2.0, [4.2, 1.05, -0.2, 0, 0.35, -0.2, 46]]] },
+  // "round": closer on the back, slightly above it, head and hands inside the frame
+  { at: T.round - 0.15, K: st([3.0, 1.4, -0.3, 0, 0.5, -0.3, 44], [2.85, 1.35, -0.3, 0, 0.5, -0.3, 44]) },
   // s2: legs, from the feet side, three-quarter
   { at: T.s2, K: st([2.2, 0.75, 1.6, 0, 0.35, 0.1, 46], [2.0, 0.75, 1.5, 0, 0.35, 0.1, 46]) },
-  { at: T.curve - 0.15, K: st([2.4, 1.3, 0.35, 0, 0.55, -0.15, 44], [2.25, 1.28, 0.3, 0, 0.55, -0.15, 44]) },
+  { at: T.curve - 0.15, K: st([3.0, 1.4, -0.3, 0, 0.5, -0.3, 44], [2.85, 1.35, -0.3, 0, 0.5, -0.3, 44]) },
   // s3: from the hands side, low, the shoulders sinking toward the floor
   { at: T.s3, K: st([2.0, 0.55, -1.7, 0, 0.35, -0.35, 46], [1.85, 0.52, -1.6, 0, 0.35, -0.35, 46]) },
   { at: g("s3", "pose") - 0.1, K: st([3.4, 1.0, 0.15, 0, 0.32, -0.14, 46], [3.2, 0.98, 0.1, 0, 0.32, -0.14, 46]) },
@@ -125,7 +126,8 @@ const SH = [
   // s5: wide side, hips lift, green spine line
   { at: T.s5, K: st([3.4, 1.05, 0.15, 0, 0.36, -0.14, 46], [3.1, 1.0, 0.1, 0, 0.36, -0.14, 46]) },
   // s6: the feet, heels hovering
-  { at: T.s6, K: st([1.7, 0.45, 1.3, 0, 0.18, 0.45, 44], [1.6, 0.45, 1.2, 0, 0.18, 0.45, 44]) },
+  // (round 2: straight side view of the feet so the heel gap reads; round 1 sat behind the legs)
+  { at: T.s6, K: st([2.1, 0.32, 0.45, 0, 0.22, 0.4, 34], [1.95, 0.32, 0.42, 0, 0.22, 0.4, 34]) },
   { at: T.longb - 0.15, K: st([3.3, 1.0, 0.15, 0, 0.36, -0.14, 46], [3.15, 1.0, 0.1, 0, 0.36, -0.14, 46]) },
   // s7-s8: calm wide, person low in frame under the end card
   { at: T.s7, calm: 1, K: [[0, [3.6, 1.6, 0.2, 0, 0.9, -0.05, 48]], [5, [4.0, 1.75, 0.2, 0, 0.95, -0.05, 48]]] },
@@ -163,7 +165,8 @@ run("down-dog-back", (t) => {
   kneeDot.position.copy(KNEE).add(OFF);
   dotMat.opacity = sm(T.knees - 0.1, T.knees + 0.15, t) * (1 - sm(T.s5 + 0.3, T.s5 + 0.6, t));
   kneeDot.visible = dotMat.opacity > 0.01;
-  const ok = sm(T.spine - 0.15, T.spine + 0.15, t) * (1 - sm(T.s7 - 0.1, T.s7 + 0.3, t));
+  // (off during the heels close-up, it blew out the frame in round 1)
+  const ok = sm(T.spine - 0.15, T.spine + 0.15, t) * (1 - sm(T.s7 - 0.1, T.s7 + 0.3, t)) * (1 - sm(T.s6 - 0.12, T.s6, t) * (1 - sm(T.longb - 0.15, T.longb + 0.05, t)));
   const okA = ok * (0.85 + 0.4 * flash(t, T.long) + 0.4 * flash(t, T.longb));
   A0.copy(HIP).add(OFF); A1.copy(SHO).add(OFF); MID.copy(HAND).add(OFF);
   spineLine.set(A0, A1, okA); armLine.set(A1, MID, okA);
