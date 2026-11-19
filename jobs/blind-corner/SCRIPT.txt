@@ -1,0 +1,8 @@
+s1|Can't see around the corner? Never cut it.
+s2|You cross the center line to take a faster line.
+s3|A car comes the other way, and you are in its lane.
+s4|Instead, stay in your own lane, and turn in late.
+s5|Wait until you can see the exit, then lean in.
+s6|Ride at a speed that lets you stop in the road you can see.
+s7|Stay in your lane. Stop in what you see.
+s8|Download APEX. The link is in our bio.
