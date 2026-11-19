@@ -65,7 +65,13 @@ function pose(a, cave, t) {
 const redShin = beam(RED, 2.4, 0.035);
 const ring = new THREE.Mesh(new THREE.TorusGeometry(0.11, 0.012, 8, 40), new THREE.MeshBasicMaterial({ color: new THREE.Color(RED).multiplyScalar(2.4), toneMapped: false, transparent: true, opacity: 0 }));
 scene.add(ring);
-const plumb = beam(GREEN, 1.8, 0.022), toeLine = beam(GREEN, 1.5, 0.018);
+const plumb = beam(GREEN, 2.6, 0.032), toeLine = beam(GREEN, 1.5, 0.018);
+// the plumb line draws on top of the shin (it used to sit inside it and vanish)
+plumb.material.depthTest = false; plumb.renderOrder = 20;
+const dotMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(GREEN).multiplyScalar(2.8), toneMapped: false, transparent: true, opacity: 0, depthTest: false });
+const kneeDot = new THREE.Mesh(new THREE.SphereGeometry(0.035, 16, 12), dotMat), ankDot = new THREE.Mesh(new THREE.SphereGeometry(0.035, 16, 12), dotMat);
+kneeDot.renderOrder = ankDot.renderOrder = 21; scene.add(kneeDot, ankDot);
+const PT = V3(0, 0, 0), PB = V3(0, 0, 0);
 const mEdge = new THREE.MeshBasicMaterial({ color: new THREE.Color(GREEN).multiplyScalar(2.2), toneMapped: false, transparent: true, opacity: 0 });
 const edge = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.02, 0.025), mEdge); scene.add(edge);
 const stancePatch = patch(1, 0.5, RED, 1.1), goodPatch = patch(1, 0.5, GREEN, 1.0);
@@ -90,22 +96,24 @@ const SH = [
   // hook: wide front, warrior two
   { at: 0, K: [[0, [0.5, 1.5, -4.6, 0, 1.15, 0, 50]], [2.0, [0.4, 1.45, -4.0, 0.05, 1.1, 0, 50]]] },
   // "cave": the knee from the front foot's side (the inward roll reads left-right here)
-  { at: T.cave - 0.15, K: st([2.0, 0.95, -0.95, 0.35, 0.5, 0, 42], [1.85, 0.9, -0.85, 0.35, 0.5, 0, 40]) },
+  // (close shots kept low with a narrower lens so the torso stays above the frame, clear of the titles)
+  { at: T.cave - 0.15, K: st([2.0, 0.58, -0.95, 0.35, 0.32, 0, 37], [1.85, 0.55, -0.85, 0.35, 0.32, 0, 36]) },
   // s2: same side, a little higher, the twisted shin
-  { at: T.s2, K: st([2.1, 1.25, -1.1, 0.35, 0.45, 0, 44], [1.9, 1.2, -0.95, 0.35, 0.45, 0, 42]) },
-  { at: T.twists - 0.1, K: st([1.7, 0.8, -1.35, 0.35, 0.42, 0, 42], [1.6, 0.78, -1.2, 0.35, 0.42, 0, 40]) },
+  { at: T.s2, K: st([2.1, 0.8, -1.1, 0.35, 0.3, 0, 38], [1.9, 0.76, -0.95, 0.35, 0.3, 0, 37]) },
+  { at: T.twists - 0.1, K: st([1.7, 0.52, -1.35, 0.35, 0.28, 0, 36], [1.6, 0.5, -1.2, 0.35, 0.28, 0, 35]) },
   // s3: high three-quarter, the stance grows (person low in frame, under the caption)
   { at: T.s3, K: st([1.5, 2.4, -3.4, -0.1, 1.0, 0, 52], [1.3, 2.3, -3.1, -0.1, 1.0, 0, 52]) },
-  // s4: front close, knee comes back over the ankle
-  { at: T.s4, K: st([0.6, 0.8, -1.6, 0.35, 0.42, 0, 44], [0.55, 0.78, -1.45, 0.35, 0.42, 0, 42]) },
-  // s5: from the front foot's side, knee -> middle toes, outer edge
-  { at: T.s5, K: st([1.95, 0.85, -0.9, 0.38, 0.35, 0, 42], [1.8, 0.8, -0.75, 0.38, 0.33, 0, 40]) },
+  // s4: front close and low, knee comes back over the ankle; torso stays above the frame (no body under the title)
+  { at: T.s4, K: st([0.62, 0.42, -1.55, 0.4, 0.3, 0, 36], [0.6, 0.4, -1.45, 0.4, 0.3, 0, 35]) },
+  // s5: from the front foot's side, knee -> middle toes, outer edge; low so the torso is out of frame
+  { at: T.s5, K: st([1.85, 0.5, -0.9, 0.4, 0.26, 0, 36], [1.75, 0.48, -0.8, 0.4, 0.25, 0, 35]) },
   // "press into the outer edge": low and close on the foot
   { at: T.press - 0.15, K: st([1.6, 0.75, 1.2, 0.42, 0.08, 0, 42], [1.5, 0.72, 1.1, 0.42, 0.08, 0, 40]) },
   // s6: wide front, shorter stance
   { at: T.s6, K: st([0.4, 1.5, -4.2, 0, 1.15, 0, 50], [0.35, 1.45, -3.9, 0, 1.15, 0, 50]) },
   // s7-s8: calm wide
-  { at: T.s7, calm: 1, K: [[0, [0.3, 1.5, -4.4, 0, 1.2, 0, 50]], [5, [0.3, 1.7, -5.0, 0, 1.2, 0, 50]]] },
+  // (look point raised so the person sits lower in frame, clear of the two-line end card)
+  { at: T.s7, calm: 1, K: [[0, [0.3, 1.5, -4.4, 0, 1.45, 0, 50]], [5, [0.3, 1.7, -5.0, 0, 1.45, 0, 50]]] },
 ];
 
 run("knee-cave", (t) => {
@@ -131,8 +139,13 @@ run("knee-cave", (t) => {
   goodPatch.set(sm(T.shorten - 0.05, T.shorten + 0.3, t) * (1 - sm(T.s7 - 0.1, T.s7 + 0.3, t)));
 
   // right: plumb line knee -> ankle, then knee -> middle toes, outer edge glow
-  const ok = sm(T.ankle - 0.35, T.ankle, t) * (1 - sm(T.middle - 0.3, T.middle, t));
-  plumb.set(K, V3(K.x, 0.02, K.z), ok * (0.8 + 0.4 * flash(t, T.ankle)));
+  const ok = sm(T.stack + 0.1, T.stack + 0.45, t) * (1 - sm(T.middle - 0.3, T.middle, t));
+  // plumb from just above the knee to the floor, a hair in front of the shin (toward the camera, -z)
+  PT.set(K.x, K.y + 0.14, K.z - 0.07); PB.set(K.x, 0.02, K.z - 0.07);
+  const okA = ok * (0.85 + 0.4 * flash(t, T.ankle));
+  plumb.set(PT, PB, okA);
+  kneeDot.position.set(K.x, K.y, K.z - 0.07); ankDot.position.set(K.x, 0.04, K.z - 0.07);
+  kneeDot.visible = ankDot.visible = ok > 0.01; dotMat.opacity = Math.min(1, okA);
   const tl = sm(T.middle - 0.15, T.middle + 0.1, t) * (1 - sm(T.press - 0.25, T.press, t));
   toeLine.set(K, TOES, tl);
   edge.position.set(ANK.x + 0.08, 0.03, 0.065);
