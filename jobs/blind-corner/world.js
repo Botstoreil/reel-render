@@ -103,7 +103,7 @@ run("blind-corner", (t) => {
 
   // red patch on the centre line while the bike is over it
   const over = A ? sm(Tcl - 0.2, Tcl + 0.2, t) * (1 - sm(Tln + 0.3, Tln + 0.7, t)) : 0;
-  if (st) { xline.position.set(st.x, 0.035, st.z); xline.scale.set(1, 3, 1); xline.rotation.z = 0; }
+  if (st) { xline.position.set(st.x, 0.035, st.z); xline.scale.set(1, 3, 1); xline.rotation.z = st.h; }
   xline.set(over);
 
   // part B: own lane glows from "own" to the end of s5
