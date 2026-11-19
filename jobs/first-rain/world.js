@@ -79,7 +79,7 @@ const SH = [
   // s4: high chase, the whole green gap to the car
   { at: T4, f: fBikeB, noRot: 1, K: [[0, [2.6, 8.0, 15, 0, 0, -7, 50]], [2.0, [2.4, 8.6, 16, 0, 0, -8, 50]]] },
   // s5: low side, the bike stays upright while it slows
-  { at: S.s5[0], f: fBikeB, noRot: 1, K: [[0, [6.0, 3.0, 4.5, 0, 0.7, -1.5, 48]], [2.2, [6.0, 3.2, 3.5, 0, 0.7, -2.0, 48]]] },
+  { at: S.s5[0], f: fBikeB, noRot: 1, K: [[0, [6.0, 3.0, 4.0, 0, 0.7, 0, 50]], [2.2, [6.2, 3.2, 4.0, 0, 0.7, -0.3, 50]]] },
   // s6: high behind, the arrow and the cover ahead, the bike passes left of them
   { at: S6, f: fBikeB, noRot: 1, K: [[0, [0.6, 6.5, 8.5, -0.4, 0, -7, 50]], [3.2, [0.4, 7.0, 8.0, -0.6, 0, -7, 50]]] },
   // s7-s8: calm, high behind
