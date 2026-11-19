@@ -36,8 +36,9 @@ const Tln = g("s3", "lean"), Tdn = g("s3", "down");
 const bikeA = (t) => { const base = V * t + 4; if (t < Tdn) return base; const d = Math.min(t - Tdn, 1.4); return V * Tdn + 4 + V * d - (V / 2.8) * d * d; };
 const bendX = (t) => LANE - 2.4 * sm(S.s3[0], Tdn + 0.3, t);   // a bend to the left in s3
 const fnBikeA = (u) => SP(bikeA(u), bendX(u));
-leafPatch(bikeA(Tb) - 1.0, 9, LANE, 260);
-leafPatch(bikeA(Tln) - 3.0, 10, LANE - 1.6, 260);
+// patches run past the slide / the fall, so the bike is still on leaves at "slides" and "down"
+leafPatch(bikeA(Tb) - 1.0, bikeA(Tsl) + 6 - (bikeA(Tb) - 1.0), LANE, 300);
+leafPatch(bikeA(Tln) - 3.0, bikeA(Tdn) + 5 - (bikeA(Tln) - 3.0), LANE - 1.8, 300);
 const skid = patch(1.0, 3.0, RED, 1.4); skid.position.set(LANE, 0.035, -(bikeA(Tsl) + 0.6));
 
 // ---------- part B: slow down on "slow", roll over the leaves upright ----------
@@ -78,13 +79,13 @@ const SH = [
   // hook: low behind the bike, the leaves ahead on the road
   { at: 0, f: fBikeA, noRot: 1, K: [[0, [2.4, 2.4, 6.4, 0, 0.6, -9, 50]], [S.s2[0], [1.8, 2.8, 5.4, 0, 0.6, -9, 50]]] },
   // s2: high three-quarter, close on the front wheel on the leaves
-  { at: S.s2[0], f: fBikeA, noRot: 1, K: [[0, [4.5, 4.5, 4.5, 0, 0.4, -2, 50]], [3.0, [4.0, 4.2, 3.0, 0, 0.4, -2.5, 50]]] },
+  { at: S.s2[0], f: fBikeA, noRot: 1, K: [[0, [4.5, 4.5, 4.5, 0, 0.4, -1.5, 50]], [3.0, [4.2, 4.4, 4.6, 0, 0.4, -1.0, 50]]] },
   // s3: high, outside the bend
   { at: S.s3[0], f: fBikeA, noRot: 1, K: [[0, [4.5, 5.5, 6.5, -1, 0.4, -3, 50]], [2.2, [5.0, 6.0, 5.0, -1, 0.4, -2, 50]]] },
   // s4: high behind, the green line reaches the leaves far ahead
   { at: T4, f: fBikeB, noRot: 1, K: [[0, [2.6, 7.0, 10, 0, 0, -22, 50]], [2.3, [2.4, 7.5, 11, 0, 0, -22, 50]]] },
   // s5: low side, the bike slows on clean road with the leaves just ahead
-  { at: S.s5[0], f: fBikeB, noRot: 1, K: [[0, [4.8, 2.6, 3.0, 0, 0.6, -6, 48]], [2.3, [4.8, 2.6, 1.5, 0, 0.6, -6, 48]]] },
+  { at: S.s5[0], f: fBikeB, noRot: 1, K: [[0, [5.5, 3.0, 4.5, 0, 0.6, -2.0, 52]], [2.3, [5.5, 3.0, 4.5, 0, 0.6, -2.5, 52]]] },
   // s6: high behind, upright over the leaves
   { at: S.s6[0], f: fBikeB, noRot: 1, K: [[0, [2.6, 5.5, 7.5, 0, 0.4, -7, 50]], [2.5, [2.4, 6.0, 8.0, 0, 0.4, -8, 50]]] },
   // s7-s8: calm, high behind
