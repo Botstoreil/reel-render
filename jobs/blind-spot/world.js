@@ -64,7 +64,7 @@ const SH = [
   // s5: behind and right of the rider, a little high: the green line runs from the helmet up to the car's mirror
   { at: S.s5[0], f: fBikeB, noRot: 1, K: [[0, [1.6, 2.8, 3.6, -1.8, 1.0, -8, 46]], [2.3, [1.4, 2.7, 3.0, -1.8, 1.0, -8, 44]]] },
   // s6: high side view, wide enough for the whole line, the car and the bike
-  { at: S.s6[0], f: fCar, noRot: 1, K: [[0, [9.0, 9.5, 13, 1.8, 0.5, 6.0, 50]], [1.8, [9.5, 10, 14, 1.8, 0.5, 6.0, 50]]] },
+  { at: S.s6[0], f: fCar, noRot: 1, K: [[0, [7.0, 12, 22, 1.6, 0.3, 4.5, 50]], [1.8, [7.5, 12.5, 23, 1.6, 0.3, 4.5, 50]]] },
   // s7-s8: calm, high behind
   { at: S.s7[0], f: fCar, noRot: 1, calm: 1, K: [[0, [2.5, 8.5, 17, 1.0, 0, -2, 50]], [5, [2.5, 10, 20, 1.0, 0, -4, 50]]] },
 ];
