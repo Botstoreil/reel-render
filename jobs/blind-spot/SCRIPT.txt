@@ -1,0 +1,8 @@
+s1|Riding next to a car? Never sit in its blind spot.
+s2|The driver checks the mirror, and sees nothing.
+s3|They change lanes, right into you.
+s4|Instead, drop back or move ahead. Don't stay beside the car.
+s5|Ride where you can see the driver's face in their mirror.
+s6|If you can see their eyes, they can see you.
+s7|Don't ride beside cars. Be seen in the mirror.
+s8|Download APEX. The link is in our bio.

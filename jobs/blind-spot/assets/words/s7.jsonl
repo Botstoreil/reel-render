@@ -1,0 +1,3 @@
+{"type":"words","model":"small.en","words":[{"text":"Don't","start":0,"end":0.25},{"text":"ride","start":0.25,"end":0.45},{"text":"beside","start":0.45,"end":0.75},{"text":"cars.","start":0.75,"end":1}],"through":1}
+{"type":"words","model":"small.en","words":[{"text":"Be","start":1,"end":1.084},{"text":"seen","start":1.084,"end":1.253},{"text":"in","start":1.253,"end":1.338},{"text":"the","start":1.338,"end":1.464},{"text":"mirror.","start":1.464,"end":1.76}],"through":1.76}
+{"type":"words","model":"small.en","words":[],"through":2.0078125}
