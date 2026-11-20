@@ -1,0 +1,8 @@
+s1|Hospital bill too big to pay? Never just ignore it.
+s2|Unpaid bills get sent to a collection agency, often after a few months.
+s3|Then the calls start, and it gets harder to sort out.
+s4|Instead, call the billing office this week.
+s5|Say you are reviewing the bill, and ask them to put the account on hold.
+s6|Write down the date, the name, and what they said.
+s7|Call early. Ask for a hold.
+s8|Save this for the next bill you get.
