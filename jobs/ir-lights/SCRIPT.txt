@@ -1,0 +1,8 @@
+s1|Room looks clean? Never check only with your eyes.
+s2|Night vision cameras light the room with infrared you can't see.
+s3|So the room looks dark and empty to you.
+s4|Turn off the lights and open your phone camera.
+s5|Slowly point it around the room, at the bed and the walls.
+s6|Some phone cameras show infrared as small purple dots. Check any you find.
+s7|Lights off. Look through the camera.
+s8|Download Hidden Cam. The link is in our bio.
