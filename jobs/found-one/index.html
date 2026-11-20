@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <script type="importmap">
+      { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.181.2/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.181.2/examples/jsm/"
+      } }
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #080622; }
+      #world { position: absolute; inset: 0; width: 1080px; height: 1920px; display: block; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="19.699" data-width="1080" data-height="1920">
+      <div id="stage" class="clip" data-start="0" data-duration="19.699" data-track-index="1" style="position:absolute;inset:0"><canvas id="world" width="1080" height="1920" data-layout-allow-overflow></canvas></div>
+      <div id="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="19.699" data-track-index="2" data-track-kind="captions" data-width="1080" data-height="1920" style="z-index: 10"></div>
+      <audio id="vo-s1" class="clip" src="assets/vo/s1.wav" data-start="0.050" data-duration="2.538666666666667" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s2" class="clip" src="assets/vo/s2.wav" data-start="2.759" data-duration="1.728" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s3" class="clip" src="assets/vo/s3.wav" data-start="4.657" data-duration="1.9626666666666666" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s4" class="clip" src="assets/vo/s4.wav" data-start="6.790" data-duration="2.88" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s5" class="clip" src="assets/vo/s5.wav" data-start="9.840" data-duration="2.624" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s6" class="clip" src="assets/vo/s6.wav" data-start="12.634" data-duration="2.005333333333333" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s7" class="clip" src="assets/vo/s7.wav" data-start="14.809" data-duration="1.3226666666666667" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s8" class="clip" src="assets/vo/s8.wav" data-start="16.302" data-duration="2.1973333333333334" data-track-index="3" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__EV = {"S":{"s1":[0,2.709],"s2":[2.709,1.898],"s3":[4.607,2.133],"s4":[6.74,3.05],"s5":[9.79,2.794],"s6":[12.584,2.175],"s7":[14.759,1.493],"s8":[16.252,3.447]},"W":{"s1":{"dur":2.538666666666667,"words":[{"text":"Found","start":0,"end":0.105},{"text":"a","start":0.105,"end":0.158},{"text":"hidden","start":0.158,"end":0.475},{"text":"camera?","start":0.475,"end":0.844},{"text":"Never","start":0.844,"end":1.107},{"text":"rip","start":1.107,"end":1.265},{"text":"it","start":1.265,"end":1.371},{"text":"out","start":1.371,"end":1.529},{"text":"and","start":1.529,"end":1.687},{"text":"throw","start":1.687,"end":1.951},{"text":"it","start":1.951,"end":2.056},{"text":"away.","start":2.056,"end":2.32}]},"s2":{"dur":1.728,"words":[{"text":"Breaking","start":0,"end":0.361},{"text":"it","start":0.361,"end":0.453},{"text":"can","start":0.453,"end":0.588},{"text":"destroy","start":0.588,"end":0.904},{"text":"the","start":0.904,"end":1.04},{"text":"proof","start":1.04,"end":1.267},{"text":"you","start":1.267,"end":1.402},{"text":"need.","start":1.402,"end":1.628}]},"s3":{"dur":1.9626666666666666,"words":[{"text":"And","start":0,"end":0.145},{"text":"without","start":0.145,"end":0.507},{"text":"proof,","start":0.507,"end":0.779},{"text":"the","start":0.779,"end":0.924},{"text":"host","start":0.924,"end":1.118},{"text":"can","start":1.118,"end":1.263},{"text":"just","start":1.263,"end":1.456},{"text":"deny","start":1.456,"end":1.655},{"text":"it.","start":1.655,"end":1.8}]},"s4":{"dur":2.88,"words":[{"text":"Don't","start":0,"end":0.276},{"text":"touch","start":0.276,"end":0.551},{"text":"it.","start":0.551,"end":0.716},{"text":"Take","start":0.716,"end":0.937},{"text":"clear","start":0.937,"end":1.212},{"text":"photos","start":1.212,"end":1.543},{"text":"and","start":1.543,"end":1.708},{"text":"a","start":1.708,"end":1.763},{"text":"video","start":1.763,"end":2.039},{"text":"of","start":2.039,"end":2.149},{"text":"where","start":2.149,"end":2.424},{"text":"it","start":2.424,"end":2.535},{"text":"is.","start":2.535,"end":2.7}]},"s5":{"dur":2.624,"words":[{"text":"Leave","start":0,"end":0.253},{"text":"the","start":0.253,"end":0.405},{"text":"room","start":0.405,"end":0.607},{"text":"and","start":0.607,"end":0.759},{"text":"report","start":0.759,"end":1.063},{"text":"it","start":1.063,"end":1.164},{"text":"to","start":1.164,"end":1.265},{"text":"the","start":1.265,"end":1.417},{"text":"platform","start":1.417,"end":1.822},{"text":"and","start":1.822,"end":1.974},{"text":"the","start":1.974,"end":2.126},{"text":"police.","start":2.126,"end":2.48}]},"s6":{"dur":2.005333333333333,"words":[{"text":"Then","start":0,"end":0.143},{"text":"ask","start":0.143,"end":0.286},{"text":"the","start":0.286,"end":0.429},{"text":"platform","start":0.429,"end":0.81},{"text":"to","start":0.81,"end":0.905},{"text":"move","start":0.905,"end":1.096},{"text":"you","start":1.096,"end":1.238},{"text":"somewhere","start":1.238,"end":1.667},{"text":"safe.","start":1.667,"end":1.905}]},"s7":{"dur":1.3226666666666667,"words":[{"text":"Don't","start":0,"end":0.25},{"text":"touch","start":0.25,"end":0.5},{"text":"it.","start":0.5,"end":0.65},{"text":"Document","start":0.65,"end":1.05},{"text":"it.","start":1.05,"end":1.2}]},"s8":{"dur":2.1973333333333334,"words":[{"text":"Download","start":0,"end":0.454},{"text":"Hidden","start":0.454,"end":0.793},{"text":"Cam.","start":0.793,"end":1.077},{"text":"The","start":1.077,"end":1.247},{"text":"link","start":1.247,"end":1.474},{"text":"is","start":1.474,"end":1.587},{"text":"in","start":1.587,"end":1.701},{"text":"our","start":1.701,"end":1.87},{"text":"bio.","start":1.87,"end":2.097}]}},"LEAD":0.05,"BRAND":{"cta":["DOWNLOAD","HIDDEN CAM"],"sub":"LINK IN BIO"}};
+      const tl = gsap.timeline({ paused: true });
+      tl.set({}, {}, 19.699);
+      window.__timelines["main"] = tl;
+    </script>
+    <script type="module" src="world.js"></script>
+  </body>
+</html>
