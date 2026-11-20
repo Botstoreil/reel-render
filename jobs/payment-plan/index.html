@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <script type="importmap">
+      { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.181.2/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.181.2/examples/jsm/"
+      } }
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #080622; }
+      #world { position: absolute; inset: 0; width: 1080px; height: 1920px; display: block; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="24.477" data-width="1080" data-height="1920">
+      <div id="stage" class="clip" data-start="0" data-duration="24.477" data-track-index="1" style="position:absolute;inset:0"><canvas id="world" width="1080" height="1920" data-layout-allow-overflow></canvas></div>
+      <div id="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="24.477" data-track-index="2" data-track-kind="captions" data-width="1080" data-height="1920" style="z-index: 10"></div>
+      <audio id="vo-s1" class="clip" src="assets/vo/s1.wav" data-start="0.050" data-duration="3.4346666666666668" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s2" class="clip" src="assets/vo/s2.wav" data-start="3.655" data-duration="2.517333333333333" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s3" class="clip" src="assets/vo/s3.wav" data-start="6.342" data-duration="3.2" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s4" class="clip" src="assets/vo/s4.wav" data-start="9.712" data-duration="2.304" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s5" class="clip" src="assets/vo/s5.wav" data-start="12.186" data-duration="4.117333333333334" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s6" class="clip" src="assets/vo/s6.wav" data-start="16.473" data-duration="3.264" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s7" class="clip" src="assets/vo/s7.wav" data-start="19.907" data-duration="1.6853333333333333" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s8" class="clip" src="assets/vo/s8.wav" data-start="21.762" data-duration="1.5146666666666666" data-track-index="3" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__EV = {"S":{"s1":[0,3.605],"s2":[3.605,2.687],"s3":[6.292,3.37],"s4":[9.662,2.474],"s5":[12.136,4.287],"s6":[16.423,3.434],"s7":[19.857,1.855],"s8":[21.712,2.765]},"W":{"s1":{"dur":3.4346666666666668,"words":[{"text":"Thinking","start":0,"end":0.425},{"text":"of","start":0.425,"end":0.531},{"text":"putting","start":0.531,"end":0.903},{"text":"a","start":0.903,"end":0.956},{"text":"hospital","start":0.956,"end":1.381},{"text":"bill","start":1.381,"end":1.593},{"text":"on","start":1.593,"end":1.7},{"text":"a","start":1.7,"end":1.753},{"text":"credit","start":1.753,"end":2.071},{"text":"card?","start":2.071,"end":2.337},{"text":"Never","start":2.337,"end":2.603},{"text":"do","start":2.603,"end":2.709},{"text":"that","start":2.709,"end":2.921},{"text":"first.","start":2.921,"end":3.24}]},"s2":{"dur":2.517333333333333,"words":[{"text":"A","start":0,"end":0.051},{"text":"card","start":0.051,"end":0.257},{"text":"adds","start":0.257,"end":0.462},{"text":"interest","start":0.462,"end":0.872},{"text":"every","start":0.872,"end":1.128},{"text":"month","start":1.128,"end":1.385},{"text":"you","start":1.385,"end":1.538},{"text":"carry","start":1.538,"end":1.795},{"text":"the","start":1.795,"end":1.949},{"text":"balance.","start":1.949,"end":2.36}]},"s3":{"dur":3.2,"words":[{"text":"And","start":0,"end":0.18},{"text":"once","start":0.18,"end":0.42},{"text":"the","start":0.42,"end":0.6},{"text":"hospital","start":0.6,"end":1.08},{"text":"is","start":1.08,"end":1.2},{"text":"paid,","start":1.2,"end":1.5},{"text":"it","start":1.5,"end":1.62},{"text":"has","start":1.62,"end":1.8},{"text":"no","start":1.8,"end":1.92},{"text":"reason","start":1.92,"end":2.28},{"text":"to","start":2.28,"end":2.4},{"text":"negotiate.","start":2.4,"end":3}]},"s4":{"dur":2.304,"words":[{"text":"Instead,","start":0,"end":0.391},{"text":"ask","start":0.391,"end":0.537},{"text":"the","start":0.537,"end":0.684},{"text":"billing","start":0.684,"end":1.026},{"text":"office","start":1.026,"end":1.319},{"text":"for","start":1.319,"end":1.465},{"text":"a","start":1.465,"end":1.514},{"text":"payment","start":1.514,"end":1.856},{"text":"plan.","start":1.856,"end":2.1}]},"s5":{"dur":4.117333333333334,"words":[{"text":"Many","start":0,"end":0.239},{"text":"hospitals","start":0.239,"end":0.779},{"text":"offer","start":0.779,"end":1.08},{"text":"plans","start":1.08,"end":1.379},{"text":"with","start":1.379,"end":1.619},{"text":"no","start":1.619,"end":1.739},{"text":"interest.","start":1.739,"end":2.279},{"text":"Ask","start":2.279,"end":2.447},{"text":"what","start":2.447,"end":2.671},{"text":"the","start":2.671,"end":2.84},{"text":"monthly","start":2.84,"end":3.232},{"text":"amount","start":3.232,"end":3.568},{"text":"would","start":3.568,"end":3.849},{"text":"be.","start":3.849,"end":4.017}]},"s6":{"dur":3.264,"words":[{"text":"Agree","start":0,"end":0.274},{"text":"only","start":0.274,"end":0.493},{"text":"to","start":0.493,"end":0.603},{"text":"a","start":0.603,"end":0.658},{"text":"payment","start":0.658,"end":1.041},{"text":"you","start":1.041,"end":1.206},{"text":"can","start":1.206,"end":1.37},{"text":"keep","start":1.37,"end":1.59},{"text":"up,","start":1.59,"end":1.699},{"text":"and","start":1.699,"end":1.864},{"text":"get","start":1.864,"end":2.028},{"text":"the","start":2.028,"end":2.193},{"text":"plan","start":2.193,"end":2.412},{"text":"in","start":2.412,"end":2.521},{"text":"writing.","start":2.521,"end":2.96}]},"s7":{"dur":1.6853333333333333,"words":[{"text":"Ask","start":0,"end":0.153},{"text":"for","start":0.153,"end":0.307},{"text":"a","start":0.307,"end":0.358},{"text":"payment","start":0.358,"end":0.716},{"text":"plan.","start":0.716,"end":0.972},{"text":"Skip","start":0.972,"end":1.176},{"text":"the","start":1.176,"end":1.33},{"text":"card.","start":1.33,"end":1.585}]},"s8":{"dur":1.5146666666666666,"words":[{"text":"Save","start":0,"end":0.195},{"text":"this","start":0.195,"end":0.39},{"text":"for","start":0.39,"end":0.537},{"text":"the","start":0.537,"end":0.683},{"text":"next","start":0.683,"end":0.878},{"text":"bill","start":0.878,"end":1.073},{"text":"you","start":1.073,"end":1.219},{"text":"get.","start":1.219,"end":1.415}]}},"LEAD":0.05,"BRAND":{"cta":["SAVE THIS","FOR LATER"],"sub":"RED PEN"}};
+      const tl = gsap.timeline({ paused: true });
+      tl.set({}, {}, 24.477);
+      window.__timelines["main"] = tl;
+    </script>
+    <script type="module" src="world.js"></script>
+  </body>
+</html>
