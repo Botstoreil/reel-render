@@ -49,17 +49,18 @@ door(-2.7, -2.9, 0);
 const CX = -1.3, CY = 1.5;
 scene.add(box(0.3, 0.025, 0.14, CX, CY - 0.075, -2.9, mat(0x4a40c0), false)); // shelf
 const cam = new THREE.Group(); cam.position.set(CX, CY, -2.86); cam.rotation.y = 0.35; scene.add(cam); // turned toward the bed
-cam.add(box(0.16, 0.12, 0.09, 0, 0, 0, mat(0x1a1830, 0.08)));
+cam.add(box(0.16, 0.12, 0.09, 0, 0, 0, mat(0x3a3670, 0.25))); // round 2: lighter, it read as a black hole in the dark
 const LENS_L = V3(0, 0, 0.047);
 const lens = new THREE.Mesh(new THREE.SphereGeometry(0.014, 16, 12), new THREE.MeshBasicMaterial({ color: 0x050410, toneMapped: false })); lens.position.copy(LENS_L); cam.add(lens);
 // six IR LEDs around the lens: dull red to the eye (s2), bright purple through the phone camera (s6)
 const mLed = new THREE.MeshBasicMaterial({ color: new THREE.Color(0x200a14), toneMapped: false });
-const mLedGlow = new THREE.MeshBasicMaterial({ color: new THREE.Color(VIOLET).multiplyScalar(2.2), toneMapped: false, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false });
+// round 2: was additive x2.2 and read as big white blobs -> plain violet, smaller
+const mLedGlow = new THREE.MeshBasicMaterial({ color: new THREE.Color(0xb04dff).multiplyScalar(1.1), toneMapped: false, transparent: true, opacity: 0, depthWrite: false });
 const leds = [];
 for (let i = 0; i < 6; i++) {
   const a = (i / 6) * Math.PI * 2, x = 0.036 * Math.cos(a), y = 0.036 * Math.sin(a);
   const d = new THREE.Mesh(new THREE.SphereGeometry(0.007, 10, 8), mLed); d.position.set(x, y, 0.046); cam.add(d);
-  const h = new THREE.Mesh(new THREE.SphereGeometry(0.016, 12, 10), mLedGlow); h.position.set(x, y, 0.05); cam.add(h); leds.push(h);
+  const h = new THREE.Mesh(new THREE.SphereGeometry(0.009, 12, 10), mLedGlow); h.position.set(x, y, 0.05); cam.add(h); leds.push(h);
 }
 const LENS = V3(0, 0, 0);
 function ringOf(hex, r) {
@@ -113,23 +114,25 @@ endCard([["LIGHTS OFF", 1], ["THROUGH THE CAMERA", 1]]);
 
 // ---------- shots: [cx, cy, cz, lookx, looky, lookz, fov] ----------
 const st = (a, b = a) => [[0, a], [3, b]];
-const CLOSE = [-0.98, 1.6, -2.05, -1.3, 1.5, -2.86];
+// round 2: was 0.8 m away at fov 36-38 and the box filled the frame -> 1.4 m, fov 44
+const CLOSE = [-0.75, 1.68, -1.55, -1.3, 1.45, -2.86];
 const SH = [
   // hook: bright room, guest walks in
   { at: 0, K: [[0, [0.6, 2.2, 4.4, -0.4, 1.1, -2.2, 50]], [2.5, [0.4, 2.1, 3.7, -0.5, 1.1, -2.2, 50]]] },
   // s2: close on the box, then wide on "light" so the red cone over the bed reads
-  { at: T.s2, K: st([...CLOSE, 38], [CLOSE[0] + 0.03, CLOSE[1], CLOSE[2] - 0.08, ...CLOSE.slice(3), 36]) },
+  { at: T.s2, K: st([...CLOSE, 44], [CLOSE[0] + 0.03, CLOSE[1], CLOSE[2] - 0.1, ...CLOSE.slice(3), 42]) },
   { at: T.light2 - 0.05, K: st([1.4, 2.0, 1.2, -0.4, 0.9, -2.2, 50], [1.3, 1.95, 1.0, -0.4, 0.9, -2.2, 50]) },
   // s3: three-quarter from the right, guest and the dark room
-  { at: T.s3, K: st([1.0, 1.7, 1.6, -0.6, 1.0, -2.0, 48], [0.9, 1.68, 1.4, -0.6, 1.0, -2.0, 48]) },
+  // round 2: was right behind the guest and the shrug arms filled the frame -> wider, from the right
+  { at: T.s3, K: st([1.7, 2.0, 2.8, -0.4, 1.0, -2.0, 50], [1.6, 1.95, 2.6, -0.4, 1.0, -2.0, 50]) },
   // s4: wide, lights go out, phone comes up
   { at: T.s4, K: st([0.9, 2.0, 2.6, -0.2, 1.1, -1.8, 50], [0.8, 1.95, 2.3, -0.2, 1.1, -1.8, 50]) },
   // s5: behind the guest, the violet cone sweeps the room
-  { at: T.s5, K: st([0.7, 1.9, 2.3, 0.3, 1.1, -2.6, 54], [0.6, 1.85, 2.0, 0.0, 1.1, -2.6, 54]) },
+  { at: T.s5, K: st([1.4, 2.0, 2.5, 0.0, 1.1, -2.6, 54], [1.3, 1.95, 2.2, -0.2, 1.1, -2.6, 54]) },
   // s6: close on the box: purple dots
-  { at: T.cameras6 - 0.1, K: st([...CLOSE, 36], [CLOSE[0] + 0.03, CLOSE[1], CLOSE[2] - 0.1, ...CLOSE.slice(3), 33]) },
-  // "check": medium, green patch under the box
-  { at: T.check - 0.05, K: st([-0.3, 1.5, -0.7, -1.2, 1.0, -2.8, 44], [-0.35, 1.48, -0.85, -1.2, 1.0, -2.8, 44]) },
+  { at: T.cameras6 - 0.1, K: st([...CLOSE, 42], [CLOSE[0] + 0.03, CLOSE[1], CLOSE[2] - 0.12, ...CLOSE.slice(3), 38]) },
+  // "check": medium, box in the middle, green patch below (round 2: box sat behind the caption)
+  { at: T.check - 0.05, K: st([-0.2, 1.75, -0.4, -1.3, 1.25, -2.8, 46], [-0.25, 1.72, -0.55, -1.3, 1.25, -2.8, 46]) },
   // s7-s8: calm wide
   { at: T.s7, calm: 1, K: [[0, [0.3, 2.2, 4.2, -0.3, 1.4, -2.0, 52]], [5, [0.3, 2.5, 5.0, -0.3, 1.4, -2.0, 52]]] },
 ];
@@ -167,15 +170,17 @@ run("ir-lights", (t) => {
 
   // s5-s6: violet phone-camera cone sweeps the room and lands on the box at "cameras"
   ph.updateWorldMatrix(true, false); ph.getWorldPosition(hp);
-  viewCone.set(hp, B, 0.35, 0.06 * on * sm(T.s5 - 0.2, T.slowly, t));
+  // round 2: cone fades once it lands on the box (its base read as a dark disc in the close-ups)
+  viewCone.set(hp, B, 0.35, 0.06 * on * sm(T.s5 - 0.2, T.slowly, t) * (1 - sm(T.cameras6 + 0.1, T.ir6, t)));
   // s6: the LEDs show as bright purple dots through the phone camera at "purple"
   const pur = sm(T.ir6, T.purple, t) * (1 - sm(T.s8 - 0.2, T.s8 + 0.3, t));
   const pz = (0.7 + 0.3 * flash(t, T.dots)) * pur;
   mLedGlow.opacity = pz;
-  for (const l of leds) l.scale.setScalar(Math.max(0.01, 0.6 + 0.5 * pz + 0.1 * Math.sin(t * 9)));
+  for (const l of leds) l.scale.setScalar(Math.max(0.01, 0.8 + 0.3 * pz + 0.08 * Math.sin(t * 9)));
   okRing.material.opacity = sm(T.check - 0.05, T.check + 0.2, t) * (1 - sm(T.s7 - 0.1, T.s7 + 0.2, t));
   camPatch.set(sm(T.check - 0.05, T.check + 0.25, t) * (1 - sm(T.s8 - 0.2, T.s8 + 0.2, t)));
-  ph.userData.screen.material.color.set(WHITE).lerp(new THREE.Color(VIOLET), on).multiplyScalar(1.4 + 2 * flash(t, T.purple));
+  // round 2: screen dark until the phone is up (it glowed white from the first frame)
+  ph.userData.screen.material.color.set(VIOLET).multiplyScalar(0.05 + on * (1.35 + 2 * flash(t, T.purple)));
 
   const { punch } = shoot(SH, t);
   unclip();
