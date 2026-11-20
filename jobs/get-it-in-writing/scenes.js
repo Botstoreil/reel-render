@@ -13,9 +13,9 @@ const css = (hex) => "#" + new THREE.Color(hex).getHexString();
 
 // floor, back wall (z -3) and optional front wall (z +3) with neon strips, so every camera has a backdrop
 function set_(OX, { front = false, hex = VIOLET } = {}) {
-  scene.add(box(8, 0.02, 8, OX, -0.01, 0, mFloor, false), box(8, 3.2, 0.1, OX, 1.6, -3, mWall, false), box(8, 0.03, 0.03, OX, 2.4, -2.94, glow(hex, 1.2), false));
+  scene.add(box(8, 0.02, 8, OX, -0.01, 0, mFloor, false), box(8, 3.2, 0.1, OX, 1.6, -3, mWall, false), box(8, 0.03, 0.03, OX, 2.95, -2.94, glow(hex, 1.2), false));
   for (let i = -3; i <= 3; i++) scene.add(box(0.015, 0.003, 8, OX + i, 0.002, 0, glow(hex, 0.45), false));
-  if (front) scene.add(box(8, 3.2, 0.1, OX, 1.6, 3, mWall, false), box(8, 0.03, 0.03, OX, 2.4, 2.94, glow(hex, 1.2), false));
+  if (front) scene.add(box(8, 3.2, 0.1, OX, 1.6, 3, mWall, false), box(8, 0.03, 0.03, OX, 2.95, 2.94, glow(hex, 1.2), false));
   scene.fog.density = 0.028;
 }
 
@@ -86,7 +86,7 @@ export function meeting({ OX = 60, shirtA = ORANGE, shirtB = VIOLET } = {}) {
 function invoiceTex(amount, stamp, stampHex) {
   const [c, x] = canvas(512, 704);
   x.fillStyle = "#f3f1ff"; x.fillRect(0, 0, 512, 704); x.textAlign = "center"; x.textBaseline = "middle";
-  x.fillStyle = "#1b1650"; x.font = "900 58px Inter, Arial, sans-serif"; x.fillText("HOSPITAL LETTER", 256, 90);
+  x.fillStyle = "#1b1650"; x.font = "900 46px Inter, Arial, sans-serif"; x.fillText("HOSPITAL LETTER", 256, 90);
   x.fillStyle = "#b9b4dd"; for (let i = 0; i < 5; i++) x.fillRect(60, 190 + i * 52, 392 - (i % 2) * 90, 18);
   x.fillStyle = "#1b1650"; x.font = "900 96px Inter, Arial, sans-serif"; x.fillText(amount, 256, 500);
   if (stamp) { x.save(); x.translate(256, 620); x.rotate(-0.12); x.strokeStyle = x.fillStyle = css(stampHex); x.lineWidth = 10; x.strokeRect(-200, -50, 400, 100); x.font = "900 72px Inter, Arial, sans-serif"; x.fillText(stamp, 0, 4); x.restore(); }
