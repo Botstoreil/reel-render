@@ -94,7 +94,7 @@ const HANDS = [makeHand(1), makeHand(-1)], XS = [0.25, -0.25];
 
 // ---------- guides ----------
 const OFF = V3(0.34, 0, 0); // floats on the camera side of the body
-const gazeLine = beam(RED, 2.2, 0.025), armLine = beam(RED, 2.2, 0.03), goodGaze = beam(GREEN, 1.3, 0.022), chestArrow = beam(GREEN, 1.3, 0.03);
+const gazeLine = beam(RED, 2.2, 0.025), armLine = beam(RED, 2.2, 0.03), goodGaze = beam(GREEN, 1.3, 0.022), chestArrow = beam(GREEN, 0.8, 0.03);
 const ringOf = (hex, r) => { const m = new THREE.MeshBasicMaterial({ color: new THREE.Color(hex).multiplyScalar(2.2), toneMapped: false, transparent: true, opacity: 0, depthTest: false }); const o = new THREE.Mesh(new THREE.TorusGeometry(r, 0.008, 8, 40), m); o.rotation.y = Math.PI / 2; o.renderOrder = 21; scene.add(o); return o; };
 const neckRing = ringOf(RED, 0.07), backRing = ringOf(RED, 0.09);
 const elbDot = ringOf(GREEN, 0.04);
@@ -116,20 +116,21 @@ endCard([["LONG NECK", 1], ["LIFT YOUR CHEST", 1]]);
 
 // ---------- shots: [cx, cy, cz, lookx, looky, lookz, fov]; side view from +x ----------
 const st = (a, b = a) => [[0, a], [3, b]];
-const WIDE = st([4.3, 0.9, -0.1, 0, 0.3, -0.1, 46], [4.0, 0.88, -0.1, 0, 0.3, -0.1, 46]);
+const WIDE = st([4.3, 0.9, -0.3, 0, 0.3, -0.3, 46], [4.0, 0.88, -0.3, 0, 0.3, -0.3, 46]);
 const UPPER = st([2.1, 0.6, -0.55, 0, 0.38, -0.45, 42], [1.95, 0.58, -0.55, 0, 0.38, -0.45, 42]);
-const HEAD = st([1.35, 0.72, -0.7, 0, 0.58, -0.45, 38], [1.25, 0.7, -0.7, 0, 0.58, -0.45, 38]);
+// round 2: medium side shot so the whole arch + head + the red gaze line to the ceiling are in frame
+const HEAD = st([2.25, 0.75, -0.5, 0, 0.62, -0.45, 42], [2.1, 0.74, -0.5, 0, 0.62, -0.45, 42]);
 const SH = [
   { at: 0, K: [[0, [4.5, 0.9, -0.05, 0, 0.3, -0.1, 46]], [2.0, [4.2, 0.88, -0.05, 0, 0.3, -0.1, 46]]] },
   { at: T.ceiling - 0.2, K: UPPER },
   // s2: close on the head and neck
   { at: T.s2, K: HEAD },
   // s3: arm and low back
-  { at: T.s3, K: st([2.4, 0.55, -0.15, 0, 0.3, -0.2, 44], [2.25, 0.55, -0.15, 0, 0.3, -0.2, 44]) },
+  { at: T.s3, K: st([2.5, 0.4, -0.1, 0, 0.3, -0.15, 44], [2.35, 0.4, -0.1, 0, 0.3, -0.15, 44]) },
   // s4: elbows bend, upper body
   { at: T.s4, K: UPPER },
   // s5: chest and gaze, head close
-  { at: T.chest - 0.15, K: st([1.5, 0.6, -0.65, 0, 0.42, -0.45, 40], [1.4, 0.6, -0.65, 0, 0.42, -0.45, 40]) },
+  { at: T.chest - 0.15, K: st([2.0, 0.62, -0.55, 0, 0.4, -0.45, 42], [1.9, 0.6, -0.55, 0, 0.4, -0.45, 42]) },
   // s6: wide side, the height band
   { at: T.s6, K: WIDE },
   { at: T.s7, calm: 1, K: [[0, [3.6, 1.7, 0.2, 0, 1.0, 0.0, 48]], [5, [4.0, 1.85, 0.2, 0, 1.05, 0.0, 48]]] },
@@ -169,7 +170,7 @@ run("cobra-neck", (t) => {
   elbDot.material.opacity = sm(T.elbows - 0.05, T.elbows + 0.15, t) * (1 - sm(T.s5 + 0.1, T.s5 + 0.4, t)) * (0.8 + 0.2 * flash(t, T.ribs));
   // s5: green arrow up from the sternum on "chest"; green gaze line forward-down on "gaze"
   const cA = sm(T.chest - 0.1, T.chest + 0.15, t) * (1 - sm(T.s6 - 0.1, T.s6 + 0.2, t));
-  A0.copy(J.SHO).add(OFF); A0.y -= 0.04; A1.copy(A0); A1.y += 0.35; A1.z -= 0.05; chestArrow.set(A0, A1, cA * (0.8 + 0.2 * flash(t, T.chest)));
+  A0.copy(J.SHO).add(OFF); A0.y -= 0.04; A1.copy(A0); A1.y += 0.25; A1.z -= 0.04; chestArrow.set(A0, A1, cA * (0.8 + 0.2 * flash(t, T.chest)));
   const fA = sm(T.gaze - 0.1, T.gaze + 0.15, t) * (1 - sm(T.s7 - 0.1, T.s7 + 0.2, t));
   A0.copy(EYE).add(OFF); A1.copy(A0).addScaledVector(GZ, 0.55); goodGaze.set(A0, A1, fA * (0.8 + 0.2 * flash(t, T.down)));
   // s6: green "easy" height band next to the shoulders
