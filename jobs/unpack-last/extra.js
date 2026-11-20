@@ -141,10 +141,10 @@ function split(t) { if (t.length <= 16) return [t]; const w = t.split(" "); let 
 
 // ---- screen captions keyed to words: one slot at the top, newest wins ----
 const CAPS = [], BOOMS = [];
-export function cap(id, word, lines, hex = ORANGE, { n = 1, until = null, untilN = 1, y = 0.62, w = 0.7, boom = 0 } = {}) {
+export function cap(id, word, lines, hex = ORANGE, { n = 1, until = null, untilN = 1, y = 0.62, w = 0.7, boom = 0, panel = false } = {}) {
   const m = fitText(typeof lines === "string" ? [lines] : lines, hex, 2.1);
   const st = g(id, word, n) - 0.1, en = until ? (Array.isArray(until) ? g(until[0], until[1], untilN) - 0.1 : END(until)) : END(id);
-  CAPS.push({ m, st, en, y, w }); if (boom) BOOMS.push([st + 0.1, boom]);
+  CAPS.push({ m, st, en, y, w, panel }); if (boom) BOOMS.push([st + 0.1, boom]);
   return m;
 }
 export const boom = (id, word, k = 0.8, n = 1) => BOOMS.push([g(id, word, n), k]);

@@ -48,7 +48,7 @@ const dresser = box(1.8, 0.8, 0.45, -0.2, 0.4, FZ - 0.25, mat(0x4a40c0)); scene.
 const TV = V3(0.2, 1.65, FZ - 0.04);
 scene.add(box(1.2, 0.7, 0.05, TV.x, TV.y, TV.z, mat(0x0c0a24, 0.05), false), box(1.1, 0.62, 0.01, TV.x, TV.y, TV.z - 0.03, glow(0x2a2470, 0.6), false));
 // clock on the dresser (tiny lens under the face)
-const CLK = V3(-0.75, 0.93, FZ - 0.3);
+const CLK = V3(-0.65, 0.93, FZ - 0.3); // (r2: at -0.75 it sat on the right edge, under the caption pill)
 const clk = new THREE.Group(); clk.position.copy(CLK); scene.add(clk);
 clk.add(box(0.3, 0.26, 0.1, 0, 0, 0, mat(0x2a2470, 0.15), false));
 clk.add(box(0.24, 0.12, 0.005, 0, 0.03, -0.052, glow(0x7b5cff, 1.4), false));
@@ -96,8 +96,8 @@ const STOP1 = [0.8, -0.55], DOOR_IN = [-1.9, 1.95], BAG_SPOT = [-0.7, 1.9], SWEE
 
 // ---------- text ----------
 title("NEVER UNPACK FIRST");
-cap("s2", "everywhere", "THINGS EVERYWHERE", RED);
-cap("s2", "harder", "HARDER TO CHECK", RED, { boom: 0.3 });
+cap("s2", "everywhere", ["THINGS", "EVERYWHERE"], RED, { w: 0.8, panel: true }); // (r2: one small line over the bright bed)
+cap("s2", "harder", ["HARDER", "TO CHECK"], RED, { w: 0.8, panel: true, boom: 0.3 });
 cap("s3", "something", "FOUND SOMETHING?", RED);
 cap("s3", "leave", "NOW LEAVE FAST", RED, { boom: 0.3 });
 cap("s4", "bag", "BAG BY THE DOOR", GREEN, { boom: 0.3 });
@@ -116,7 +116,7 @@ const SH = [
   // s2: high view of the mess
   { at: T.s2, K: st([0.6, 2.9, 1.2, -0.1, 0.3, -1.3, 54], [0.5, 2.75, 0.9, -0.1, 0.3, -1.3, 52]) },
   // s3: close on the clock
-  { at: T.s3, K: st([-0.25, 1.3, 0.55, -0.75, 0.95, FZ - 0.3, 42], [-0.3, 1.28, 0.75, -0.75, 0.95, FZ - 0.3, 40]) }, // (r1: too tight, ring covered the caption)
+  { at: T.s3, K: st([-0.15, 1.3, 0.55, CLK.x, 0.95, FZ - 0.3, 42], [-0.2, 1.28, 0.75, CLK.x, 0.95, FZ - 0.3, 40]) }, // (r1: too tight, ring covered the caption)
   // s3 "leave": from the back-right corner, he heads for the door through the mess
   { at: T.leave - 0.15, K: st([2.0, 1.9, -1.2, -1.4, 0.7, 1.8, 54], [1.85, 1.85, -1.0, -1.4, 0.7, 1.8, 52]) },
   // s4: the bag by the door
@@ -124,7 +124,7 @@ const SH = [
   // s5: high wide, bed + bathroom door
   { at: T.s5, K: st([2.3, 2.5, 1.9, -0.8, 0.8, -1.5, 58], [2.1, 2.4, 1.6, -0.8, 0.8, -1.5, 56]) },
   // s5 "anything": the front wall, clock lens and vent
-  { at: T.anything - 0.05, K: st([0.05, 1.55, -1.5, 0.05, 1.55, FZ, 56], [0.05, 1.55, -1.3, 0.05, 1.55, FZ, 54]) }, // (r1: clock and vent cut off at the edges)
+  { at: T.anything - 0.05, K: st([0.05, 1.98, -1.5, 0.05, 1.98, FZ, 56], [0.05, 1.98, -1.3, 0.05, 1.98, FZ, 54]) }, // (r2: eye at 1.98 puts the clock below the caption pill, ~y 1080-1120 px) // (r1: clock and vent cut off at the edges)
   // s6: back-right corner toward the door and the dresser
   { at: T.s6, K: st([2.0, 1.8, -1.0, -0.6, 0.9, 2.4, 52], [1.85, 1.75, -0.85, -0.6, 0.9, 2.4, 50]) },
   // s7-s8: calm wide of the bed
