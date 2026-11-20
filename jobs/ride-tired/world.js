@@ -2,7 +2,7 @@
 // then one long blink (screen goes dark), the bike drifts off the road edge and goes down.
 // Part B (s4-s5): the bike pulls into a green rest area, the rider gets off and stretches, drinks water, eats an apple.
 // Part C (s6-s8): a rider drifting inside the lane signals, pulls over into a green rest area, and rests beside the bike.
-import { THREE, S, g, sm, scene, camera, bloom, glow, VIOLET, RED, GREEN, patch, makeBike, makeCar, shoot, run } from "./kit.js";
+import { THREE, S, g, sm, scene, camera, bloom, glow, VIOLET, RED, GREEN, patch, makeBike, makeCar, pathState, shoot, run } from "./kit.js";
 import { title, cap, endCard, overlays, buildRoad, SP, ride, downLean, makePerson, pose, ARM, dist } from "./extra.js";
 
 scene.fog.density = 0.011;
@@ -123,6 +123,8 @@ run("ride-tired", (t) => {
   if (part === 3 && t >= Toff) extra.lean = downLean(sm(Toff + 0.05, Toff + 0.45, t), -1);
   const parked = (part === 2 && t > Tget) || (part === 4 && t > Trest + 0.5);
   if (parked) extra.trail = false;
+  // round 2: drift + pull-over still leaned the bike 45-50 deg (read as falling); keep 35% of the physical lean
+  if (part === 2 || part === 4) { const s0 = pathState(fn, t); if (s0) extra.lean = -0.65 * s0.lean; }
   ride(bike, fn, t, part === 1 || part === 3 ? RED : part === 4 && t < Tpull ? VIOLET : GREEN, extra);
   // turn signal while pulling over
   const sigOn = (part === 2 && t > Tst - 0.25 && t < Tget) || (part === 4 && t > Tpull - 0.2 && t < Trest + 0.6);
@@ -153,7 +155,7 @@ run("ride-tired", (t) => {
     const k = sm(Tget + 0.05, Tget + 0.45, t), up = sm(Tstr - 0.1, Tstr + 0.3, t) * (1 - sm(S.s5[0] - 0.15, S.s5[0] + 0.1, t));
     const drinkA = sm(Tdr - 0.1, Tdr + 0.25, t) * (1 - sm(Teat - 0.05, Teat + 0.2, t) * 0.5);
     const eatA = sm(Teat - 0.1, Teat + 0.25, t);
-    pose(P, { x: REST + 0.95 * k, z: -sB + 0.3, h: 0, armR: Math.max(ARM.up * up, 1.95 * drinkA), armL: Math.max(ARM.up * up, 1.4 * eatA), hex: GREEN });
+    pose(P, { x: REST + 0.95 * k, z: -sB + 0.3, h: 0, armR: Math.max(ARM.up * up, 1.75 * drinkA), armL: Math.max(ARM.up * up, 1.4 * eatA), hex: GREEN });
     bottle.visible = t > S.s5[0] - 0.05; apple.visible = t > Teat - 0.1;
   } else if (offC) {
     pose(P, { x: REST + 0.95 * sm(Trest + 0.55, Trest + 0.95, t), z: -sC + 0.3, h: Math.PI * 0.85, hex: GREEN });
