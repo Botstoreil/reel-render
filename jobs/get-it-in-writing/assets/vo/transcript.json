@@ -1,0 +1,80 @@
+[
+  {
+    "text": "I'll",
+    "start": 0.04,
+    "end": 0.22,
+    "id": "w0"
+  },
+  {
+    "text": "do",
+    "start": 0.22,
+    "end": 0.33,
+    "id": "w1"
+  },
+  {
+    "text": "a",
+    "start": 0.33,
+    "end": 0.38,
+    "id": "w2"
+  },
+  {
+    "text": "red",
+    "start": 0.38,
+    "end": 0.54,
+    "id": "w3"
+  },
+  {
+    "text": "pen",
+    "start": 0.54,
+    "end": 0.72,
+    "id": "w4"
+  },
+  {
+    "text": "for",
+    "start": 0.72,
+    "end": 0.89,
+    "id": "w5"
+  },
+  {
+    "text": "more",
+    "start": 0.89,
+    "end": 1.11,
+    "id": "w6"
+  },
+  {
+    "text": "ways",
+    "start": 1.12,
+    "end": 1.36,
+    "id": "w7"
+  },
+  {
+    "text": "to",
+    "start": 1.4,
+    "end": 1.48,
+    "id": "w8"
+  },
+  {
+    "text": "lower",
+    "start": 1.49,
+    "end": 1.72,
+    "id": "w9"
+  },
+  {
+    "text": "a",
+    "start": 1.72,
+    "end": 1.76,
+    "id": "w10"
+  },
+  {
+    "text": "hospital",
+    "start": 1.76,
+    "end": 2.06,
+    "id": "w11"
+  },
+  {
+    "text": "bill.",
+    "start": 2.14,
+    "end": 2.47,
+    "id": "w12"
+  }
+]
