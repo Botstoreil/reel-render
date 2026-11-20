@@ -1,0 +1,8 @@
+s1|A debt collector called about a medical bill? Never pay on that first call.
+s2|You may not know if the amount is right, or even if the debt is yours.
+s3|Pay by phone, and you have paid before you could check.
+s4|Instead, ask them to send the details in writing.
+s5|Collectors have to send a notice with the amount and who you owe.
+s6|If it looks wrong, dispute it in writing within 30 days.
+s7|Ask for it in writing. Check before you pay.
+s8|Save this for the next bill you get.
