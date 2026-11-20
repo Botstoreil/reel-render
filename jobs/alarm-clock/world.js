@@ -91,7 +91,7 @@ const spot = new THREE.SpotLight(0xfff4e0, 0, 12, 0.2, 0.6, 1); scene.add(spot, 
 // ---------- the guest ----------
 const P = human({ hex: 0x3d7bff });
 const ph = P.hold(phone(WHITE));
-const START = [0.6, 2.9], SPOT = [0.75, -0.9];
+const START = [1.4, 2.9], SPOT = [1.05, -1.0];
 const tArr = S.s1[0] + 2.1, hFace = face(SPOT, [1.3, -2.68]);
 const hp = V3(0, 0, 0);
 
@@ -116,17 +116,19 @@ const CL = [CLK.x - 0.42, 0.8, CLK.z + 0.62, CLK.x, CLK.y, CLK.z];
 const st = (a, b = a) => [[0, a], [3, b]];
 const SH = [
   // hook: room with the clock glowing on the right
-  { at: 0, K: [[0, [0.2, 2.2, 4.4, 0.4, 1.0, -2.2, 50]], [2.5, [0.3, 2.1, 3.7, 0.5, 1.0, -2.2, 50]]] },
+  // (round 1: the guest walked straight through the frame and covered the clock -> camera from the left, guest on the right)
+  { at: 0, K: [[0, [-1.2, 2.0, 3.8, 0.8, 0.9, -2.3, 48]], [2.5, [-1.1, 1.9, 3.2, 0.8, 0.9, -2.3, 46]]] },
   // s2: "plugged in": medium on nightstand + cord; "points at you": wide over the bed, red cone
   { at: T.s2, K: st([0.5, 1.2, -1.2, 1.4, 0.55, -2.8, 44], [0.55, 1.2, -1.35, 1.4, 0.55, -2.8, 44]) },
   { at: T.points - 0.1, K: st([-1.2, 2.0, 0.6, 0.6, 0.6, -2.1, 50], [-1.1, 1.95, 0.4, 0.6, 0.6, -2.1, 50]) },
   // s3: close on the clock, red ring on the lens
   { at: T.s3, K: st([...CL.slice(0, 3), ...CL.slice(3), 36], [CL[0] + 0.03, CL[1], CL[2] - 0.08, ...CL.slice(3), 34]) },
-  // s4: guest leans in (three-quarter from the left), then close on the face at "hole"
-  { at: T.s4, K: st([-0.3, 1.7, 0.4, 1.1, 0.8, -2.3, 46], [-0.25, 1.68, 0.25, 1.1, 0.8, -2.3, 46]) },
-  { at: T.hole - 0.2, K: st([CL[0] + 0.12, 0.74, CL[2] - 0.25, CLK.x + 0.08, CLK.y + 0.03, CLK.z, 32], [CL[0] + 0.14, 0.74, CL[2] - 0.3, CLK.x + 0.08, CLK.y + 0.03, CLK.z, 30]) },
-  // s5: behind the guest, beam on the clock; glint close
-  { at: T.s5, K: st([-0.1, 1.85, 0.9, 1.2, 0.75, -2.7, 50], [-0.05, 1.8, 0.7, 1.2, 0.75, -2.7, 50]) },
+  // s4: close on the clock face, green ring at "hole"
+  // (round 1: a lean shot from behind-left hid the clock behind the guest; a tighter "hole" cam sat inside the clock)
+  { at: T.s4, K: st([CL[0] - 0.05, CL[1] + 0.03, CL[2] + 0.08, ...CL.slice(3), 38], [CL[0], CL[1], CL[2], ...CL.slice(3), 34]) },
+  // s5: from above the left half of the bed: guest on the right, beam onto the clock
+  // (round 1: from behind, the guest's back covered clock and beam)
+  { at: T.s5, K: st([-0.6, 1.45, -1.55, 1.15, 0.75, -2.45, 50], [-0.5, 1.42, -1.6, 1.15, 0.75, -2.45, 48]) },
   { at: T.glint - 0.25, K: st([...CL.slice(0, 3), ...CL.slice(3), 34], [CL[0] + 0.03, CL[1], CL[2] - 0.06, ...CL.slice(3), 32]) },
   // s6: medium on nightstand: plug out, clock turns to the wall
   { at: T.s6, K: st([0.6, 1.3, -1.0, 1.35, 0.55, -2.75, 44], [0.62, 1.28, -1.15, 1.35, 0.55, -2.75, 44]) },
@@ -172,7 +174,7 @@ run("alarm-clock", (t) => {
   spot.intensity = 1.3 * on; spot.position.copy(hp); spot.target.position.copy(LENS); spot.target.updateMatrixWorld();
   const gA = on * sm(T.watch - 0.1, T.glint, t) * (0.55 + 0.45 * flash(t, T.glint));
   gl.visible = gA > 0.02; gl.position.copy(LENS).add(V3(-0.56 * 0.02, 0, 0.83 * 0.02));
-  gl.scale.setScalar(Math.max(0.01, gA * (1 + 0.15 * Math.sin(t * 17)))); gl.rotation.z = 0.3 * Math.sin(t * 1.3);
+  gl.scale.setScalar(Math.max(0.01, 0.65 * gA * (1 + 0.15 * Math.sin(t * 17)))); gl.rotation.z = 0.3 * Math.sin(t * 1.3);
   ph.userData.screen.material.color.set(WHITE).multiplyScalar(1.4 + 2 * flash(t, T.glint));
   okPatch.set(sm(T.wall - 0.1, T.wall + 0.2, t) * (1 - sm(T.s8 - 0.2, T.s8 + 0.2, t)));
 
