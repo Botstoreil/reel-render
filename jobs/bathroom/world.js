@@ -133,11 +133,12 @@ const SH = [
   { at: 0, K: [[0, [-0.4, 1.9, 3.2, -0.5, 1.45, -2.4, 50]], [2.5, [-0.4, 1.85, 2.6, -0.5, 1.45, -2.4, 50]]] },
   // s2: bedroom, guest checks the bed; on "then" the bathroom, guest walks into the shower
   { at: T.s2, K: st([2.2, 1.9, 1.7, 3.0, 0.8, -1.9, 48], [2.3, 1.85, 1.5, 3.0, 0.8, -1.9, 48]) },
-  { at: T.then - 0.05, K: st([-0.5, 1.9, 1.9, -1.0, 1.0, -2.2, 48], [-0.6, 1.85, 1.6, -1.1, 1.0, -2.2, 48]) },
+  // round 3: aim higher so the vent drops below the caption band
+  { at: T.then - 0.05, K: st([-0.5, 1.9, 1.9, -1.0, 1.3, -2.2, 48], [-0.6, 1.85, 1.6, -1.1, 1.3, -2.2, 48]) },
   // s3: shower + hook + vent + freshener from the front right
   { at: T.s3, K: st([0.35, 1.8, 1.0, -0.6, 1.75, -2.6, 52], [0.3, 1.8, 0.8, -0.6, 1.75, -2.6, 52]) },
   // s4: guest in front, the shower and the toilet behind
-  { at: T.s4, K: st([0.2, 2.3, 2.4, -0.3, 0.8, -2.2, 52], [0.2, 2.25, 2.1, -0.3, 0.8, -2.2, 52]) },
+  { at: T.s4, K: st([0.2, 2.3, 2.4, -0.3, 1.1, -2.2, 52], [0.2, 2.25, 2.1, -0.3, 1.1, -2.2, 52]) },
   // s5: flashlight sweep from the side, then close on the freshener for the holes / glint
   { at: T.s5, K: st([-1.3, 1.7, 0.6, 0.0, 1.4, -2.6, 50], [-1.2, 1.7, 0.5, 0.0, 1.4, -2.6, 50]) },
   { at: T.holes - 0.2, K: st([...FRC, 36], [FRC[0] + 0.03, FRC[1], FRC[2] - 0.06, ...FRC.slice(3), 34]) },
