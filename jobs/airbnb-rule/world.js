@@ -142,9 +142,10 @@ const SH = [
   // s2 "living": the living room, camera on the TV stand
   { at: T.living - 0.1, K: st([LX + 1.9, 1.5, 0.9, LX + 0.2, 0.8, -2.5, 46], [LX + 1.7, 1.45, 0.6, LX + 0.3, 0.8, -2.5, 46]) },
   // s3: outside the front door
-  { at: T.s3, K: st([OX + 0.4, 1.7, 1.9, OX - 0.2, 1.7, -2.8, 50], [OX + 0.3, 1.65, 1.4, OX - 0.2, 1.7, -2.8, 50]) },
-  // s4: over the guest's shoulder, the phone
-  { at: T.s4, K: st([HX + 0.45, 1.75, -0.55, HX + 0.05, 1.1, -2.1, 40], [HX + 0.4, 1.72, -0.7, HX + 0.05, 1.1, -2.1, 38]) },
+  // round 2: wider and centred left, both cameras inside the safe zone
+  { at: T.s3, K: st([OX - 0.45, 1.9, 3.6, OX - 0.45, 1.85, -2.9, 52], [OX - 0.45, 1.88, 3.1, OX - 0.45, 1.85, -2.9, 52]) },
+  // s4: high over the guest's shoulder, looking down at the phone (round 2: the camera was inside his back)
+  { at: T.s4, K: st([HX + 0.6, 2.25, -0.75, HX + 0.1, 1.1, -2.2, 46], [HX + 0.55, 2.2, -0.85, HX + 0.1, 1.1, -2.2, 44]) },
   // s5: wide, the guest walks in to the bed
   { at: T.s5, K: st([0.6, 2.1, 2.3, -0.6, 0.9, -2.1, 52], [0.4, 2.0, 2.0, -0.8, 0.9, -2.1, 52]) },
   // s6: from the left side, the guest photographs the camera (proven framing from found-one)
@@ -158,7 +159,7 @@ run("airbnb-rule", (t) => {
   let x, z, h, walk = 0, phU = 0, vis = true, shrug = 0;
   if (t < T.s3) { // in the bedroom, looking at the shelf camera
     [x, z] = G1; h = face(G1, [CAM0.x, CAM0.z]); shrug = 0.6 * sm(T.never - 0.2, T.never + 0.2, t) * (1 - sm(T.s2 - 0.2, T.s2, t));
-    vis = t < T.living - 0.1;
+    vis = false; // round 2: only an arm showed at the frame edge
   } else if (t < T.s4) { vis = false; [x, z] = G1; h = 0; }
   else if (t < T.s5) { [x, z] = HOME; h = 0; phU = 1; }
   else if (t < T.s6) {
