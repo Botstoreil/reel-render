@@ -1,0 +1,8 @@
+s1|Hotel room? Never ignore the clock facing your bed.
+s2|A bedside clock is plugged in all night and points straight at you.
+s3|That makes it an easy place to hide a tiny camera.
+s4|Look closely at the front for a small dark hole or a glass dot.
+s5|Shine your flashlight on it and watch for a glint.
+s6|Still not sure? Unplug it or turn it to face the wall.
+s7|Check the clock. Turn it away.
+s8|Download Hidden Cam. The link is in our bio.
