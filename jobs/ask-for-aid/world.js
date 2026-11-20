@@ -8,7 +8,7 @@ title("NEVER SKIP FINANCIAL AID");
 cap("s2", "credit", [["ON A CREDIT CARD", 1]], RED);
 cap("s3", "interest", [["DEBT WITH", 1], ["INTEREST", 1]], RED);
 cap("s4", "ask", [["ASK FOR THE", 1], ["AID POLICY", 1]], GREEN);
-cap("s5", "cut", [["CUT OR FORGIVEN", 1]], GREEN);
+cap("s5", "cut", [["CUT OR", 1], ["FORGIVEN", 1]], GREEN, { y: 0.42 });   // below the wall strip, like the end card
 cap("s6", "Fill", [["FILL IN THE FORM", 1]], VIOLET);
 endCard([["ASK FOR AID", 1], ["BEFORE YOU PAY", 1]]);
 
