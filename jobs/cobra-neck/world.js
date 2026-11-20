@@ -44,7 +44,8 @@ const d = V3(0, 0, 0), d2 = V3(0, 0, 0);
 // key poses: [y, z] for hand, elbow, shoulder, hip, knee, ankle (lying along z, face toward -z)
 const POSE = {
   flat:  { HAND: [0.03, -0.45], ELB: [0.24, -0.33], SHO: [0.15, -0.5],  HIP: [0.12, 0.05], KNEE: [0.08, 0.48], FOOT: [0.05, 0.9] },
-  wrong: { HAND: [0.03, -0.34], ELB: [0.3, -0.33],  SHO: [0.56, -0.31], HIP: [0.12, 0.05], KNEE: [0.08, 0.48], FOOT: [0.05, 0.9] },
+  // round 3: torso ~40 deg (pelvis + legs stay on the mat), straight arms angled forward to the hands
+  wrong: { HAND: [0.06, -0.84], ELB: [0.277, -0.6], SHO: [0.48, -0.38], HIP: [0.12, 0.05], KNEE: [0.08, 0.48], FOOT: [0.05, 0.9] },
   right: { HAND: [0.03, -0.5],  ELB: [0.15, -0.29], SHO: [0.36, -0.46], HIP: [0.12, 0.05], KNEE: [0.08, 0.48], FOOT: [0.05, 0.9] },
   low:   { HAND: [0.03, -0.48], ELB: [0.18, -0.3],  SHO: [0.25, -0.49], HIP: [0.12, 0.05], KNEE: [0.08, 0.48], FOOT: [0.05, 0.9] },
 };
@@ -120,13 +121,16 @@ const WIDE = st([4.3, 0.9, -0.3, 0, 0.3, -0.3, 46], [4.0, 0.88, -0.3, 0, 0.3, -0
 const UPPER = st([2.1, 0.6, -0.55, 0, 0.38, -0.45, 42], [1.95, 0.58, -0.55, 0, 0.38, -0.45, 42]);
 // round 2: medium side shot so the whole arch + head + the red gaze line to the ceiling are in frame
 const HEAD = st([2.25, 0.75, -0.5, 0, 0.62, -0.45, 42], [2.1, 0.74, -0.5, 0, 0.62, -0.45, 42]);
+// round 3: wrong-pose shots pulled back (~3.0) so hands, hips and thighs on the mat are in frame and the head sits
+// below the title band
+const BACKW = st([3.05, 0.5, -0.25, 0, 0.28, -0.25, 42], [2.9, 0.5, -0.25, 0, 0.28, -0.25, 42]);
 const SH = [
   { at: 0, K: [[0, [4.5, 0.9, -0.05, 0, 0.3, -0.1, 46]], [2.0, [4.2, 0.88, -0.05, 0, 0.3, -0.1, 46]]] },
-  { at: T.ceiling - 0.2, K: UPPER },
-  // s2: close on the head and neck
-  { at: T.s2, K: HEAD },
+  { at: T.ceiling - 0.2, K: BACKW },
+  // s2: head and neck, still wide enough to read as lying on the mat
+  { at: T.s2, K: st([2.8, 0.55, -0.3, 0, 0.3, -0.3, 42], [2.65, 0.55, -0.3, 0, 0.3, -0.3, 42]) },
   // s3: arm and low back
-  { at: T.s3, K: st([2.5, 0.4, -0.1, 0, 0.3, -0.15, 44], [2.35, 0.4, -0.1, 0, 0.3, -0.15, 44]) },
+  { at: T.s3, K: st([2.95, 0.42, -0.15, 0, 0.26, -0.2, 42], [2.8, 0.42, -0.15, 0, 0.26, -0.2, 42]) },
   // s4: elbows bend, upper body
   { at: T.s4, K: UPPER },
   // s5: chest and gaze, head close
@@ -153,7 +157,7 @@ run("cobra-neck", (t) => {
   EYE.set(0, 0.13, -0.135); P.head.localToWorld(EYE);
   // s1-s2: red gaze line from the eyes up to the ceiling
   const gA = sm(T.ceiling - 0.15, T.ceiling + 0.1, t) * (1 - sm(T.s3 - 0.1, T.s3 + 0.2, t));
-  GZ.set(0, 0, -1).applyQuaternion(qH); A0.copy(EYE).add(OFF); A1.copy(A0).addScaledVector(GZ, 0.9);
+  GZ.set(0, 0, -1).applyQuaternion(qH); A0.copy(EYE).add(OFF); A1.copy(A0).addScaledVector(GZ, 0.4);
   gazeLine.set(A0, A1, gA * (0.85 + 0.15 * Math.sin(t * 8)));
   // s2: red ring at the back of the neck
   neckRing.position.copy(NECK).add(OFF.clone().multiplyScalar(0.3)).add(V3(0, 0.02, 0.06));
@@ -162,7 +166,7 @@ run("cobra-neck", (t) => {
   // s3: red line along the straight arm, red ring on the low back
   const aA = sm(T.straight - 0.1, T.arms + 0.1, t) * (1 - sm(T.s4 - 0.1, T.s4 + 0.2, t));
   A0.copy(J.SHO).add(OFF); A1.copy(J.HAND).add(OFF); armLine.set(A0, A1, aA);
-  backRing.position.copy(J.HIP).lerp(J.SHO, 0.25).add(OFF.clone().multiplyScalar(0.3)).add(V3(0, 0.08, 0));
+  backRing.position.copy(J.HIP).lerp(J.SHO, 0.1).add(OFF.clone().multiplyScalar(0.3)).add(V3(0, 0.1, 0.02));
   backRing.material.opacity = sm(T.jams - 0.1, T.jams + 0.1, t) * (1 - sm(T.s4 - 0.1, T.s4 + 0.2, t)) * (0.7 + 0.3 * Math.sin(t * 9));
   backRing.scale.setScalar(1 + 0.4 * flash(t, T.low));
   // s4: green ring on the elbow, close to the ribs
