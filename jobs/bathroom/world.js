@@ -50,7 +50,7 @@ scene.add(box(0.1, 2.6, 1.6, 1.45, 1.3, -2.2, solid(0x221d5a), false));
 
 // ---------- the three things that face the shower ----------
 // hook (back wall, right of the shower), vent (high on the back wall), air freshener (shelf, turned toward the shower)
-const HOOK = V3(-0.55, 1.65, -2.93), VENT = V3(-0.45, 2.55, -2.93);
+const HOOK = V3(-0.55, 1.65, -2.93), VENT = V3(-0.45, 2.2, -2.93); // round 2: vent lower, out of the title band
 scene.add(box(0.08, 0.12, 0.02, HOOK.x, HOOK.y, HOOK.z, mat(0xd8d4ff, 0.35), false));
 scene.add(tube([HOOK.x, HOOK.y - 0.02, HOOK.z + 0.01], [HOOK.x, HOOK.y + 0.02, HOOK.z + 0.1], 0.012, mat(0xd8d4ff, 0.35)));
 scene.add(box(0.36, 0.24, 0.03, VENT.x, VENT.y, VENT.z, mat(0xc8c4ff, 0.25), false));
@@ -130,12 +130,12 @@ const st = (a, b = a) => [[0, a], [3, b]];
 const FRC = [0.3 - 0.45, 1.65, -2.88 + 0.55, 0.3, 1.52, -2.88];
 const SH = [
   // hook: wide bathroom, shower left, toilet right
-  { at: 0, K: [[0, [-0.4, 2.0, 3.2, -0.5, 1.2, -2.4, 50]], [2.5, [-0.4, 1.9, 2.6, -0.5, 1.2, -2.4, 50]]] },
+  { at: 0, K: [[0, [-0.4, 1.9, 3.2, -0.5, 1.45, -2.4, 50]], [2.5, [-0.4, 1.85, 2.6, -0.5, 1.45, -2.4, 50]]] },
   // s2: bedroom, guest checks the bed; on "then" the bathroom, guest walks into the shower
   { at: T.s2, K: st([2.2, 1.9, 1.7, 3.0, 0.8, -1.9, 48], [2.3, 1.85, 1.5, 3.0, 0.8, -1.9, 48]) },
   { at: T.then - 0.05, K: st([-0.5, 1.9, 1.9, -1.0, 1.0, -2.2, 48], [-0.6, 1.85, 1.6, -1.1, 1.0, -2.2, 48]) },
   // s3: shower + hook + vent + freshener from the front right
-  { at: T.s3, K: st([0.35, 1.8, 1.0, -0.6, 1.65, -2.6, 52], [0.3, 1.8, 0.8, -0.6, 1.65, -2.6, 52]) },
+  { at: T.s3, K: st([0.35, 1.8, 1.0, -0.6, 1.75, -2.6, 52], [0.3, 1.8, 0.8, -0.6, 1.75, -2.6, 52]) },
   // s4: guest in front, the shower and the toilet behind
   { at: T.s4, K: st([0.2, 2.3, 2.4, -0.3, 0.8, -2.2, 52], [0.2, 2.25, 2.1, -0.3, 0.8, -2.2, 52]) },
   // s5: flashlight sweep from the side, then close on the freshener for the holes / glint
@@ -143,7 +143,7 @@ const SH = [
   { at: T.holes - 0.2, K: st([...FRC, 36], [FRC[0] + 0.03, FRC[1], FRC[2] - 0.06, ...FRC.slice(3), 34]) },
   // s6: close for "cover", medium on the guest with the phone for "photos" / "tell"
   { at: T.s6, K: st([...FRC, 38], [FRC[0] + 0.03, FRC[1], FRC[2] - 0.06, ...FRC.slice(3), 36]) },
-  { at: T.photos - 0.15, K: st([-1.0, 1.75, 0.9, 0.1, 1.3, -1.6, 48], [-0.9, 1.72, 0.8, 0.1, 1.3, -1.6, 48]) },
+  { at: T.photos + 0.05, K: st([-1.0, 1.75, 0.9, 0.1, 1.3, -1.6, 48], [-0.9, 1.72, 0.8, 0.1, 1.3, -1.6, 48]) },
   // s7-s8: calm wide
   { at: T.s7, calm: 1, K: [[0, [0.2, 2.2, 4.0, -0.2, 1.3, -2.2, 52]], [5, [0.2, 2.4, 4.8, -0.2, 1.3, -2.2, 52]]] },
 ];
@@ -199,10 +199,12 @@ run("bathroom", (t) => {
   gl.scale.setScalar(Math.max(0.01, 0.6 * gA * (1 + 0.15 * Math.sin(t * 17)))); gl.rotation.z = 0.3 * Math.sin(t * 1.3);
 
   // s6: tape slides over the hole at "cover" (green ring), phone flash at "photos", screen green at "tell"
-  const cov = sm(T.cover - 0.05, T.cover + 0.25, t);
+  const cov = sm(T.cover - 0.2, T.cover + 0.1, t);
   tape.visible = cov > 0.01; tape.position.set(0, 0.15 + 0.12 * (1 - cov), 0.05); tape.scale.setScalar(Math.max(0.01, cov));
   okRing.material.opacity = sm(T.cover + 0.1, T.cover + 0.3, t) * (1 - sm(T.s7 - 0.1, T.s7 + 0.2, t));
-  const fl6 = flash(t, T.photos + 0.1);
+  const fl6 = flash(t, T.photos + 0.2);
+  // round 2: the photo flash lights the freshener (was invisible behind the guest)
+  if (fl6 > 0.01) { spot.intensity = 5 * fl6; spot.position.copy(hp); spot.target.position.copy(LENS); spot.target.updateMatrixWorld(); }
   const grn = sm(T.tell - 0.1, T.tell + 0.2, t) * (1 - sm(T.s8 - 0.2, T.s8 + 0.2, t));
   ph.userData.screen.material.color.set(WHITE).lerp(new THREE.Color(GREEN), grn).multiplyScalar(1.4 + 2 * flash(t, T.shiny) + 2.5 * fl6);
 
