@@ -26,8 +26,7 @@ const T = {
 // ---------- set: mat along z, a plant ----------
 scene.add(box(0.72, 0.012, 2.3, 0, 0.006, -0.3, mat(0x6a5cff, 0.35), false));
 scene.add(box(0.02, 0.004, 2.3, 0.36, 0.014, -0.3, glow(VIOLET, 1.4), false), box(0.02, 0.004, 2.3, -0.36, 0.014, -0.3, glow(VIOLET, 1.4), false));
-scene.add(box(0.26, 0.3, 0.26, -1.0, 0.15, 1.0, mat(0x2a2470, 0.2)));
-for (const [x, r] of [[0, 0], [-0.08, 0.4], [0.08, -0.4]]) { const l = box(0.06, 0.5, 0.02, -1.0 + x, 0.5, 1.0, glow(GREEN, 0.5), false); l.rotation.z = r; scene.add(l); }
+// (round 2: no plant - in round 1 it stood right behind the red pain ring and read as part of it)
 const floorGlow = patch(1.6, 3.0, VIOLET, 0.5); floorGlow.position.set(0, 0.02, -0.3); floorGlow.set(0.6);
 // yoga blocks (pop in on "blocks")
 const BZ = -0.62, blocks = [];
@@ -85,7 +84,7 @@ const painDot = new THREE.Mesh(new THREE.SphereGeometry(0.05, 16, 12), painMat);
 const hamLine = beam(GREEN, 2.0, 0.026); hamLine.material.depthTest = false; hamLine.renderOrder = 20;
 const upArrow = [beam(GREEN, 2.0, 0.026), beam(GREEN, 2.0, 0.026), beam(GREEN, 2.0, 0.026)];
 for (const a of upArrow) { a.material.depthTest = false; a.renderOrder = 20; }
-const strap = beam(VIOLET, 1.8, 0.02);
+const strap = beam(VIOLET, 2.4, 0.032);
 const blockMat = glow(VIOLET, 1.6);
 for (const b of blocks) b.add(box(0.13, 0.004, 0.16, 0, 0.117, 0, blockMat, false));
 
@@ -93,7 +92,7 @@ for (const b of blocks) b.add(box(0.13, 0.004, 0.16, 0, 0.117, 0, blockMat, fals
 title("NEVER SAY PUSH THROUGH PAIN");
 cap("s2", "harder", "PUSHING HARDER", RED);
 cap("s2", "room", "TO KEEP UP", RED, { boom: 0.3 });
-cap("s3", "sharp", "SHARP. PINCHING. BURNING.", RED);
+cap("s3", "sharp", ["SHARP, PINCHING", "OR BURNING"], RED);
 cap("s3", "back", "= BACK OFF", GREEN, { boom: 0.35 });
 cap("s4", "strong", "STRONG STRETCH", GREEN);
 cap("s4", "painful", "NEVER PAINFUL", RED, { boom: 0.3 });
@@ -113,7 +112,8 @@ const SH = [
   // s2: low from the hands side, forcing to the floor
   { at: T.s2, K: st([2.6, 0.6, -1.6, 0, 0.5, -0.25, 46], [2.45, 0.58, -1.5, 0, 0.5, -0.25, 46]) },
   // s3: close on the back of the thigh, then wide when backing off
-  { at: T.s3, K: st([2.2, 0.75, 0.45, 0, 0.62, 0.02, 42], [2.1, 0.74, 0.42, 0, 0.62, 0.02, 42]) },
+  // (round 2: pulled back; round 1 cut the head and filled the frame with the torso)
+  { at: T.s3, K: st([3.0, 0.8, 0.35, 0, 0.58, -0.08, 46], [2.85, 0.79, 0.33, 0, 0.58, -0.08, 46]) },
   { at: T.back - 0.15, K: st([3.2, 0.9, -0.15, 0, 0.55, -0.15, 46], [3.0, 0.88, -0.15, 0, 0.55, -0.15, 46]) },
   // s4: side, the green line on the back of the thigh
   { at: T.s4, K: st([2.6, 0.8, 0.2, 0, 0.6, -0.05, 44], [2.45, 0.78, 0.18, 0, 0.6, -0.05, 44]) },
@@ -151,7 +151,7 @@ run("no-push-pain", (t) => {
   blockMat.color.set(VIOLET).multiplyScalar(1.2 + 1.0 * flash(t, T.blocks));
 
   // the back of the thigh (hamstring), on the camera side
-  HAM.lerpVectors(HIP, KNEE, 0.5); HAM.z += 0.08; HAM.add(OFF);
+  HAM.lerpVectors(HIP, KNEE, 0.6); HAM.z += 0.08; HAM.add(OFF);
   // red: pain ring + dot on the hamstring (s1 "pain" to s3 "back"), flashes on each pain word
   const pr = sm(T.pain - 0.1, T.pain + 0.15, t) * (1 - sm(T.back + 0.1, T.back + 0.35, t));
   const fl = flash(t, T.pain) + flash(t, T.sharp) + flash(t, T.pinching) + flash(t, T.burning) + 0.6 * flash(t, T.harder);
@@ -168,13 +168,14 @@ run("no-push-pain", (t) => {
   hamLine.set(A0, A1, hl * (0.85 + 0.3 * flash(t, T.strong)));
   // green arrow up over the back on "coming out" (s5)
   const ua = sm(T.coming - 0.1, T.coming + 0.15, t) * (1 - sm(T.s6 - 0.1, T.s6 + 0.1, t));
-  const tip = V3(0, 0, 0).copy(HIP).lerp(SHO, 0.5).addScaledVector(N, 0.3).add(OFF), base = tip.clone(); base.y -= 0.0; tip.y += 0.3 * (1 + 0.15 * flash(t, T.out));
+  // (round 2: shorter and lower; round 1 the tip ran into the caption)
+  const tip = V3(0, 0, 0).copy(HIP).lerp(SHO, 0.5).addScaledVector(N, 0.2).add(OFF), base = tip.clone(); tip.y += 0.17 * (1 + 0.15 * flash(t, T.out));
   upArrow[0].set(base, tip, ua);
   A0.copy(tip).add(V3(0, -0.08, 0.07)); upArrow[1].set(tip, A0, ua);
   A1.copy(tip).add(V3(0, -0.08, -0.07)); upArrow[2].set(tip, A1, ua);
   // violet strap from the hands to the front of the feet (s6 "straps")
   const sp = sm(T.straps - 0.1, T.straps + 0.2, t) * (1 - sm(T.s7 - 0.1, T.s7, t));
-  A0.copy(HAND); A0.x = 0.12; A1.set(0.12, 0.03, FOOT.z - 0.14); strap.set(A0, A1, sp * (0.85 + 0.3 * flash(t, T.straps)));
+  A0.copy(HAND); A0.x = 0.3; A1.set(0.3, 0.03, FOOT.z - 0.14); // camera side so it is not hidden by the block strap.set(A0, A1, sp * (0.85 + 0.3 * flash(t, T.straps)));
 
   const { punch } = shoot(SH, t);
   unclip();
