@@ -61,10 +61,10 @@ function fold(P, a, reach = 0) {
 }
 const HW = [V3(0, 0, 0), V3(0, 0, 0)];
 // (round 2: in round 1 the folded hands missed the blocks) pose everyone in the fold once and put each block under a hand
-const FOLD = 1.3;
+const FOLD = 1.6; // (round 3: was 1.3, the hands stopped ~0.5 m up and the blocks became pillars)
 function seat(P, x, z, h, pair) {
   P.set({ x, z, h }); fold(P, FOLD); P.g.updateMatrixWorld(true);
-  P.hands.forEach((hd, j) => { const v = V3(0, 0, 0); hd.getWorldPosition(v); const top = Math.max(0.1, v.y - 0.06); const b = pair[j]; b.position.set(v.x, top / 2, v.z); b.userData.sy = top / 0.23; });
+  P.hands.forEach((hd, j) => { const v = V3(0, 0, 0); hd.getWorldPosition(v); const top = Math.min(0.28, Math.max(0.1, v.y - 0.06)); const b = pair[j]; b.position.set(v.x, top / 2, v.z); b.userData.sy = top / 0.23; });
 }
 ST.forEach((P, i) => seat(P, XS[i], 0, 0, sBlocks[i]));
 seat(TE, 0, TZ, Math.PI, tBlocks);
@@ -103,7 +103,8 @@ const SH = [
   // s4: high behind the class, the teacher talks, blocks pop in on every mat
   { at: T.s4, K: st([2.2, 3.4, 3.6, 0, 0.3, -1.0, 46], [2.0, 3.25, 3.35, 0, 0.3, -1.0, 46]) },
   // s5: on the teacher from beside the class, folding onto her blocks
-  { at: T.s5, K: st([2.2, 1.4, -0.9, 0, 0.55, -2.0, 44], [2.05, 1.35, -1.0, 0, 0.55, -2.0, 44]) },
+  // (round 3: pulled back; round 2 showed only her legs, then cut her head)
+  { at: T.s5, K: st([3.0, 1.7, -0.5, 0, 0.6, -2.1, 44], [2.85, 1.65, -0.6, 0, 0.6, -2.1, 44]) },
   // s6: wide three-quarter front, everyone on blocks
   { at: T.s6, K: st([3.5, 2.2, -4.3, 0, 0.5, -0.6, 46], [3.3, 2.1, -4.1, 0, 0.5, -0.6, 46]) },
   // s7-s8: calm high front, people low under the end card
@@ -122,7 +123,7 @@ run("props-for-all", (t) => {
   const talk = sm(T.s4 - 0.1, T.s4 + 0.2, t) * (1 - sm(T.s5 - 0.15, T.s5 + 0.05, t));
   const bend = sm(putT - 0.35, putT, t) * (1 - sm(putT + 0.1, putT + 0.45, t)); // bends down to put the block on the floor
   TE.set({ ...wp, t, argue: talk * 0.7 });
-  fold(TE, 1.1 * bend + 1.3 * sm(T.yourself - 0.25, T.yourself + 0.1, t));
+  fold(TE, 1.1 * bend + FOLD * sm(T.yourself - 0.25, T.yourself + 0.1, t));
   redHeld.visible = t < putT;
   const rf = sm(putT - 0.05, putT + 0.05, t);
   const slide = sm(T.skip - 0.05, T.skip + 0.35, t), fadeR = 1 - sm(T.strain - 0.1, T.strain + 0.2, t);
@@ -139,7 +140,7 @@ run("props-for-all", (t) => {
   ST.forEach((P, i) => {
     P.set({ x: XS[i], z: 0, h: 0, t, look: i === 0 ? look : i === 2 ? -look : 0, nod: i === 1 ? 0 : 0.3 * look });
     const shake = 0.04 * Math.sin(t * 23 + i) * strain; // straining: a small shake
-    fold(P, 1.45 * strain + 1.3 * onB + shake, 0.2 * strain);
+    fold(P, 1.5 * strain + FOLD * onB + shake, 0.25 * strain);
     if (i === 1 && shame > 0.01) P.head.rotation.x = -0.5 * shame;
     P.g.updateMatrixWorld(true);
     // red gap lines: hands to the floor while straining
