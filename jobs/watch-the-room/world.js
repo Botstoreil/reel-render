@@ -81,19 +81,22 @@ endCard([["SHOW IT ONCE", 1], ["WATCH THE ROOM", 1]]);
 const st = (a, b = a) => [[0, a], [3, b]];
 const SH = [
   // hook: from the side, the teacher and the class all folded on their mats
-  { at: 0, K: [[0, [4.3, 2.3, -1.0, 0, 0.6, -1.1, 46]], [2.6, [4.0, 2.15, -1.1, 0, 0.6, -1.1, 46]]] },
-  // s2: closer on the teacher from her side, her red gaze stuck on her own mat
-  { at: T.s2, K: st([2.6, 1.5, -2.9, 0, 0.6, -1.9, 44], [2.45, 1.45, -2.85, 0, 0.6, -1.9, 44]) },
+  // (round 2: pulled back; round 1 cropped the students at the left edge)
+  { at: 0, K: [[0, [5.8, 2.9, -1.1, 0, 0.55, -1.0, 46]], [2.6, [5.4, 2.75, -1.15, 0, 0.55, -1.0, 46]]] },
+  // s2: on the teacher from her side, her red gaze stuck on her own mat (round 2: pulled back, her head was cut at the edge)
+  { at: T.s2, K: st([3.5, 1.8, -3.5, -0.2, 0.55, -2.0, 46], [3.35, 1.75, -3.4, -0.2, 0.55, -2.0, 46]) },
   // s3: the middle student straining, from the front-left (tested camera from reel 11)
   { at: T.s3, K: st([-1.5, 1.35, -3.0, 0.1, 0.6, -0.4, 44], [-1.4, 1.3, -2.85, 0.1, 0.6, -0.4, 44]) },
   // s4: on the teacher from beside the class, she demos once and stands up (head room for standing)
   { at: T.s4, K: st([3.4, 1.8, -0.3, 0, 0.9, -2.1, 46], [3.25, 1.75, -0.4, 0, 0.9, -2.1, 46]) },
   // s5: high behind the class, she walks in among the mats
-  { at: T.s5, K: st([2.2, 3.4, 3.6, 0, 0.3, -1.0, 46], [2.0, 3.25, 3.35, 0, 0.3, -1.0, 46]) },
+  // (round 2: look point raised so the far teacher sits below the caption, not under it)
+  { at: T.s5, K: st([2.2, 3.4, 3.6, 0, 1.0, -1.0, 46], [2.0, 3.25, 3.35, 0, 1.0, -1.0, 46]) },
   // s6: wide three-quarter front, she talks and the middle student gets her block
-  { at: T.s6, K: st([3.5, 2.2, -4.3, 0, 0.5, -0.6, 46], [3.3, 2.1, -4.1, 0, 0.5, -0.6, 46]) },
+  // (round 2: look point moved to -x so she is left of the like/share buttons)
+  { at: T.s6, K: st([3.5, 2.2, -4.3, -0.55, 0.5, -0.6, 46], [3.3, 2.1, -4.1, -0.55, 0.5, -0.6, 46]) },
   // s7-s8: calm high front, people low under the end card
-  { at: T.s7, calm: 1, K: [[0, [3.4, 3.4, -4.6, 0, 1.5, -0.8, 48]], [5, [3.7, 3.6, -5.0, 0, 1.55, -0.8, 48]]] },
+  { at: T.s7, calm: 1, K: [[0, [3.4, 3.4, -4.6, -0.45, 1.5, -0.8, 48]], [5, [3.7, 3.6, -5.0, -0.45, 1.55, -0.8, 48]]] },
 ];
 
 run("watch-the-room", (t) => {
