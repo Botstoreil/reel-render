@@ -119,16 +119,17 @@ endCard([["WHERE YOU SLEEP", 1], ["CHECK WHAT SEES", 1]]);
 const st = (a, b = a) => [[0, a], [3, b]];
 const CX = CLK.x, CY = CLK.y, CZ = CLK.z;
 // the front wall from the middle of the room (no head in frame): frame, clock and TV all inside the safe zone
-const WALL = [-0.15, 1.5, -1.5, -0.3, 1.35, FZ, 56], WALL2 = [-0.2, 1.48, -1.25, -0.3, 1.35, FZ, 55];
+// (camera looks +z, so world -x is screen RIGHT: centre on x -0.6 keeps the frame left of x=940)
+const WALL = [-0.45, 1.5, -1.5, -0.6, 1.35, FZ, 56], WALL2 = [-0.5, 1.48, -1.25, -0.6, 1.35, FZ, 55];
 const SH = [
   // s1: wide of the bed from the front wall
   { at: 0, K: [[0, [1.6, 2.1, 2.3, -0.2, 0.7, -1.9, 52]], [2.4, [1.3, 1.95, 1.8, -0.2, 0.7, -1.9, 50]]] },
   // s2: close on the clock on the dresser
-  { at: T.s2, K: st([CX + 0.3, 1.15, 1.35, CX, CY, CZ, 38], [CX + 0.25, 1.12, 1.55, CX, CY, CZ, 34]) },
+  { at: T.s2, K: st([CX - 0.3, 1.15, 1.35, CX, CY, CZ, 46], [CX - 0.25, 1.12, 1.5, CX, CY, CZ, 42]) },
   // s2 "so": the clock's view of the bed
   { at: T.so - 0.1, K: st([CX + 0.13, 1.22, 2.64, -0.1, 0.55, -1.9, 50], [CX + 0.15, 1.2, 2.58, -0.1, 0.55, -1.9, 48]) },
   // s3: the guest by the bed, seen from the dresser side, looking out
-  { at: T.s3, K: st([-0.3, 1.75, 1.3, 1.0, 1.1, -1.5, 44], [-0.2, 1.72, 1.1, 1.0, 1.1, -1.5, 42]) },
+  { at: T.s3, K: st([-0.3, 1.85, 1.3, 1.0, 1.35, -1.5, 48], [-0.2, 1.82, 1.1, 1.0, 1.35, -1.5, 46]) },
   // s3 "points": the guest's view of the front wall; red lines come back at the viewer
   { at: T.points - 0.1, K: st([0.9, 1.6, -1.3, -0.3, 1.45, FZ, 60], [0.85, 1.58, -1.1, -0.3, 1.45, FZ, 58]) },
   // s4 one shot per thing named: smoke detector (ceiling), then clock + TV + frame, then the vent
@@ -136,8 +137,8 @@ const SH = [
   { at: T.clocks - 0.05, K: st(WALL, WALL2) },
   { at: T.air - 0.05, K: st([0.75, 2.0, 0.6, VNT.x, 2.35, FZ, 46], [0.78, 2.02, 0.75, VNT.x, 2.35, FZ, 44]) },
   // s5: lights off on the wall, the flashlight sweep, then close on the clock glint
-  { at: T.s5, K: st(WALL2, [-0.25, 1.45, -1.0, -0.35, 1.3, FZ, 54]) },
-  { at: T.flashlight + 0.1, K: st([CX + 0.45, 1.1, 1.4, CX, CY, CZ, 36], [CX + 0.4, 1.08, 1.55, CX, CY, CZ, 34]) },
+  { at: T.s5, K: st(WALL2, [-0.55, 1.45, -1.0, -0.6, 1.3, FZ, 54]) },
+  { at: T.flashlight + 0.1, K: st([CX - 0.3, 1.1, 1.4, CX, CY, CZ, 38], [CX - 0.25, 1.08, 1.55, CX, CY, CZ, 36]) },
   // s6: the dresser and the frame (camera to the right so the cloth and the frame stay in frame and under the caption)
   { at: T.s6, K: st([0.1, 1.38, 0.75, -0.95, 1.3, FZ, 56], [0.05, 1.37, 0.9, -0.95, 1.3, FZ, 54]) },
   // s7-s8: calm wide of the bed
@@ -165,7 +166,9 @@ run("face-the-bed", (t) => {
   // ---- s4: a violet ring on each object as it is named ----
   for (const k of Object.keys(R)) {
     const T0 = T[k];
-    R[k].material.opacity = sm(T0 - 0.05, T0 + 0.1, t) * (1 - sm(T.s6 - 0.1, T.s6 + 0.1, t)) * pul;
+    // smoke ring only in its own shot; the rest stay through s5 and go before the clock close-up
+    const off = k === "smoke" ? T.clocks - 0.1 : T.flashlight;
+    R[k].material.opacity = sm(T0 - 0.05, T0 + 0.1, t) * (1 - sm(off - 0.1, off + 0.05, t)) * pul;
     R[k].scale.setScalar(1 + 0.4 * flash(t, T0));
   }
 
