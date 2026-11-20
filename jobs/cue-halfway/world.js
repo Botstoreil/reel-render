@@ -115,10 +115,10 @@ const SH = [
   // s4: on the arm, elbow to ribs
   { at: T.s4, K: ARM },
   // s5: wide, then close on the halfway line
-  { at: T.s5, K: WIDE(4.2, 3.9) },
+  { at: T.s5, K: st([4.2, 0.9, -0.2, 0, 0.35, -0.2, 46], [3.9, 0.88, -0.2, 0, 0.35, -0.2, 46]) },
   { at: T.halfway - 0.1, K: st([1.9, 0.48, -0.75, 0, 0.36, -0.7, 40], [1.8, 0.47, -0.74, 0, 0.36, -0.7, 40]) },
   // s6: wide, knees down
-  { at: T.s6, K: WIDE(4.2, 3.95) },
+  { at: T.s6, K: st([4.2, 0.9, -0.32, 0, 0.35, -0.32, 46], [3.95, 0.88, -0.32, 0, 0.35, -0.32, 46]) },
   // s7-s8: calm wide, person low in frame under the end card
   { at: T.s7, calm: 1, K: [[0, [3.6, 1.7, 0.2, 0, 1.0, 0.0, 48]], [5, [4.0, 1.85, 0.2, 0, 1.05, 0.0, 48]]] },
 ];
