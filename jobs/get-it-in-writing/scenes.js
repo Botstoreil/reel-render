@@ -13,9 +13,9 @@ const css = (hex) => "#" + new THREE.Color(hex).getHexString();
 
 // floor, back wall (z -3) and optional front wall (z +3) with neon strips, so every camera has a backdrop
 function set_(OX, { front = false, hex = VIOLET } = {}) {
-  scene.add(box(8, 0.02, 8, OX, -0.01, 0, mFloor, false), box(8, 3.2, 0.1, OX, 1.6, -3, mWall, false), box(8, 0.03, 0.03, OX, 2.95, -2.94, glow(hex, 1.2), false));
+  scene.add(box(8, 0.02, 8, OX, -0.01, 0, mFloor, false), box(8, 3.2, 0.1, OX, 1.6, -3, mWall, false), box(8, 0.03, 0.03, OX, 3.17, -2.94, glow(hex, 1.2), false));
   for (let i = -3; i <= 3; i++) scene.add(box(0.015, 0.003, 8, OX + i, 0.002, 0, glow(hex, 0.45), false));
-  if (front) scene.add(box(8, 3.2, 0.1, OX, 1.6, 3, mWall, false), box(8, 0.03, 0.03, OX, 2.95, 2.94, glow(hex, 1.2), false));
+  if (front) scene.add(box(8, 3.2, 0.1, OX, 1.6, 3, mWall, false), box(8, 0.03, 0.03, OX, 3.17, 2.94, glow(hex, 1.2), false));
   scene.fog.density = 0.028;
 }
 
