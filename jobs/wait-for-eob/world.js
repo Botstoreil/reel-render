@@ -18,8 +18,8 @@ const SH = [
   { at: 0, cam: I.wide },
   { at: s("s2"), cam: I.close }, { at: g("s2", "before") - 0.15, cam: E.screen },
   { at: s("s3"), cam: I.wide },
-  { at: s("s4"), cam: E.face }, { at: g("s4", "Explanation") - 0.15, cam: E.wide },
-  { at: s("s5"), cam: E.screen },
+  { at: s("s4"), cam: E.wide }, { at: g("s4", "Explanation") - 0.15, cam: E.screen },
+  { at: s("s5"), cam: E.face }, { at: g("s5", "owe") - 0.15, cam: E.screen },
   { at: s("s6"), cam: Ph.close }, { at: g("s6", "call") - 0.15, cam: Ph.wide },
   { at: s("s7"), cam: M.wide },
 ];
