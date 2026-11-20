@@ -21,7 +21,7 @@ const T = {
   s3: S.s3[0], tire: g("s3", "tire"), faster: g("s3", "faster"),
   s4: S.s4[0], slowly: g("s4", "slowly"), inW: g("s4", "in"), outW: g("s4", "out"), nose: g("s4", "nose"),
   s5: S.s5[0], exhale: g("s5", "exhale"), longer: g("s5", "longer"), inhale: g("s5", "inhale"),
-  s6: S.s6[0], ease: g("s6", "ease", 2), little: g("s6", "little"),
+  s6: S.s6[0], ease: g("s6", "ease"), little: g("s6", "little"),
   s7: S.s7[0], s8: S.s8[0],
 };
 
