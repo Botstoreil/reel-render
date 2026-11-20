@@ -1,0 +1,8 @@
+s1|First thing in a new room? Check what faces the bed.
+s2|A hidden camera needs a clear view, so it sits where it can see the bed.
+s3|Stand by the bed and look out. What points back at you?
+s4|Smoke detectors, clocks, TVs, frames and air vents.
+s5|Check those first, lights off, with your flashlight.
+s6|Not sure about one? Cover it or turn it to the wall.
+s7|Stand where you sleep. Check what sees you.
+s8|Download Hidden Cam. The link is in our bio.
