@@ -171,7 +171,7 @@ run("ir-lights", (t) => {
   // s5-s6: violet phone-camera cone sweeps the room and lands on the box at "cameras"
   ph.updateWorldMatrix(true, false); ph.getWorldPosition(hp);
   // round 2: cone fades once it lands on the box (its base read as a dark disc in the close-ups)
-  viewCone.set(hp, B, 0.35, 0.06 * on * sm(T.s5 - 0.2, T.slowly, t) * (1 - sm(T.cameras6 + 0.1, T.ir6, t)));
+  viewCone.set(hp, B, 0.35, 0.06 * on * sm(T.s5 - 0.2, T.slowly, t) * (1 - sm(T.cameras6 - 0.3, T.cameras6 - 0.1, t))); // round 3: gone before the cut to the close-up (dark disc in round 2)
   // s6: the LEDs show as bright purple dots through the phone camera at "purple"
   const pur = sm(T.ir6, T.purple, t) * (1 - sm(T.s8 - 0.2, T.s8 + 0.3, t));
   const pz = (0.7 + 0.3 * flash(t, T.dots)) * pur;
