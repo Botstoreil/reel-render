@@ -131,7 +131,8 @@ run("no-bounce", (t) => {
   pose(f);
 
   // hamstring line on the back of the thigh: red and tight while bouncing, green from "gentle"
-  A0.copy(HIP).add(OFF); A0.z += 0.1; A1.copy(KNEE).add(OFF); A1.z += 0.08;
+  // round 2: closer to the thigh (round 1 floated a stick behind the leg)
+  A0.copy(HIP).add(OFF); A0.z += 0.06; A1.copy(KNEE).add(OFF); A1.z += 0.05;
   const bad = sm(T.muscle - 0.1, T.muscle + 0.1, t) * (1 - sm(T.s4 - 0.1, T.s4 + 0.2, t));
   hamRed.set(A0, A1, bad * (0.7 + 0.3 * Math.sin(t * 14)) * (1 + 0.6 * flash(t, T.tighten) + 0.6 * flash(t, T.tight)));
   const good = sm(T.gentle - 0.1, T.gentle + 0.15, t) * (1 - sm(T.s7 - 0.1, T.s7 + 0.2, t));
@@ -141,7 +142,7 @@ run("no-bounce", (t) => {
   // five breath dots above the back, one by one from "five"
   breathDots.forEach((o, i) => {
     const ti = T.five + i * 0.18;
-    o.position.set(OFF.x, 1.42, -0.55 + i * 0.16);
+    o.position.set(OFF.x, 1.17, -0.55 + i * 0.16); // round 2: lower, out of the caption band
     o.material.opacity = sm(ti - 0.05, ti + 0.08, t) * (1 - sm(T.s6 + 0.2, T.s6 + 0.5, t)) * (0.75 + 0.25 * Math.sin(t * 2 + i));
     o.scale.setScalar(1 + 0.6 * flash(t, ti));
   });
