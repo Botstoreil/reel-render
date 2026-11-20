@@ -1,0 +1,8 @@
+s1|No insurance and a procedure coming up? Never book it without a price.
+s2|Without a number up front, the bill can be anything.
+s3|And you have nothing to compare it to.
+s4|Instead, ask for a Good Faith Estimate when you schedule.
+s5|Providers must give one to patients who are uninsured or paying themselves.
+s6|If the bill is 400 dollars or more above it, you can file a dispute.
+s7|Get the estimate first. Keep it.
+s8|Save this for the next bill you get.

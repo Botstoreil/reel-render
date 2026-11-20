@@ -1,0 +1,50 @@
+[
+  {
+    "text": "Save",
+    "start": 0.04,
+    "end": 0.18,
+    "id": "w0"
+  },
+  {
+    "text": "this",
+    "start": 0.18,
+    "end": 0.35,
+    "id": "w1"
+  },
+  {
+    "text": "for",
+    "start": 0.35,
+    "end": 0.5,
+    "id": "w2"
+  },
+  {
+    "text": "the",
+    "start": 0.5,
+    "end": 0.64,
+    "id": "w3"
+  },
+  {
+    "text": "next",
+    "start": 0.64,
+    "end": 0.73,
+    "id": "w4"
+  },
+  {
+    "text": "bill",
+    "start": 0.83,
+    "end": 0.99,
+    "id": "w5"
+  },
+  {
+    "text": "you",
+    "start": 1,
+    "end": 1.14,
+    "id": "w6"
+  },
+  {
+    "text": "get.",
+    "start": 1.14,
+    "end": 1.37,
+    "id": "w7"
+  }
+]
