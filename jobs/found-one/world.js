@@ -80,14 +80,13 @@ scene.add(box(0.5, 0.04, 0.5, HX, 3.15, -1.2, glow(0xfff0d8, 0.8), false));
 const P = human({ hex: 0x3d7bff });
 const ph = P.hold(phone(WHITE));
 const H = human({ hex: 0xff9a3d, phase: 0.4 });
-const G1 = [-0.3, -2.2], G4 = [0.05, -1.35], DOORF = [2.25, -2.3], HALL0 = [HX - 1.1, -0.5], HALL1 = [HX + 0.65, -2.25];
+const G1 = [0.3, -2.25], G4 = [0.05, -1.35], DOORF = [2.25, -2.3], HALL0 = [HX - 1.1, -0.5], HALL1 = [HX + 0.65, -2.25];
 const HOST0 = [2.4, -2.7], HOST1 = [1.35, -1.85];
 const hp = V3(0, 0, 0), cp = V3(0, 0, 0);
 
 // ---------- text ----------
+// round 2: no s1 caps (they replaced the title 0.3 s after it appeared)
 title("NEVER DESTROY A CAMERA");
-cap("s1", "rip", "RIP IT OUT", RED);
-cap("s1", "throw", "THROW IT AWAY", RED, { boom: 0.3 });
 cap("s2", "destroy", "PROOF: DESTROYED", RED, { boom: 0.4 });
 cap("s3", "without", "NO PROOF", RED);
 cap("s3", "deny", "HOST DENIES IT", RED, { boom: 0.35 });
@@ -105,8 +104,8 @@ endCard([["DON'T TOUCH IT", 1], ["DOCUMENT IT", 1]]);
 // ---------- shots: [cx, cy, cz, lookx, looky, lookz, fov] ----------
 const st = (a, b = a) => [[0, a], [3, b]];
 const SH = [
-  // s1: guest at the shelf, seen from the front right so the camera and the hand both show
-  { at: 0, K: [[0, [1.1, 1.75, 0.4, -0.35, 1.25, -2.6, 46]], [2.5, [0.95, 1.7, 0.0, -0.35, 1.25, -2.6, 46]]] },
+  // s1 (round 2): from the front left, the guest stands right of the shelf so the camera is not hidden behind the back
+  { at: 0, K: [[0, [-1.3, 1.7, -0.3, -0.1, 1.3, -2.6, 44]], [2.5, [-1.15, 1.68, -0.6, -0.1, 1.3, -2.6, 44]]] },
   // the throw: wider, the floor in frame
   { at: T.throw - 0.1, K: st([1.9, 1.6, 1.0, 0.3, 0.6, -1.8, 50], [1.8, 1.5, 0.8, 0.4, 0.5, -1.6, 50]) },
   // s2: close on the broken pieces
@@ -114,9 +113,10 @@ const SH = [
   // s3: host in the door, guest in the left foreground
   { at: T.s3, K: st([-1.3, 1.75, 0.9, 1.3, 1.2, -2.1, 48], [-1.1, 1.7, 0.6, 1.3, 1.2, -2.0, 48]) },
   // s4: camera back on the shelf; over the guest's shoulder, then close on the camera for the photos
-  { at: T.s4, K: st([0.75, 1.8, 0.0, -0.4, 1.3, -2.85, 44], [0.65, 1.75, -0.2, -0.4, 1.3, -2.85, 44]) },
-  { at: T.photos - 0.05, K: st([0.55, 1.6, -0.75, -0.42, 1.3, -2.85, 38], [0.45, 1.58, -0.9, -0.42, 1.3, -2.85, 36]) },
-  { at: T.where - 0.1, K: st([0.8, 1.7, -0.1, -0.4, 1.2, -2.7, 46], [0.75, 1.7, -0.25, -0.4, 1.2, -2.7, 46]) },
+  // round 2: from the left side, so the guest's back no longer fills the frame and hides the camera
+  { at: T.s4, K: st([-1.5, 1.65, -0.9, -0.15, 1.3, -2.5, 44], [-1.4, 1.62, -1.05, -0.15, 1.3, -2.5, 44]) },
+  { at: T.photos - 0.05, K: st([-1.1, 1.5, -1.5, -0.3, 1.3, -2.6, 40], [-1.0, 1.48, -1.6, -0.3, 1.3, -2.6, 38]) },
+  { at: T.where - 0.1, K: st([-1.4, 1.7, -0.6, -0.2, 1.15, -2.5, 46], [-1.3, 1.68, -0.75, -0.2, 1.15, -2.5, 46]) },
   // s5: wide, guest walks to the door
   { at: T.s5, K: st([-1.3, 1.9, 1.6, 1.2, 1.1, -2.2, 50], [-1.0, 1.85, 1.2, 1.4, 1.1, -2.3, 50]) },
   // s6: hallway, the green door
