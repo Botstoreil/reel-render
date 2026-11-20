@@ -99,7 +99,7 @@ scene.add(tube([OUTC.x, OUTC.y + 0.1, -2.98], [OUTC.x, OUTC.y + 0.1, OUTC.z], 0.
 const oc = spyCam(OUTC, 1.8); oc.rotation.x = 0.35;
 const rBell = ringOf(VIOLET, 0.17, V3(BELL.x, BELL.y, BELL.z + 0.08));
 const rOut = ringOf(VIOLET, 0.24, V3(OUTC.x, OUTC.y, OUTC.z + 0.12));
-scene.add(box(0.5, 0.04, 0.5, OX, 3.3, -1.8, glow(0xfff0d8, 0.6), false));
+scene.add(box(0.16, 0.24, 0.08, OX - 0.85, 2.35, -2.93, glow(0xfff0d8, 0.6), false)); // porch wall lamp (round 2: a ceiling panel at y 3.3 covered the caption)
 
 // ---------- at home (x = 24): the guest reading the listing on the phone ----------
 const HX = 24;
