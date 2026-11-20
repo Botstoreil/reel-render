@@ -6,7 +6,7 @@
 // s5 the teacher folds onto her own blocks on "yourself". s6 everyone folds onto their blocks on "choice". s7-s8 calm wide.
 import { THREE, S, g, sm, flash, scene, bloom, glow, box, beam, patch, mSolid, VIOLET, RED, GREEN, shoot, run } from "./kit.js";
 import { title, cap, endCard, overlays } from "./extra.js";
-import { human, walkPath, unclip } from "./parts.js";
+import { human, walkPath, face, unclip } from "./parts.js";
 
 scene.fog.density = 0.02;
 const mat = (hex, em = 0.25) => { const m = mSolid.clone(); m.color.set(hex).multiplyScalar(0.6); m.emissive.set(hex).multiplyScalar(em); return m; };
@@ -39,6 +39,7 @@ const vMat = mat(0x8a7cff, 0.5), vTop = glow(VIOLET, 1.5);
 const mkBlock = (x, z, m = vMat, top = vTop) => { const b = box(0.12, 0.23, 0.15, x, 0.115, z, m); b.add(box(0.13, 0.004, 0.16, 0, 0.117, 0, top, false)); scene.add(b); return b; };
 const sBlocks = XS.map((x) => [mkBlock(x - 0.29, BZ), mkBlock(x + 0.29, BZ)]);
 const tBlocks = [mkBlock(-0.29, TZ - BZ), mkBlock(0.29, TZ - BZ)];
+const BLK = []; // [block, x, z, top] filled after the people exist: each block sits right under a folded hand
 // the one red block: in the teacher's hand, then on the floor in front of the middle student
 const rMat = mat(RED, 0.6), rTop = glow(RED, 1.6);
 const redFloor = mkBlock(0, BZ - 0.05, rMat, rTop);
@@ -46,7 +47,7 @@ const redHeld = box(0.12, 0.23, 0.15, 0, 0, 0, rMat); redHeld.add(box(0.13, 0.00
 
 // ---------- people ----------
 const ST = [human({ hex: 0x2ad1c0, skin: 0xd99a74, phase: 0.2 }), human({ hex: 0xf06aa8, skin: 0xc68660, phase: 0.5 }), human({ hex: 0x5aa0ff, skin: 0xe0b08c, phase: 0.8 })];
-const TE = human({ hex: 0xe8e4ff, skin: 0xb87a56 });
+const TE = human({ hex: 0xffd166, skin: 0xb87a56 });
 TE.hold(redHeld, 1); redHeld.position.set(0, -0.06, -0.1);
 const rig = (P) => { const hips = P.g.children[0], spine = hips.children[0]; return { spine, sh: [spine.children[2], spine.children[3]] }; };
 const RIG = new Map([...ST, TE].map((P) => [P, rig(P)]));
@@ -59,6 +60,15 @@ function fold(P, a, reach = 0) {
   P.head.rotation.x = -0.15 * Math.min(1, a);
 }
 const HW = [V3(0, 0, 0), V3(0, 0, 0)];
+// (round 2: in round 1 the folded hands missed the blocks) pose everyone in the fold once and put each block under a hand
+const FOLD = 1.3;
+function seat(P, x, z, h, pair) {
+  P.set({ x, z, h }); fold(P, FOLD); P.g.updateMatrixWorld(true);
+  P.hands.forEach((hd, j) => { const v = V3(0, 0, 0); hd.getWorldPosition(v); const top = Math.max(0.1, v.y - 0.06); const b = pair[j]; b.position.set(v.x, top / 2, v.z); b.userData.sy = top / 0.23; });
+}
+ST.forEach((P, i) => seat(P, XS[i], 0, 0, sBlocks[i]));
+seat(TE, 0, TZ, Math.PI, tBlocks);
+const popBlock = (b, k) => { b.visible = k > 0.01; const s = Math.max(0.01, k); b.scale.set(s, s * b.userData.sy, s); };
 
 // ---------- guides ----------
 const gaps = ST.map(() => [beam(RED, 2.2, 0.022), beam(RED, 2.2, 0.022)]);
@@ -81,32 +91,34 @@ endCard([["PROPS FOR EVERYONE", 1], ["EVERY CLASS", 1]]);
 // ---------- shots: [cx, cy, cz, lookx, looky, lookz, fov] ----------
 const st = (a, b = a) => [[0, a], [3, b]];
 const SH = [
-  // hook: behind and above the class, the teacher walks in with the red block
-  { at: 0, K: [[0, [1.5, 2.1, 2.9, 0, 0.6, -1.0, 46]], [3.6, [1.2, 1.9, 2.5, 0, 0.6, -0.9, 46]]] },
-  // "struggles": close on the middle student and the red block, from the front side
-  { at: T.struggles - 0.15, K: st([1.0, 1.0, -1.9, 0, 0.75, -0.2, 44], [0.95, 0.98, -1.8, 0, 0.75, -0.2, 44]) },
-  // s2: front of the class, the red spotlight and the two looking
-  { at: T.s2, K: st([0.6, 1.45, -3.0, 0, 0.7, -0.2, 46], [0.55, 1.4, -2.8, 0, 0.7, -0.2, 46]) },
+  // (round 2: every camera pulled back ~2x; round 1 the bodies filled the frame)
+  // hook: high three-quarter front, the whole class, the teacher walks in with the red block
+  { at: 0, K: [[0, [3.6, 2.7, -4.9, 0, 0.8, -0.8, 46]], [3.6, [3.3, 2.55, -4.5, 0, 0.8, -0.8, 46]]] },
+  // "struggles": the middle student and the red block, from the front-left (the teacher stands to her right)
+  { at: T.struggles - 0.15, K: st([-1.5, 1.35, -3.0, 0.1, 0.6, -0.4, 44], [-1.4, 1.3, -2.85, 0.1, 0.6, -0.4, 44]) },
+  // s2: high front-left, the red spotlight and the two looking at her
+  { at: T.s2, K: st([-2.4, 2.8, -4.4, 0, 0.7, -0.4, 46], [-2.25, 2.7, -4.2, 0, 0.7, -0.4, 46]) },
   // s3: three-quarter front, all three folding short of the floor
-  { at: T.s3, K: st([1.9, 1.0, -2.2, 0, 0.5, -0.4, 46], [1.8, 0.98, -2.05, 0, 0.5, -0.4, 46]) },
-  // s4: behind the class, blocks pop in on every mat
-  { at: T.s4, K: st([1.4, 2.0, 2.6, 0, 0.45, -0.8, 46], [1.25, 1.9, 2.4, 0, 0.45, -0.8, 46]) },
-  // s5: on the teacher from the class side, folding onto her blocks
-  { at: T.s5, K: st([1.3, 1.0, -0.6, 0, 0.6, -2.0, 44], [1.2, 0.98, -0.7, 0, 0.6, -2.0, 44]) },
+  { at: T.s3, K: st([3.2, 1.5, -3.4, 0, 0.55, -0.4, 44], [3.0, 1.45, -3.2, 0, 0.55, -0.4, 44]) },
+  // s4: high behind the class, the teacher talks, blocks pop in on every mat
+  { at: T.s4, K: st([2.2, 3.4, 3.6, 0, 0.3, -1.0, 46], [2.0, 3.25, 3.35, 0, 0.3, -1.0, 46]) },
+  // s5: on the teacher from beside the class, folding onto her blocks
+  { at: T.s5, K: st([2.2, 1.4, -0.9, 0, 0.55, -2.0, 44], [2.05, 1.35, -1.0, 0, 0.55, -2.0, 44]) },
   // s6: wide three-quarter front, everyone on blocks
-  { at: T.s6, K: st([2.0, 1.4, -2.6, 0, 0.5, -0.5, 46], [1.85, 1.35, -2.45, 0, 0.5, -0.5, 46]) },
-  // s7-s8: calm wide, people low under the end card
-  { at: T.s7, calm: 1, K: [[0, [2.4, 2.6, 2.6, 0, 1.2, -0.9, 48]], [5, [2.7, 2.8, 2.9, 0, 1.25, -0.9, 48]]] },
+  { at: T.s6, K: st([3.5, 2.2, -4.3, 0, 0.5, -0.6, 46], [3.3, 2.1, -4.1, 0, 0.5, -0.6, 46]) },
+  // s7-s8: calm high front, people low under the end card
+  { at: T.s7, calm: 1, K: [[0, [3.4, 3.4, -4.6, 0, 1.5, -0.8, 48]], [5, [3.7, 3.6, -5.0, 0, 1.55, -0.8, 48]]] },
 ];
 
 run("props-for-all", (t) => {
   // ---- teacher: walks in with the red block, puts it down on "struggles", walks back in s2, talks in s4, folds in s5-s6
   const putT = T.struggles + 0.1;
+  // (round 2: she stands beside the student, not in front; round 1 her back filled the close-ups)
+  const PUT = [0.5, -0.85], START = [1.1, TZ], HOME = [0, TZ];
   let wp;
-  if (t < putT) wp = walkPath([0, TZ], [0, -0.95], 0.3, T.student, t);
-  else if (t < T.s2 + 0.5) wp = { x: 0, z: -0.95, h: Math.PI, walk: 0 };
-  else { wp = walkPath([0, -0.95], [0, TZ], T.s2 + 0.5, T.s2 + 1.9, t); wp.h = wp.walk ? wp.h : Math.PI * sm(T.s2 + 1.9, T.s2 + 2.3, t) + 0 * (1 - sm(T.s2 + 1.9, T.s2 + 2.3, t)); }
-  if (t >= T.s2 + 2.3) wp.h = Math.PI;
+  if (t < putT) { wp = walkPath(START, PUT, 0.3, T.student, t); if (!wp.walk && t > 1) wp.h = face(PUT, [0, BZ]); }
+  else if (t < T.s2 + 0.5) wp = { x: PUT[0], z: PUT[1], h: face(PUT, [0, BZ]), walk: 0 };
+  else { wp = walkPath(PUT, HOME, T.s2 + 0.5, T.s2 + 1.9, t); if (!wp.walk) { const k = sm(T.s2 + 1.9, T.s2 + 2.3, t); wp.h = wp.h + (Math.PI - wp.h) * k; } }
   const talk = sm(T.s4 - 0.1, T.s4 + 0.2, t) * (1 - sm(T.s5 - 0.15, T.s5 + 0.05, t));
   const bend = sm(putT - 0.35, putT, t) * (1 - sm(putT + 0.1, putT + 0.45, t)); // bends down to put the block on the floor
   TE.set({ ...wp, t, argue: talk * 0.7 });
@@ -139,9 +151,9 @@ run("props-for-all", (t) => {
   const gp = sm(T.everyone - 0.1, T.everyone + 0.2, t) * (1 - sm(T.s5 - 0.1, T.s5 + 0.1, t)) + sm(T.whole - 0.1, T.whole + 0.2, t) * (1 - sm(T.s7, T.s7 + 0.4, t));
   green.forEach((p) => p.set(gp * (0.8 + 0.2 * flash(t, T.everyone))));
   const bk = sm(T.blocks - 0.3, T.blocks, t);
-  sBlocks.forEach((pair, i) => pair.forEach((b) => { const k = Math.max(0, Math.min(1, bk * 1.6 - i * 0.3)); b.visible = k > 0.01; b.scale.setScalar(Math.max(0.01, k * (1 + 0.15 * flash(t, T.blocks)))); }));
+  sBlocks.forEach((pair, i) => pair.forEach((b) => popBlock(b, Math.max(0, Math.min(1, bk * 1.6 - i * 0.3)) * (1 + 0.15 * flash(t, T.blocks)))));
   const tb = sm(T.block5 - 0.25, T.block5, t);
-  tBlocks.forEach((b) => { b.visible = tb > 0.01; b.scale.setScalar(Math.max(0.01, tb * (1 + 0.15 * flash(t, T.block5)))); });
+  tBlocks.forEach((b) => popBlock(b, tb * (1 + 0.15 * flash(t, T.block5))));
   vTop.color.set(VIOLET).multiplyScalar(1.2 + 1.0 * flash(t, T.blocks) + 0.8 * flash(t, T.block5));
   const ok = sm(T.choice, T.choice + 0.2, t) * (1 - sm(T.s7 + 0.3, T.s7 + 0.8, t));
   okRings.forEach((o) => { o.material.opacity = ok * (0.7 + 0.3 * Math.sin(t * 6)); o.scale.setScalar(1 + 0.3 * flash(t, T.choice)); });
