@@ -61,13 +61,13 @@ function blend(seq) {
 }
 function applyPose(t, heel, toe) {
   const br = 0.004 * Math.sin(t * 1.6);
-  hips.position.set(0, J.HIP.y + br + 0.05 * heel, J.HIP.z);
+  hips.position.set(0, J.HIP.y + br + 0.07 * heel, J.HIP.z);
   d.subVectors(J.SHO, J.HIP).normalize(); spine.quaternion.setFromUnitVectors(UP, d);
   d.subVectors(J.KNEE, J.HIP).normalize(); qa.setFromUnitVectors(DOWN, d);
   d2.subVectors(J.FOOT, J.KNEE).normalize(); qb.setFromUnitVectors(DOWN, d2);
   for (const [th, kn] of [[LTh, LKn], [RTh, RKn]]) { th.quaternion.copy(qa); kn.quaternion.copy(qa).invert().multiply(qb); }
   // feet: flat on the mat in world space; heel > 0 lifts the heel (toes stay down), toe > 0 lifts the toes a little
-  qF.setFromAxisAngle(XA, -0.45 * heel + 0.22 * toe);
+  qF.setFromAxisAngle(XA, -0.6 * heel + 0.22 * toe);
   for (const f of FEET) f.quaternion.copy(qb).invert().multiply(qF);
   qs.copy(spine.quaternion).invert();
   d.subVectors(J.ELB, J.SHO).normalize(); qa.setFromUnitVectors(DOWN, d);
@@ -108,17 +108,19 @@ endCard([["HIPS BACK", 1], ["WEIGHT IN YOUR HEELS", 1]]);
 // ---------- shots: [cx, cy, cz, lookx, looky, lookz, fov]; side view from +x, a little in front ----------
 const st = (a, b = a) => [[0, a], [3, b]];
 const WIDE = st([4.0, 1.0, -0.9, 0, 0.85, 0, 46], [3.75, 1.0, -0.85, 0, 0.85, 0, 46]);
-const LEGS = st([2.3, 0.55, -0.45, 0, 0.45, -0.05, 42], [2.15, 0.55, -0.42, 0, 0.45, -0.05, 42]);
-const FEETS = st([1.6, 0.3, -0.35, 0, 0.22, 0, 40], [1.5, 0.3, -0.32, 0, 0.22, 0, 40]);
+// round 2: round 1 was far too close (visible height ~0.45 x distance): head cut in s1-s2, feet shots only shins
+const FEETS = st([2.9, 0.5, -0.7, 0, 0.32, -0.05, 42], [2.75, 0.5, -0.66, 0, 0.32, -0.05, 42]);
 const SH = [
-  { at: 0, K: [[0, [4.4, 1.05, -1.0, 0, 0.85, 0, 46]], [2.0, [4.1, 1.0, -0.95, 0, 0.85, 0, 46]]] },
-  { at: T.knees1 - 0.25, K: LEGS },
-  { at: T.s2, K: st([2.9, 0.75, -0.6, 0, 0.62, 0, 44], [2.75, 0.75, -0.55, 0, 0.62, 0, 44]) },
+  // s1: whole body below the title band, the knee ring readable
+  { at: 0, K: [[0, [6.6, 1.45, -1.5, 0, 1.25, 0, 46]], [2.6, [6.1, 1.4, -1.4, 0, 1.22, 0, 46]]] },
+  // s2: hips down to the feet (hip ring + toe line)
+  { at: T.s2, K: st([4.3, 0.75, -0.9, 0, 0.58, 0, 44], [4.05, 0.75, -0.85, 0, 0.58, 0, 44]) },
   { at: T.s3, K: FEETS },
-  { at: T.s4, K: st([3.4, 0.9, -0.2, 0, 0.72, 0.1, 46], [3.2, 0.9, -0.2, 0, 0.72, 0.1, 46]) },
+  // s4: whole body + the ghost chair, hands below the title band
+  { at: T.s4, K: st([5.8, 1.35, -0.6, 0, 1.12, 0.1, 46], [5.5, 1.33, -0.55, 0, 1.12, 0.1, 46]) },
   { at: T.s5, K: FEETS },
   { at: T.s6, K: WIDE },
-  { at: T.s7, calm: 1, K: [[0, [3.4, 1.6, -1.6, 0, 0.95, 0, 48]], [5, [3.8, 1.7, -1.7, 0, 0.95, 0, 48]]] },
+  { at: T.s7, calm: 1, K: [[0, [4.8, 1.9, -1.9, 0, 1.3, 0, 48]], [5, [5.2, 2.0, -2.0, 0, 1.3, 0, 48]]] },
 ];
 
 run("chair-hips", (t) => {
@@ -145,7 +147,7 @@ run("chair-hips", (t) => {
   hipRing.material.opacity = sm(T.hips2 - 0.1, T.hips2 + 0.1, t) * (1 - sm(T.forward - 0.2, T.forward + 0.1, t)) * (0.7 + 0.3 * Math.sin(t * 9));
   hipRing.scale.setScalar(1 + 0.4 * flash(t, T.high));
   // s2: red vertical toe line, the knee sits in front of it
-  const tR = sm(T.forward - 0.1, T.forward + 0.15, t) * (1 - sm(T.s4 - 0.1, T.s4 + 0.2, t));
+  const tR = sm(T.forward - 0.1, T.forward + 0.15, t) * (1 - sm(T.s3 - 0.1, T.s3 + 0.15, t));
   A0.set(0.3, 0.02, toeZ); A1.set(0.3, 0.62, toeZ); toeLineR.set(A0, A1, tR);
   // s3: red ring on the lifted heel
   heelRing.position.copy(HEEL).add(OFF);
@@ -156,7 +158,7 @@ run("chair-hips", (t) => {
   chairM.opacity = 0.35 * sm(T.chair - 0.1, T.chair + 0.2, t) * (1 - sm(T.s5 - 0.1, T.s5 + 0.3, t)) * (0.85 + 0.15 * flash(t, T.behind));
   // s5: green ring on the heel (weight in the heels)
   heelGood.position.copy(HEEL).add(OFF);
-  heelGood.material.opacity = sm(T.heels5 - 0.1, T.heels5 + 0.1, t) * (1 - sm(T.s6 - 0.1, T.s6 + 0.2, t)) * (0.8 + 0.2 * Math.sin(t * 7));
+  heelGood.material.opacity = sm(T.heels5 - 0.1, T.heels5 + 0.1, t) * (1 - sm(T.s6 - 0.1, T.s6 + 0.2, t)) * (0.45 + 0.15 * Math.sin(t * 7)); // round 2: was blinding
   heelGood.scale.setScalar(1 + 0.4 * flash(t, T.heels5));
   // s6: green toe line (knee over the foot), green line along the arm beside the ear
   const tG = sm(T.knees6 - 0.1, T.knees6 + 0.15, t) * (1 - sm(T.s7 - 0.1, T.s7 + 0.2, t));
