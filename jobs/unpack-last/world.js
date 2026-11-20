@@ -92,7 +92,7 @@ const FROM_BED = V3(0.15, 0.75, -1.1), FROM_BAG = V3(-1.6, 0.8, 2.35);
 
 // ---------- the guest ----------
 const P = human({ hex: 0x3d7bff });
-const STOP1 = [0.8, -0.55], DOOR_IN = [-1.9, 1.95], BAG_SPOT = [-0.7, 1.9], SWEEP = [0.9, -0.9], DRESS = [0.7, 1.9];
+const STOP1 = [0.8, -0.55], DOOR_IN = [-1.9, 1.95], BAG_SPOT = [-0.7, 1.9], SWEEP = [1.4, -1.8], DRESS = [0.7, 1.9];
 
 // ---------- text ----------
 title("NEVER UNPACK FIRST");
@@ -112,11 +112,11 @@ endCard([["BAG BY THE DOOR", 1], ["CHECK, THEN UNPACK", 1]]);
 const st = (a, b = a) => [[0, a], [3, b]];
 const SH = [
   // s1: wide of the bed from the front-right, the guest walks in and drops the case
-  { at: 0, K: [[0, [1.9, 2.0, 2.4, -0.1, 0.7, -1.6, 54]], [2.4, [1.6, 1.9, 2.0, -0.1, 0.7, -1.6, 52]]] },
+  { at: 0, K: [[0, [-1.7, 2.0, 2.2, 0.1, 0.6, -1.5, 54]], [2.4, [-1.5, 1.9, 1.9, 0.1, 0.6, -1.5, 52]]] }, // (r1: from the right the guest walked into the lens)
   // s2: high view of the mess
   { at: T.s2, K: st([0.6, 2.9, 1.2, -0.1, 0.3, -1.3, 54], [0.5, 2.75, 0.9, -0.1, 0.3, -1.3, 52]) },
   // s3: close on the clock
-  { at: T.s3, K: st([-0.45, 1.15, 1.35, -0.75, 0.93, FZ - 0.3, 38], [-0.5, 1.12, 1.55, -0.75, 0.93, FZ - 0.3, 34]) },
+  { at: T.s3, K: st([-0.25, 1.3, 0.55, -0.75, 0.95, FZ - 0.3, 42], [-0.3, 1.28, 0.75, -0.75, 0.95, FZ - 0.3, 40]) }, // (r1: too tight, ring covered the caption)
   // s3 "leave": from the back-right corner, he heads for the door through the mess
   { at: T.leave - 0.15, K: st([2.0, 1.9, -1.2, -1.4, 0.7, 1.8, 54], [1.85, 1.85, -1.0, -1.4, 0.7, 1.8, 52]) },
   // s4: the bag by the door
@@ -124,7 +124,7 @@ const SH = [
   // s5: high wide, bed + bathroom door
   { at: T.s5, K: st([2.3, 2.5, 1.9, -0.8, 0.8, -1.5, 58], [2.1, 2.4, 1.6, -0.8, 0.8, -1.5, 56]) },
   // s5 "anything": the front wall, clock lens and vent
-  { at: T.anything - 0.05, K: st([0.05, 1.5, -0.5, 0.05, 1.5, FZ, 56], [0.05, 1.5, -0.3, 0.05, 1.5, FZ, 54]) },
+  { at: T.anything - 0.05, K: st([0.05, 1.55, -1.5, 0.05, 1.55, FZ, 56], [0.05, 1.55, -1.3, 0.05, 1.55, FZ, 54]) }, // (r1: clock and vent cut off at the edges)
   // s6: back-right corner toward the door and the dresser
   { at: T.s6, K: st([2.0, 1.8, -1.0, -0.6, 0.9, 2.4, 52], [1.85, 1.75, -0.85, -0.6, 0.9, 2.4, 50]) },
   // s7-s8: calm wide of the bed
@@ -144,12 +144,12 @@ run("unpack-last", (t) => {
     const w = walkPath(STOP1, DOOR_IN, T.leave - 0.1, T.s4 + 0.2, t);
     pp = t < T.leave - 0.1 ? { x: STOP1[0], z: STOP1[1], h: face(STOP1, [CLK.x, CLK.z]), point: sm(T.something, T.something + 0.25, t) } : w;
   } else if (t < T.s5) {
-    pp = { x: BAG_SPOT[0], z: BAG_SPOT[1], h: face(BAG_SPOT, [-1.6, 2.35]), point: sm(T.bag - 0.1, T.bag + 0.15, t) };
+    pp = { x: BAG_SPOT[0], z: BAG_SPOT[1], h: face(BAG_SPOT, [-1.6, 2.35]) }; // (r1: the pointing arm poked into the frame)
   } else if (t < T.s6) {
     const w = walkPath(BAG_SPOT, SWEEP, T.s5 + 0.05, T.bathroom + 0.1, t);
     pp = t < T.bathroom + 0.1 ? { ...w, phone: 0.0 } : { x: SWEEP[0], z: SWEEP[1], h: face(SWEEP, [0, FZ]), point: sm(T.lens - 0.2, T.lens + 0.1, t) };
   } else {
-    const w = walkPath(SWEEP, DRESS, T.s6 + 0.05, T.unpack6, t);
+    const w = { x: DRESS[0], z: DRESS[1], h: face(DRESS, [0.35, FZ]), walk: 0 }; // (r1: walking from SWEEP his head filled the lens)
     pp = { ...w, cheer: 0.5 * sm(T.clear - 0.1, T.clear + 0.15, t) * (1 - sm(T.clear + 0.3, T.clear + 0.5, t)) };
     if (t >= T.unpack6) pp.h = face(DRESS, [0.35, FZ]);
   }
@@ -157,7 +157,7 @@ run("unpack-last", (t) => {
 
   // ---- suitcases ----
   flat.visible = wrong; stand.visible = !wrong;
-  lid.rotation.x = -1.9 * sm(T.unpack1 - 0.1, T.unpack1 + 0.15, t);
+  lid.rotation.x = -2.9 * /* r1: half-open lid hid the mess; now lies flat behind */ sm(T.unpack1 - 0.1, T.unpack1 + 0.15, t);
 
   // ---- his things: burst onto the bed and floor (s1-s3), hidden in the bag (s4-s5), neat stacks (s6+) ----
   items.forEach((o, i) => {
