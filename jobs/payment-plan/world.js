@@ -26,7 +26,7 @@ const SH = [
 
 run("payment-plan", (t) => {
   const wrong = t < s("s4");
-  I.set(t, { amount: wrong ? "$6,200" : "$150 / MO", stamp: wrong ? "PAID BY CARD" : "IN WRITING", stampHex: wrong ? RED : GREEN, tear: 0, cheer: wrong ? 0 : 1 });
+  I.set(t, { amount: wrong ? "$6,200" : "$150 / MO", stamp: wrong ? "DUE NOW" : "IN WRITING", stampHex: wrong ? RED : GREEN, tear: 0, cheer: wrong ? 0 : 1 });
   E.set(t, { label: "INTEREST", hex: RED, slump: 0.7, type: 0.2, p: ((t - s("s2")) % 5) / 5 });
   Ph.set(t, { phone: 1 });
   M.set(t, { a: { nod: 1 }, b: { nod: 1 } });
