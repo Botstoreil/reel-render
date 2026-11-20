@@ -1,0 +1,8 @@
+s1|Just checked in? Never unpack before you check the room.
+s2|Once your things are everywhere, a room is much harder to check.
+s3|And if you find something, you want to leave fast.
+s4|Leave your bag by the door.
+s5|Do one slow sweep: bed, bathroom, then anything with a lens or a hole.
+s6|All clear? Now unpack and enjoy your stay.
+s7|Bag by the door. Check, then unpack.
+s8|Download Hidden Cam. The link is in our bio.
