@@ -50,7 +50,8 @@ const Tdft = g("s6", "drifting"), Tpull = g("s6", "pull"), Trest = g("s6", "rest
 const vC = (t) => (t < Tpull + 0.1 ? 9 : 9 * Math.max(0, 1 - (t - Tpull - 0.1) / (Trest + 0.5 - Tpull - 0.1)));
 const DCc = dist(vC, T6, END);
 const C0 = midLamp(480 + DCc(END)) - DCc(END), sC = C0 + DCc(END);
-const drift = (t) => LANE + 1.0 * Math.sin((2 * Math.PI * (t - T6)) / 1.2) * sm(T6 + 0.1, Tdft + 0.2, t);
+// round 2: amplitude 1.0 / period 1.2 s leaned the bike ~70 deg (looked like it was lying down); now ~25 deg
+const drift = (t) => LANE + 0.45 * Math.sin((2 * Math.PI * (t - T6)) / 2.0) * sm(T6 + 0.1, Tdft + 0.2, t);
 const xC = (t) => drift(t) + (REST - drift(t)) * sm(Tpull - 0.15, Trest + 0.25, t);
 const fnC = (u) => SP(C0 + DCc(u), xC(u));
 const restC = patch(2.6, 5.5, GREEN, 0.9); restC.position.set(REST + 0.4, 0.03, -sC);
@@ -92,7 +93,8 @@ const SH = [
   // hook: behind the tired rider at night, the car ahead
   { at: 0, f: fA1, noRot: 1, K: [[0, [1.6, 3.0, 7.5, 0, 0.9, -10, 50]], [S.s2[0], [1.4, 3.4, 7.0, 0, 0.9, -10, 50]]] },
   // s2: high left three-quarter, the car brakes, the gap shrinks
-  { at: S.s2[0], f: fA1, noRot: 1, K: [[0, [-3.5, 4.2, 5.5, 0, 0.6, -5, 50]], [1.2, [-3.8, 4.0, 4.6, 0, 0.6, -5, 50]]] },
+  // (round 1: from x -3.5 the bike sat half out of frame on the right)
+  { at: S.s2[0], f: fA1, noRot: 1, K: [[0, [-2.0, 4.0, 6.0, 0.3, 0.6, -4, 50]], [1.2, [-2.2, 3.9, 5.4, 0.3, 0.6, -4, 50]]] },
   // late brake: high behind-right, bike stops right on the car's bumper
   { at: Tmiss, f: fA1, noRot: 1, K: [[0, [2.5, 5.5, 5.0, 0, 0.5, -4, 50]], [1.5, [2.2, 5.2, 4.4, 0, 0.5, -4, 50]]] },
   // s3: high behind, the road edge on the right
@@ -151,7 +153,7 @@ run("ride-tired", (t) => {
     const k = sm(Tget + 0.05, Tget + 0.45, t), up = sm(Tstr - 0.1, Tstr + 0.3, t) * (1 - sm(S.s5[0] - 0.15, S.s5[0] + 0.1, t));
     const drinkA = sm(Tdr - 0.1, Tdr + 0.25, t) * (1 - sm(Teat - 0.05, Teat + 0.2, t) * 0.5);
     const eatA = sm(Teat - 0.1, Teat + 0.25, t);
-    pose(P, { x: REST + 0.95 * k, z: -sB + 0.3, h: 0, armR: Math.max(ARM.up * up, 2.2 * drinkA), armL: Math.max(ARM.up * up, 1.4 * eatA), hex: GREEN });
+    pose(P, { x: REST + 0.95 * k, z: -sB + 0.3, h: 0, armR: Math.max(ARM.up * up, 1.95 * drinkA), armL: Math.max(ARM.up * up, 1.4 * eatA), hex: GREEN });
     bottle.visible = t > S.s5[0] - 0.05; apple.visible = t > Teat - 0.1;
   } else if (offC) {
     pose(P, { x: REST + 0.95 * sm(Trest + 0.55, Trest + 0.95, t), z: -sC + 0.3, h: Math.PI * 0.85, hex: GREEN });
