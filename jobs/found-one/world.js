@@ -114,9 +114,10 @@ const SH = [
   { at: T.s3, K: st([-1.3, 1.75, 0.9, 1.3, 1.2, -2.1, 48], [-1.1, 1.7, 0.6, 1.3, 1.2, -2.0, 48]) },
   // s4: camera back on the shelf; over the guest's shoulder, then close on the camera for the photos
   // round 2: from the left side, so the guest's back no longer fills the frame and hides the camera
-  { at: T.s4, K: st([-1.5, 1.65, -0.9, -0.15, 1.3, -2.5, 44], [-1.4, 1.62, -1.05, -0.15, 1.3, -2.5, 44]) },
-  { at: T.photos - 0.05, K: st([-1.1, 1.5, -1.5, -0.3, 1.3, -2.6, 40], [-1.0, 1.48, -1.6, -0.3, 1.3, -2.6, 38]) },
-  { at: T.where - 0.1, K: st([-1.4, 1.7, -0.6, -0.2, 1.15, -2.5, 46], [-1.3, 1.68, -0.75, -0.2, 1.15, -2.5, 46]) },
+  // round 3: aim further left, the camera sat half outside the left edge
+  { at: T.s4, K: st([-1.3, 1.6, -1.0, -0.5, 1.3, -2.7, 42], [-1.2, 1.58, -1.15, -0.5, 1.3, -2.7, 42]) },
+  { at: T.photos - 0.05, K: st([-1.0, 1.45, -1.6, -0.5, 1.3, -2.75, 38], [-0.95, 1.44, -1.7, -0.5, 1.3, -2.75, 36]) },
+  { at: T.where - 0.1, K: st([-1.3, 1.65, -0.7, -0.4, 1.15, -2.6, 46], [-1.2, 1.63, -0.85, -0.4, 1.15, -2.6, 46]) },
   // s5: wide, guest walks to the door
   { at: T.s5, K: st([-1.3, 1.9, 1.6, 1.2, 1.1, -2.2, 50], [-1.0, 1.85, 1.2, 1.4, 1.1, -2.3, 50]) },
   // s6: hallway, the green door
