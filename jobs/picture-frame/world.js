@@ -67,9 +67,9 @@ const CHG = V3(0.15, DY + 0.25, FZ - 0.04);
 scene.add(box(0.16, 0.2, 0.01, CHG.x, CHG.y, FZ - 0.005, mat(0xe8e4ff, 0.2), false)); // socket plate
 scene.add(box(0.1, 0.1, 0.07, CHG.x, CHG.y, CHG.z - 0.03, mat(0xffffff, 0.35), false)); // charger cube
 
-function ringOf(hex, r, at) {
-  const m = new THREE.MeshBasicMaterial({ color: new THREE.Color(hex).multiplyScalar(2), toneMapped: false, transparent: true, opacity: 0, depthTest: false });
-  const o = new THREE.Mesh(new THREE.TorusGeometry(r, 0.01, 8, 40), m); o.renderOrder = 21; o.position.copy(at); scene.add(o); return o;
+function ringOf(hex, r, at, tube = 0.01, k = 2) {
+  const m = new THREE.MeshBasicMaterial({ color: new THREE.Color(hex).multiplyScalar(k), toneMapped: false, transparent: true, opacity: 0, depthTest: false });
+  const o = new THREE.Mesh(new THREE.TorusGeometry(r, tube, 8, 40), m); o.renderOrder = 21; o.position.copy(at); scene.add(o); return o;
 }
 const R2 = {
   frames: ringOf(RED, 0.22, V3(sf.position.x, DY + 0.15, DZ - 0.08)),
@@ -77,8 +77,8 @@ const R2 = {
   chargers: ringOf(RED, 0.16, V3(CHG.x, CHG.y, CHG.z - 0.1)),
 };
 const rFrameBad = ringOf(RED, 0.36, V3(0, 0, 0));
-const rHole = ringOf(VIOLET, 0.05, V3(0, 0, 0));
-const rDot = ringOf(GREEN, 0.05, V3(0, 0, 0));
+const rHole = ringOf(VIOLET, 0.035, V3(0, 0, 0), 0.004, 1);
+const rDot = ringOf(GREEN, 0.035, V3(0, 0, 0), 0.004, 1);
 const rDown = ringOf(GREEN, 0.34, V3(FR.x, FR.y + 0.06, FR.z - 0.1)); rDown.rotation.x = Math.PI / 2;
 
 // red sight lines from the frame to the bed (s3)
@@ -115,13 +115,13 @@ const SH = [
   // s1: from the bed, the frame on the shelf looks back
   { at: 0, K: [[0, [0.4, 1.25, -1.3, FC[0], FC[1], FC[2], 40]], [2.3, [0.6, 1.3, -0.6, FC[0], FC[1], FC[2], 36]]] },
   // s2: close on the small frame, then the lineup
-  { at: T.s2, K: st([-0.95, 1.05, 1.65, -0.95, 0.95, DZ, 34], [-0.9, 1.05, 1.8, -0.95, 0.95, DZ, 32]) },
-  { at: T.clocks - 0.1, K: st([-0.4, 1.25, 0.45, -0.4, 0.95, DZ, 50], [-0.35, 1.25, 0.65, -0.4, 0.95, DZ, 48]) },
+  { at: T.s2, K: st([-0.85, 1.15, 1.0, -0.95, 0.92, DZ, 40], [-0.82, 1.15, 1.15, -0.95, 0.92, DZ, 38]) },
+  { at: T.clocks - 0.1, K: st([-0.4, 1.3, -0.6, -0.4, 0.95, DZ, 52], [-0.38, 1.3, -0.4, -0.4, 0.95, DZ, 50]) },
   // s3: from behind the bed, the frame up ahead swings, red lines to the bed
   { at: T.s3, K: st([0.4, 2.4, -2.5, 1.0, 1.0, 1.8, 50], [0.45, 2.35, -2.3, 1.0, 1.0, 1.8, 48]) },
   // s4: close on the frame, then closer on the picture
-  { at: T.s4, K: st([FC[0], FC[1] + 0.05, 1.55, FC[0], FC[1], FC[2], 30], [FC[0] + 0.03, FC[1] + 0.05, 1.75, FC[0], FC[1], FC[2], 28]) },
-  { at: T.glass - 0.1, K: st([FC[0] + 0.12, FC[1] + 0.1, 2.0, FC[0] + 0.05, FC[1] + 0.05, FC[2], 26], [FC[0] + 0.1, FC[1] + 0.1, 2.1, FC[0] + 0.05, FC[1] + 0.05, FC[2], 24]) },
+  { at: T.s4, K: st([FC[0], FC[1] + 0.05, 1.2, FC[0], FC[1], FC[2], 30], [FC[0] + 0.03, FC[1] + 0.05, 1.35, FC[0], FC[1], FC[2], 28]) },
+  { at: T.glass - 0.1, K: st([FC[0] + 0.1, FC[1] + 0.08, 1.6, FC[0] + 0.05, FC[1] + 0.05, FC[2], 28], [FC[0] + 0.08, FC[1] + 0.08, 1.72, FC[0] + 0.05, FC[1] + 0.05, FC[2], 26]) },
   // s5: over the guest's shoulder at the shelf, then close on the glint
   { at: T.s5, K: st([1.65, 1.75, -2.45, FC[0], FC[1], FC[2], 40], [1.6, 1.72, -2.25, FC[0], FC[1], FC[2], 38]) },
   { at: T.glint - 0.15, K: st([FC[0] + 0.05, FC[1] + 0.05, 1.7, FC[0] + 0.05, FC[1] + 0.05, FC[2], 28], [FC[0] + 0.05, FC[1] + 0.05, 1.85, FC[0] + 0.05, FC[1] + 0.05, FC[2], 26]) },
