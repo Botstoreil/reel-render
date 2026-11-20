@@ -1,0 +1,3 @@
+{"type":"words","model":"small.en","words":[{"text":"Have","start":0,"end":0.218},{"text":"insurance","start":0.218,"end":0.709},{"text":"and","start":0.709,"end":0.873},{"text":"got","start":0.873,"end":1.036},{"text":"a","start":1.036,"end":1.091},{"text":"hospital","start":1.091,"end":1.527},{"text":"bill.","start":1.527,"end":1.8}],"through":1.8}
+{"type":"words","model":"small.en","words":[{"text":"Never","start":1.8,"end":2.097},{"text":"pay","start":2.097,"end":2.275},{"text":"before","start":2.275,"end":2.632},{"text":"your","start":2.632,"end":2.869},{"text":"insurer","start":2.869,"end":3.285},{"text":"answers.","start":3.285,"end":3.76}],"through":3.76}
+{"type":"words","model":"small.en","words":[],"through":3.8638125}

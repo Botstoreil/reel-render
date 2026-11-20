@@ -1,0 +1,8 @@
+s1|Have insurance and got a hospital bill? Never pay before your insurer answers.
+s2|Hospitals sometimes bill you before the insurance claim is finished.
+s3|Pay then, and you may pay more than you owe.
+s4|Instead, wait for the Explanation of Benefits from your insurer.
+s5|It shows what the plan paid, and what you owe.
+s6|If the bill asks for more than that number, call and ask why.
+s7|Match the bill to the Explanation of Benefits. Then pay.
+s8|Save this for the next bill you get.
