@@ -41,25 +41,25 @@ const FZ = 2.75;
 scene.add(box(10, 3.2, 0.1, 0, 1.6, FZ + 0.05, mat(0x15123f, 0.1), false));
 scene.add(box(1.8, 0.8, 0.45, -0.2, 0.4, FZ - 0.25, mat(0x4a40c0))); // dresser
 // TV on the wall
-const TV = V3(0.3, 1.55, FZ - 0.04);
-scene.add(box(1.3, 0.75, 0.05, TV.x, TV.y, TV.z, mat(0x0c0a24, 0.05), false), box(1.2, 0.66, 0.01, TV.x, TV.y, TV.z - 0.03, glow(0x2a2470, 0.6), false));
+const TV = V3(0.1, 1.55, FZ - 0.04);
+scene.add(box(1.0, 0.6, 0.05, TV.x, TV.y, TV.z, mat(0x0c0a24, 0.05), false), box(0.92, 0.52, 0.01, TV.x, TV.y, TV.z - 0.03, glow(0x3a34a0, 0.9), false));
 // clock on the dresser (the real camera: tiny lens under the face)
-const CLK = V3(-0.75, 0.93, FZ - 0.3);
+const CLK = V3(-0.65, 0.93, FZ - 0.3);
 const clk = new THREE.Group(); clk.position.copy(CLK); scene.add(clk);
 clk.add(box(0.3, 0.26, 0.1, 0, 0, 0, mat(0x2a2470, 0.15), false));
 clk.add(box(0.24, 0.12, 0.005, 0, 0.03, -0.052, glow(0x7b5cff, 1.4), false)); // digital face
 const lensM = new THREE.MeshBasicMaterial({ color: new THREE.Color(0x8fa0ff).multiplyScalar(1.2), toneMapped: false });
 const lens = new THREE.Mesh(new THREE.SphereGeometry(0.012, 12, 8), lensM); lens.position.set(0, -0.08, -0.052); clk.add(lens);
 // picture frame (turns to the wall in s6)
-const FRM = V3(-1.9, 1.6, FZ - 0.04);
+const FRM = V3(-1.2, 1.45, FZ - 0.04);
 const frm = new THREE.Group(); frm.position.copy(FRM); scene.add(frm);
 frm.add(box(0.6, 0.75, 0.04, 0, 0, 0, mat(0xd8b46a, 0.25), false), box(0.5, 0.65, 0.005, 0, 0, -0.022, mat(0x3d7bff, 0.35), false));
 // air vent (high right)
-const VNT = V3(1.8, 2.5, FZ - 0.02);
+const VNT = V3(1.25, 2.45, FZ - 0.02);
 scene.add(box(0.6, 0.3, 0.03, VNT.x, VNT.y, VNT.z, mat(0x8a86b0, 0.2), false));
 for (let i = -2; i <= 2; i++) scene.add(box(0.55, 0.02, 0.01, VNT.x, VNT.y + i * 0.055, VNT.z - 0.02, mat(0x1a1830, 0.05), false));
 // smoke detector on the ceiling near the front wall
-const SMK = V3(0.9, 3.0, 2.1);
+const SMK = V3(0.1, 3.0, 2.3);
 const smkM = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.05, 24), mat(0xe8e4ff, 0.3)); smkM.position.copy(SMK); scene.add(smkM);
 scene.add(box(4, 0.05, 2.4, 0.5, 3.05, 1.6, mat(0x15123f, 0.05), false)); // a strip of ceiling to hang it from
 
@@ -67,16 +67,18 @@ function ringOf(hex, r, at) {
   const m = new THREE.MeshBasicMaterial({ color: new THREE.Color(hex).multiplyScalar(2), toneMapped: false, transparent: true, opacity: 0, depthTest: false });
   const o = new THREE.Mesh(new THREE.TorusGeometry(r, 0.01, 8, 40), m); o.renderOrder = 21; o.position.copy(at); scene.add(o); return o;
 }
-const rClkBad = ringOf(RED, 0.22, V3(CLK.x, CLK.y, CLK.z - 0.08));
+const rClkBad = ringOf(RED, 0.17, V3(CLK.x, CLK.y, CLK.z - 0.08));
 const R = {
   smoke: ringOf(VIOLET, 0.24, V3(SMK.x, SMK.y - 0.06, SMK.z)),
   clocks: ringOf(VIOLET, 0.22, V3(CLK.x, CLK.y, CLK.z - 0.08)),
-  tvs: ringOf(VIOLET, 0.5, V3(TV.x, TV.y, TV.z - 0.08)),
-  frames: ringOf(VIOLET, 0.45, V3(FRM.x, FRM.y, FRM.z - 0.08)),
+  tvs: ringOf(VIOLET, 0.42, V3(TV.x, TV.y, TV.z - 0.08)),
+  frames: ringOf(VIOLET, 0.42, V3(FRM.x, FRM.y, FRM.z - 0.08)),
   air: ringOf(VIOLET, 0.36, V3(VNT.x, VNT.y, VNT.z - 0.08)),
 };
 R.smoke.rotation.x = Math.PI / 2;
-const rClkOk = ringOf(GREEN, 0.22, V3(CLK.x, CLK.y, CLK.z - 0.08));
+const rClkOk = ringOf(GREEN, 0.27, V3(CLK.x, CLK.y, CLK.z - 0.12));
+// where the red lines from the objects land in s3 (just below and in front of the viewer)
+const EYE = V3(0.75, 1.25, -0.6);
 
 // sight lines: clock -> bed (s2), objects -> guest (s3)
 const BED_PTS = [V3(-0.35, 0.65, -2.6), V3(0.2, 0.6, -1.8), V3(-0.3, 0.6, -1.1)];
@@ -115,22 +117,29 @@ endCard([["WHERE YOU SLEEP", 1], ["CHECK WHAT SEES", 1]]);
 
 // ---------- shots: [cx, cy, cz, lookx, looky, lookz, fov] ----------
 const st = (a, b = a) => [[0, a], [3, b]];
-const OS = [1.75, 1.75, -2.55, 0.0, 1.55, FZ, 50]; // over the guest's shoulder at the front wall
+const CX = CLK.x, CY = CLK.y, CZ = CLK.z;
+// the front wall from the middle of the room (no head in frame): frame, clock and TV all inside the safe zone
+const WALL = [-0.15, 1.5, -1.5, -0.3, 1.35, FZ, 56], WALL2 = [-0.2, 1.48, -1.25, -0.3, 1.35, FZ, 55];
 const SH = [
   // s1: wide of the bed from the front wall
   { at: 0, K: [[0, [1.6, 2.1, 2.3, -0.2, 0.7, -1.9, 52]], [2.4, [1.3, 1.95, 1.8, -0.2, 0.7, -1.9, 50]]] },
   // s2: close on the clock on the dresser
-  { at: T.s2, K: st([-0.45, 1.15, 1.35, -0.75, 0.93, FZ - 0.3, 38], [-0.5, 1.12, 1.55, -0.75, 0.93, FZ - 0.3, 34]) },
+  { at: T.s2, K: st([CX + 0.3, 1.15, 1.35, CX, CY, CZ, 38], [CX + 0.25, 1.12, 1.55, CX, CY, CZ, 34]) },
   // s2 "so": the clock's view of the bed
-  { at: T.so - 0.1, K: st([-0.62, 1.22, 2.64, -0.1, 0.55, -1.9, 50], [-0.6, 1.2, 2.58, -0.1, 0.55, -1.9, 48]) },
-  // s3-s4: over the guest's shoulder at the front wall
-  { at: T.s3, K: st(OS, [1.7, 1.72, -2.35, 0.0, 1.55, FZ, 50]) },
-  { at: T.s4, K: st([1.7, 1.72, -2.35, -0.1, 1.65, FZ, 52], [1.6, 1.7, -2.2, -0.1, 1.65, FZ, 52]) },
-  // s5: lights off, the flashlight sweep, then close on the clock glint
-  { at: T.s5, K: st([1.6, 1.7, -2.2, -0.3, 1.4, FZ, 50], [1.5, 1.6, -1.9, -0.5, 1.2, FZ, 48]) },
-  { at: T.flashlight + 0.1, K: st([-0.3, 1.1, 1.4, -0.75, 0.93, FZ - 0.3, 36], [-0.35, 1.08, 1.55, -0.75, 0.93, FZ - 0.3, 34]) },
-  // s6: the dresser and the frame
-  { at: T.s6, K: st([-0.2, 1.5, 0.6, -1.3, 1.2, FZ, 48], [-0.3, 1.48, 0.8, -1.3, 1.2, FZ, 46]) },
+  { at: T.so - 0.1, K: st([CX + 0.13, 1.22, 2.64, -0.1, 0.55, -1.9, 50], [CX + 0.15, 1.2, 2.58, -0.1, 0.55, -1.9, 48]) },
+  // s3: the guest by the bed, seen from the dresser side, looking out
+  { at: T.s3, K: st([-0.3, 1.75, 1.3, 1.0, 1.1, -1.5, 44], [-0.2, 1.72, 1.1, 1.0, 1.1, -1.5, 42]) },
+  // s3 "points": the guest's view of the front wall; red lines come back at the viewer
+  { at: T.points - 0.1, K: st([0.9, 1.6, -1.3, -0.3, 1.45, FZ, 60], [0.85, 1.58, -1.1, -0.3, 1.45, FZ, 58]) },
+  // s4 one shot per thing named: smoke detector (ceiling), then clock + TV + frame, then the vent
+  { at: T.s4 - 0.05, K: st([0.3, 1.9, 0.7, SMK.x, 2.95, SMK.z, 46], [0.28, 1.95, 0.85, SMK.x, 2.95, SMK.z, 44]) },
+  { at: T.clocks - 0.05, K: st(WALL, WALL2) },
+  { at: T.air - 0.05, K: st([0.75, 2.0, 0.6, VNT.x, 2.35, FZ, 46], [0.78, 2.02, 0.75, VNT.x, 2.35, FZ, 44]) },
+  // s5: lights off on the wall, the flashlight sweep, then close on the clock glint
+  { at: T.s5, K: st(WALL2, [-0.25, 1.45, -1.0, -0.35, 1.3, FZ, 54]) },
+  { at: T.flashlight + 0.1, K: st([CX + 0.45, 1.1, 1.4, CX, CY, CZ, 36], [CX + 0.4, 1.08, 1.55, CX, CY, CZ, 34]) },
+  // s6: the dresser and the frame (camera to the right so the cloth and the frame stay in frame and under the caption)
+  { at: T.s6, K: st([0.1, 1.38, 0.75, -0.95, 1.3, FZ, 56], [0.05, 1.37, 0.9, -0.95, 1.3, FZ, 54]) },
   // s7-s8: calm wide of the bed
   { at: T.s7, calm: 1, K: [[0, [1.6, 2.1, 2.3, -0.2, 0.9, -1.9, 52]], [5, [1.5, 2.2, 2.4, -0.2, 0.9, -1.9, 52]]] },
 ];
@@ -140,16 +149,16 @@ run("face-the-bed", (t) => {
   // ---- guest by the bed, looking out toward the front wall from s3 ----
   const hOut = face(BS, [0, FZ]);
   const phU = sm(T.flashlight - 0.5, T.flashlight - 0.1, t) * (1 - sm(T.s6 + 0.3, T.s6 + 0.6, t));
-  P.set({ x: BS[0], z: BS[1], h: hOut, walk: 0, t, vis: t >= T.s3 - 0.1 && t < T.s7, phone: phU, point: sm(T.points - 0.2, T.points + 0.1, t) * (1 - sm(T.s4, T.s4 + 0.3, t)) });
+  P.set({ x: BS[0], z: BS[1], h: hOut, walk: 0, t, vis: t >= T.s3 - 0.1 && t < T.points - 0.1, phone: phU, point: sm(T.points - 0.2, T.points + 0.1, t) * (1 - sm(T.s4, T.s4 + 0.3, t)) });
 
   // ---- s2: red ring on the clock, red lines from the clock to the bed ----
-  rClkBad.material.opacity = sm(T.camera - 0.05, T.camera + 0.1, t) * (1 - sm(T.s3 - 0.1, T.s3, t)) * pul; rClkBad.scale.setScalar(1 + 0.4 * flash(t, T.camera));
+  rClkBad.material.opacity = sm(T.camera - 0.05, T.camera + 0.1, t) * (1 - sm(T.so - 0.2, T.so - 0.1, t)) * pul; rClkBad.scale.setScalar(1 + 0.15 * flash(t, T.camera));
   const sA = sm(T.so - 0.1, T.so + 0.2, t) * (1 - sm(T.s3 - 0.1, T.s3 + 0.1, t));
   sight.forEach((b, i) => b.set(CLK, BED_PTS[i], sA * (0.75 + 0.25 * Math.sin(t * 9 + i))));
   bedBad.set(sm(T.see - 0.1, T.see + 0.1, t) * (1 - sm(T.s3 - 0.1, T.s3 + 0.1, t)));
 
   // ---- s3: red lines from the objects back to the guest's head on "points" ----
-  const head = P.top ? P.top(0) : V3(BS[0], 1.6, BS[1]);
+  const head = EYE;
   const bA = sm(T.points - 0.1, T.back, t) * (1 - sm(T.s4 - 0.1, T.s4 + 0.1, t));
   back.forEach((b, i) => b.set(SRC[i], head, bA * (0.7 + 0.3 * Math.sin(t * 9 + i))));
 
@@ -162,8 +171,8 @@ run("face-the-bed", (t) => {
 
   // ---- s5: lights off, flashlight sweep frame -> TV -> clock, the clock lens glints ----
   const dark = sm(T.lights - 0.1, T.lights + 0.2, t) * (1 - sm(T.s6 - 0.2, T.s6 + 0.1, t));
-  for (const [l, i0] of LIGHTS) l.intensity = i0 * (1 - 0.55 * dark);
-  lamp.color.set(0xfff0d8).multiplyScalar(0.8 * (1 - 0.9 * dark));
+  for (const [l, i0] of LIGHTS) l.intensity = i0 * (1 - 0.3 * dark);
+  lamp.color.set(0xfff0d8).multiplyScalar(0.8 * (1 - 0.6 * dark));
   P.hands[1].updateWorldMatrix(true, false); P.hands[1].getWorldPosition(hp);
   const u = sm(T.flashlight - 0.3, T.flashlight + 0.4, t);
   tg.copy(FRM).lerp(TV, Math.min(1, u * 2)); if (u > 0.5) tg.copy(TV).lerp(CLK, (u - 0.5) * 2);
