@@ -16,12 +16,12 @@ const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
 
 // ---------- timing (every word copied from words.json) ----------
 const T = {
-  s1: S.s1[0], hard: g("s1", "hard"), hold: g("s1", "hold"), breath1: g("s1", "breath"),
+  s1: S.s1[0], hard: g("s1", "hard"), hold: g("s1", "hold", 2), breath1: g("s1", "breath"),
   s2: S.s2[0], tightens: g("s2", "tightens"), shoulders: g("s2", "shoulders"), jaw: g("s2", "jaw"),
   s3: S.s3[0], tire: g("s3", "tire"), faster: g("s3", "faster"),
   s4: S.s4[0], slowly: g("s4", "slowly"), inW: g("s4", "in"), outW: g("s4", "out"), nose: g("s4", "nose"),
   s5: S.s5[0], exhale: g("s5", "exhale"), longer: g("s5", "longer"), inhale: g("s5", "inhale"),
-  s6: S.s6[0], ease: g("s6", "ease"), little: g("s6", "little"),
+  s6: S.s6[0], ease: g("s6", "ease", 2), little: g("s6", "little"),
   s7: S.s7[0], s8: S.s8[0],
 };
 
@@ -156,7 +156,7 @@ run("breath", (t) => {
 
   // s4-s6: green breath line out of the nose, as long as the exhale is far along
   const nA = sm(T.inW - 0.15, T.inW + 0.1, t) * (1 - sm(T.s7 - 0.1, T.s7 + 0.2, t));
-  A0.copy(HEAD).add(V3(0.05, -0.04, -0.12));
+  A0.copy(HEAD).add(V3(0.05, 0.05, -0.12));
   A1.copy(A0).add(V3(0, -0.06, -0.08 - 0.4 * (1 - b)));
   noseLine.set(A0, A1, nA * (0.8 + 0.2 * flash(t, T.longer)));
 
