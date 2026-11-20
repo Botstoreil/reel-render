@@ -94,9 +94,10 @@ const SH = [
   { at: T.s5, K: st([2.2, 3.4, 3.6, 0, 1.0, -1.0, 46], [2.0, 3.25, 3.35, 0, 1.0, -1.0, 46]) },
   // s6: wide three-quarter front, she talks and the middle student gets her block
   // (round 2: look point moved to -x so she is left of the like/share buttons)
-  { at: T.s6, K: st([3.5, 2.2, -4.3, -0.55, 0.5, -0.6, 46], [3.3, 2.1, -4.1, -0.55, 0.5, -0.6, 46]) },
+  // (round 3: further to -x, at -0.55 she still stood at the right edge)
+  { at: T.s6, K: st([3.5, 2.2, -4.3, -0.95, 0.5, -0.6, 46], [3.3, 2.1, -4.1, -0.95, 0.5, -0.6, 46]) },
   // s7-s8: calm high front, people low under the end card
-  { at: T.s7, calm: 1, K: [[0, [3.4, 3.4, -4.6, -0.45, 1.5, -0.8, 48]], [5, [3.7, 3.6, -5.0, -0.45, 1.55, -0.8, 48]]] },
+  { at: T.s7, calm: 1, K: [[0, [3.4, 3.4, -4.6, -0.9, 1.5, -0.8, 48]], [5, [3.7, 3.6, -5.0, -0.9, 1.55, -0.8, 48]]] },
 ];
 
 run("watch-the-room", (t) => {
