@@ -207,15 +207,15 @@ function frame(t) {
   if (id === "s2") {
     const a = sm(-0.05, 0.25, u);
     const l = back(at("s2", "lamps") - 0.15, at("s2", "lamps") + 0.2, u), c = back(at("s2", "chargers") - 0.15, at("s2", "chargers") + 0.2, u);
-    lampProp(200, 960, 1, a, l > 0.5 ? GREEN : VIOLET);
-    charger(470, 990, 0.9, a, c > 0.5 ? GREEN : VIOLET);
-    vent(790, 900, 260, 230, a, u > at("s2", "vent") - 0.1 ? RED : VIOLET);
-    stamp("v", 200, 690, l * 0.6, u > at("s2", "lamps") - 0.15 ? 1 : 0, GREEN);
-    stamp("v", 470, 690, c * 0.6, u > at("s2", "chargers") - 0.15 ? 1 : 0, GREEN);
-    // person walks right past the vent
+    lampProp(200, 820, 1, a, l > 0.5 ? GREEN : VIOLET);
+    charger(470, 850, 0.9, a, c > 0.5 ? GREEN : VIOLET);
+    vent(770, 780, 260, 230, a, u > at("s2", "vent") - 0.1 ? RED : VIOLET);
+    stamp("v", 200, 590, l * 0.6, u > at("s2", "lamps") - 0.15 ? 1 : 0, GREEN);
+    stamp("v", 470, 590, c * 0.6, u > at("s2", "chargers") - 0.15 ? 1 : 0, GREEN);
+    // person walks right past the vent (kept above the caption pill and left of the side buttons)
     const wk = sm(at("s2", "walk") - 0.1, at("s2", "vent") + 0.3, u);
-    walker(lerp(80, 1000, wk), 1270, 0.8, sm(at("s2", "walk") - 0.2, at("s2", "walk"), u), u * 9);
-    tag("MISSED", 790, 1060, RED, sm(at("s2", "vent") - 0.05, at("s2", "vent") + 0.2, u));
+    walker(lerp(90, 920, wk), 1120, 0.75, sm(at("s2", "walk") - 0.2, at("s2", "walk"), u), u * 9);
+    tag("MISSED", 770, 945, RED, sm(at("s2", "vent") - 0.05, at("s2", "vent") + 0.2, u));
   }
   if (id === "s3") {
     const sl = sm(at("s3", "between") - 0.1, at("s3", "slats"), u);
