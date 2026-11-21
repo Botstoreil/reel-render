@@ -43,7 +43,6 @@ function words(lines, color, cy, t0, a = 1, maxPx = 150, flashK = 0) {
       x.save(); x.translate(X + ws[i] / 2, Y + (1 - k) * 40); x.scale(s, s); x.globalAlpha = a * o;
       glow(color, 30 + 40 * flashK); x.fillStyle = flashK > 0.05 ? mix(color, WHITE, flashK * 0.8) : color;
       x.fillText(p, 0, 0);
-      noGlow(); x.lineWidth = 3; x.strokeStyle = "rgba(0,0,0,0.35)"; x.strokeText(p, 0, 0);
       x.restore();
       X += ws[i] + sp; wi++;
     });
@@ -197,11 +196,11 @@ function frame(t) {
   }
   if (id === "s2") {
     const a = sm(-0.05, 0.25, u), b = sm(at("s2", "normal") - 0.25, at("s2", "normal"), u);
-    [[300, "NORMAL", 0], [720, "SPY", 1]].forEach(([X, lab, i]) => {
+    [[285, "NORMAL", 0], [735, "SPY", 1]].forEach(([X, lab, i]) => {
       const sl = back(0.05 + i * 0.12, 0.45 + i * 0.12, u);
       x.save(); x.translate(X, 860); x.scale(sl, sl); x.translate(-X, -860);
-      mirror(X, 860, 340, 480, t + i, a);
-      x.save(); x.beginPath(); x.rect(X - 170, 620, 340, 480); x.clip();
+      mirror(X, 860, 310, 480, t + i, a);
+      x.save(); x.beginPath(); x.rect(X - 155, 620, 310, 480); x.clip();
       finger(X, lerp(1120, 900, sm(0.2, at("s2", "trick") + 0.35, u)), 0.62, a, undefined, sm(at("s2", "trick") + 0.3, at("s2", "trick") + 0.5, u));
       x.restore();
       x.restore();
@@ -223,7 +222,7 @@ function frame(t) {
     x.restore();
     if (sy < 1160) { x.save(); glow(RED, 40); x.fillStyle = RED; x.fillRect(CX - 262, sy - 5, 524, 10); x.restore(); }
     const k = sm(at("s3", "never") - 0.15, at("s3", "never") + 0.1, u);
-    x.save(); x.globalAlpha = k; finger(250, 1010, 0.45, 1); x.restore();
+    finger(250, 1010, 0.45, k);
     stamp("x", 250, 1050, back(at("s3", "never"), at("s3", "never") + 0.3, u) * 0.9, k, RED);
   }
   if (id === "s4") {
@@ -281,8 +280,7 @@ function frame(t) {
     const lit = sm(-0.1, 0.4, t - S.s7[0]);
     const gr = x.createRadialGradient(CX, 860, 0, CX, 860, 420); gr.addColorStop(0, `rgba(255,255,255,${0.35 * lit})`); gr.addColorStop(1, "rgba(255,255,255,0)");
     x.fillStyle = gr; x.fillRect(0, 300, 1080, 1100);
-    mirror(CX, 840, 520, 640, t, id === "s8" ? 0.35 : 0.7, GREEN);
-    if (id === "s7") phone(CX, 860, 0.9, 0.8, 0, 1);
+    if (id === "s7") { mirror(CX, 840, 520, 640, t, 0.7, GREEN); phone(CX, 860, 0.9, 0.8, 0, 1); }
   }
   x.restore();
 
