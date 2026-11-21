@@ -47,7 +47,6 @@ function words(lines, color, cy, t0, a = 1, maxPx = 150, flashK = 0) {
       x.save(); x.translate(X + ws[i] / 2, Y + (1 - k) * 40); x.scale(s, s); x.globalAlpha = a * o;
       glow(color, 30 + 40 * flashK); x.fillStyle = flashK > 0.05 ? mix(color, WHITE, flashK * 0.8) : color;
       x.fillText(p, 0, 0);
-      noGlow(); x.lineWidth = 3; x.strokeStyle = "rgba(0,0,0,0.35)"; x.strokeText(p, 0, 0);
       x.restore();
       X += ws[i] + sp; wi++;
     });
@@ -130,12 +129,12 @@ function check(X, Y, s, a, c = GREEN) {
   x.save(); x.globalAlpha = a; x.translate(X, Y); x.scale(s, s); x.lineCap = "round"; glow(c, 30); x.strokeStyle = c; x.lineWidth = 20;
   x.beginPath(); x.arc(0, 0, 70, 0, Math.PI * 2); x.stroke(); x.beginPath(); x.moveTo(-36, 4); x.lineTo(-10, 30); x.lineTo(38, -26); x.stroke(); x.restore();
 }
-// hand reaching from the left edge to a point
-function arm(tx, ty, a, c) {
+// a standing teacher on the floor at (TX, Y), right hand on (tx, ty)
+function arm(tx, ty, a, c, TX, Y, s) {
   if (a <= 0) return;
-  x.save(); x.globalAlpha = a; x.lineCap = "round"; glow(c, 20); x.strokeStyle = c; x.lineWidth = 40;
-  x.beginPath(); x.moveTo(-40, ty - 260); x.quadraticCurveTo(tx - 160, ty - 160, tx, ty); x.stroke();
-  x.fillStyle = c; x.beginPath(); x.ellipse(tx + 8, ty + 6, 40, 30, 0.6, 0, Math.PI * 2); x.fill(); x.restore();
+  const rx = (tx - TX) / s, ry = (ty - Y) / s;
+  const p = with_(P.stand, { eR: [rx * 0.5, (-335 + ry) / 2 - 20], hR: [rx, ry] });
+  person(TX, Y, p, s, c, { a });
 }
 
 function frame(t) {
@@ -166,7 +165,7 @@ function frame(t) {
     mat(600, 1080, 520);
     const st = person(600, 1080, sp, 1.35, VIOLET);
     const [hx, hy] = st("hip");
-    arm(hx - 10, hy - 30, sm(0, 0.3, u), RED);
+    arm(hx - 10, hy - 20, 1, RED, 880, 1080, 1.0);
     const [ex, ey] = st("head");
     const f = sm(at("s2", "different") - 0.15, at("s2", "different") + 0.1, u);
     burst(ex, ey, RED, f, u);
@@ -178,7 +177,7 @@ function frame(t) {
     xs.forEach((X, i) => mat(X, 1060, 220, 1));
     const ps = xs.map((X, i) => person(X, 1060, P.dog, 0.55, i === 1 ? VIOLET : mix(VIOLET, "#080622", 0.3)));
     const [hx, hy] = ps[1]("hip");
-    arm(hx - 5, hy - 18, sm(0, 0.3, u) * 0.9, RED);
+    arm(hx - 5, hy - 10, 1, RED, 620, 1060, 0.55);
     const [ex, ey] = ps[1]("head");
     const b = sm(at("s3", "won't") - 0.2, at("s3", "won't") + 0.1, u);
     bubble("NO", ex + 20, ey - 200, RED, b, ex, ey - 40, 70);
@@ -227,9 +226,9 @@ function frame(t) {
     if (lift > 0.05) { x.save(); x.globalAlpha = lift; glow(GREEN, 26); x.strokeStyle = GREEN; x.lineWidth = 12; x.lineCap = "round"; x.beginPath(); x.moveTo(hx + 90, hy + 110); x.lineTo(hx + 90, hy - 10); x.moveTo(hx + 60, hy + 20); x.lineTo(hx + 90, hy - 10); x.lineTo(hx + 120, hy + 20); x.stroke(); x.restore(); }
     tag("NO HAND NEEDED", 600, 1200, GREEN, sm(at("s6", "need") - 0.15, at("s6", "need") + 0.1, u), 42);
   }
-  if (id === "s7" || id === "s8") {
-    mat(CX, 1080, 300, 0.6, GREEN);
-    person(CX, 1080, P.sit, 0.9, GREEN, { closed: true, a: id === "s8" ? 0.3 : 0.6 });
+  if (id === "s7") {
+    mat(CX, 1130, 260, 0.6, GREEN);
+    person(CX, 1130, P.sit, 0.5, GREEN, { closed: true, a: 0.7 });
   }
   x.restore();
 
