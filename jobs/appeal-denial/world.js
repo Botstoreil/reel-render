@@ -19,7 +19,7 @@ const SH = [
   { at: s("s2"), cam: E.face }, { at: g("s2", "coding") - 0.15, cam: E.screen },
   { at: s("s3"), cam: I.close }, { at: g("s3", "insurer's") - 0.15, cam: I.wide },
   { at: s("s4"), cam: E.wide }, { at: g("s4", "reason") - 0.15, cam: E.screen },
-  { at: s("s5"), cam: E.wide },
+  { at: s("s5"), cam: E.face }, { at: g("s5", "180") - 0.15, cam: E.screen },
   { at: s("s6"), cam: M.onA }, { at: g("s6", "send") - 0.15, cam: M.wide },
   { at: s("s7"), cam: M.wide },
 ];
