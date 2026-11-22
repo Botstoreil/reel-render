@@ -76,9 +76,9 @@ function planks() {
   const wall = box(36, 10, 0.3, lam(0x8f7fb0)); wall.position.set(0, 5, -4.6); scene.add(wall);
   const base = box(36, 0.25, 0.1, lam(0x3a2f55)); base.position.set(0, 0.12, -4.42); scene.add(base);
   for (const wx of [-4.2, 0, 4.2]) {
-    const fr = box(1.9, 2.7, 0.08, lam(0x3a2f55)); fr.position.set(wx, 3.4, -4.42); scene.add(fr);
-    const gl = box(1.6, 2.4, 0.06, new THREE.MeshBasicMaterial({ color: 0xffd9a0 })); gl.position.set(wx, 3.4, -4.37); scene.add(gl);
-    const bar = box(0.08, 2.4, 0.07, lam(0x3a2f55)); bar.position.set(wx, 3.4, -4.33); scene.add(bar);
+    const fr = box(1.9, 2.7, 0.08, lam(0x3a2f55)); fr.position.set(wx, 4.9, -4.42); scene.add(fr);
+    const gl = box(1.6, 2.4, 0.06, new THREE.MeshBasicMaterial({ color: 0xffd9a0 })); gl.position.set(wx, 4.9, -4.37); scene.add(gl);
+    const bar = box(0.08, 2.4, 0.07, lam(0x3a2f55)); bar.position.set(wx, 4.9, -4.33); scene.add(bar);
   }
 }
 
@@ -144,7 +144,7 @@ const mats = [matMesh(0x7b6cff), matMesh(0x2ecc71), matMesh(0x7b6cff)];
 const slotMat = new THREE.MeshBasicMaterial({ color: 0x1a1640, transparent: true, opacity: 0.45, depthWrite: false });
 const slots = [0, 1, 2].map(() => { const m = box(1.15, 0.66, 0.04, slotMat); scene.add(m); return m; });
 const cards = [0, 1, 2].map(() => { const m = box(1.1, 0.62, 0.12, lam(0x7b6cff)); scene.add(m); return m; });
-const CARD_Y = 2.75, CARD_X = [-1.3, 0, 1.3];
+const CARD_Y = 2.4, CARD_X = [-1.3, 0, 1.3];
 
 // energy bars
 const NB = 26;
@@ -184,12 +184,12 @@ function fit(pts, dirArr, bx) {
   return { look, dir, dist };
 }
 const SHOTS = {
-  s1: () => fit(boxPts(-2.0, 2.0, 0, 3.15, -0.5, 0.5), [0.3, 0.2, 1], [110, 620, 910, 1390]),
+  s1: () => fit(boxPts(-2.0, 2.0, 0, 2.75, -0.5, 0.5), [0.3, 0.2, 1], [110, 600, 910, 1400]),
   s2: () => fit(boxPts(-0.9, 1.3, 0, 1.6, -0.5, 0.5), [0.55, 0.25, 1], [150, 640, 900, 1390]),
   s3: () => fit(boxPts(-2.65, 2.65, 0, 2.3, -0.2, 0.2), [0.12, 0.12, 1], [110, 640, 910, 1360]),
-  s4: () => fit(boxPts(-2.0, 2.0, 0, 3.15, -0.5, 0.5), [-0.3, 0.2, 1], [110, 620, 910, 1400]),
-  s5: () => fit(boxPts(-2.8, 2.8, 0, 2.9, -0.6, 0.6), [0.18, 0.22, 1], [100, 640, 920, 1400]),
-  s6: () => fit(boxPts(-2.4, 2.4, 0, 1.6, -0.5, 0.5), [0.2, 0.3, 1], [100, 680, 920, 1300]),
+  s4: () => fit(boxPts(-2.0, 2.0, 0, 2.75, -0.5, 0.5), [-0.3, 0.2, 1], [110, 600, 910, 1400]),
+  s5: () => fit(boxPts(-2.8, 2.8, 0.2, 3.0, -0.6, 0.6), [0.18, 0.22, 1], [90, 620, 930, 1400]),
+  s6: () => fit(boxPts(-1.2, 1.4, 0, 1.6, -1.7, 1.7), [0.4, 0.8, 1], [150, 640, 880, 1420]),
   s7: () => fit(boxPts(-1.2, 1.2, 0, 1.4, -0.5, 0.5), [0.6, 0.35, 1], [160, 1000, 880, 1500]),
   s8: () => fit(boxPts(-0.5, 0.5, 0, 1.95, -0.5, 0.5), [0, 0.12, 1], [430, 430, 590, 700]),
 };
@@ -338,16 +338,17 @@ function frame(t) {
     const k1 = sm(U("warm") - 0.1, U("up") + 0.2, u), k2 = sm(U("parts") - 0.1, U("needs") + 0.1, u), k3 = sm(U("step") - 0.15, U("time") + 0.1, u);
     stairs.forEach((m, i) => { m.visible = true; m.position.set(STAIR_X[i], m.userData.h / 2, 0); });
     const pop = (a) => back(a, a + 0.3, u);
-    putPerson(0, STAIR_X[0] - 0.1, 0.4, pose(P.stand, P.reach, k1), C3.green, 0.72 * pop(-0.05));
-    lab.p2 = putPerson(1, STAIR_X[1] - 0.1, 0.9, pose(P.stand, P.half, k2), C3.green, 0.72 * pop(U("exact") - 0.2));
-    putPerson(2, STAIR_X[2] - 0.1, 1.4, pose(P.half, P.fold, k3), C3.green, 0.72 * pop(U("one") - 0.2));
+    putPerson(0, STAIR_X[0] - 0.1, 0.4, pose(P.stand, P.reach, k1), C3.green, 0.85 * pop(-0.05));
+    lab.p2 = putPerson(1, STAIR_X[1] - 0.1, 0.9, pose(P.stand, P.half, k2), C3.green, 0.85 * pop(U("exact") - 0.2));
+    putPerson(2, STAIR_X[2] - 0.1, 1.4, pose(P.half, P.fold, k3), C3.green, 0.85 * pop(U("one") - 0.2));
   }
   if (id === "s6") {
     const E = back(U("easier") - 0.1, U("version") + 0.1, u), F = back(U("full") - 0.1, U("pose") + 0.1, u);
-    putMat(0, -1.3, C3.green).scale.setScalar(Math.max(0.001, cl(E)));
-    putMat(1, 1.3, C3.violet).scale.setScalar(Math.max(0.001, cl(F)));
-    putPerson(0, -1.3, 0, P.half, C3.green, E);
-    putPerson(1, 1.3, 0, P.fold, C3.violet, F);
+    // front mat = EASIER (lower on screen), back mat = FULL (higher on screen)
+    const m0 = putMat(0, -0.2, C3.green); m0.position.z = 1.3; m0.scale.setScalar(Math.max(0.001, cl(E)));
+    const m1 = putMat(1, 0.2, C3.violet); m1.position.z = -1.3; m1.scale.setScalar(Math.max(0.001, cl(F)));
+    putPerson(0, -0.2, 0, P.half, C3.green, E).root.position.z = 1.3;
+    putPerson(1, 0.2, 0, P.fold, C3.violet, F).root.position.z = -1.3;
   }
   if (id === "s7") {
     putMat(0, -0.1, C3.green);
@@ -366,7 +367,7 @@ function frame(t) {
   if (id === "s1") {
     const [sx, sy] = pin(V(CARD_X[0], CARD_Y, 0));
     tag("PEAK", sx, sy, RED, sm(U("peak") - 0.05, U("peak") + 0.2, u), 40);
-    mark("x", sx, sy + 150, back(U("pose"), U("pose") + 0.3, u) * 0.6, u > U("pose") ? 1 : 0, RED);
+    mark("x", sx + 170, sy - 10, back(U("pose"), U("pose") + 0.3, u) * 0.6, u > U("pose") ? 1 : 0, RED);
     words(["NEVER OPEN WITH", "THE PEAK POSE"], RED, 380, 0.0, 1, 140, Math.max(flash(u, 0.05), flash(u, U("never"))));
   }
   if (id === "s2") {
@@ -406,17 +407,17 @@ function frame(t) {
   if (id === "s5") {
     const [kx, ky] = pin(lab.p2.wp("knee"));
     ring(kx, ky, 46 + 6 * Math.sin(u * 10), ORANGE, sm(U("parts") - 0.1, U("parts") + 0.15, u));
-    const [hx, hy] = pin(V(0, 0.2, 0.5));
-    tag("HAMSTRINGS", hx, hy + 30, ORANGE, sm(U("parts") - 0.05, U("pose") + 0.1, u), 38);
+    const [hx, hy] = pin(V(0, 2.75, 0));
+    tag("HAMSTRINGS", hx, hy - 20, ORANGE, sm(U("parts") - 0.05, U("pose") + 0.1, u), 38);
     const n = [[0, 0.4, -0.05], [1, 0.9, U("exact") - 0.1], [2, 1.4, U("one")]];
     n.forEach(([i, h, t0]) => { const [X, Y] = pin(V(STAIR_X[i], h - 0.12, 0.5)); if (i !== 1) tag(String(i + 1), X, Y, GREEN, sm(t0, t0 + 0.15, u), 40); else tag("2", X + 150, Y, GREEN, sm(t0, t0 + 0.15, u), 40); });
     words(["WARM UP", "WHAT IT NEEDS"], GREEN, 360, 0.0, 1, 140);
   }
   if (id === "s6") {
-    const [ex, ey] = pin(V(-1.3, 0, 0.6)), [fx, fy] = pin(V(1.3, 0, 0.6));
-    tag("EASIER", ex, ey + 70, GREEN, sm(U("easier") - 0.05, U("easier") + 0.2, u), 42);
-    tag("FULL", fx, fy + 70, VIOLET, sm(U("full") - 0.05, U("full") + 0.2, u), 42);
-    tag("IF READY", fx, fy + 170, VIOLET, sm(U("ready") - 0.1, U("ready") + 0.15, u), 36);
+    const [ex, ey] = pin(V(1.4, 0.7, 1.3)), [fx, fy] = pin(V(1.6, 0.7, -1.3));
+    tag("EASIER", ex + 90, ey, GREEN, sm(U("easier") - 0.05, U("easier") + 0.2, u), 42);
+    tag("FULL", fx + 70, fy - 40, VIOLET, sm(U("full") - 0.05, U("full") + 0.2, u), 42);
+    tag("IF READY", fx + 70, fy + 50, VIOLET, sm(U("ready") - 0.1, U("ready") + 0.15, u), 36);
     words(["OFFER TWO", "VERSIONS"], GREEN, 360, 0.0, 1, 140);
   }
   if (id === "s7") {
