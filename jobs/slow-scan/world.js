@@ -199,7 +199,7 @@ function lightSwitch(X, Y, a, c, on) {
 function frame(t) {
   const { id, u, d } = sceneOf(t);
   curU = u;
-  drawK = sm(-LEAD, 0.75, u);
+  drawK = lerp(0.4, 1, sm(-LEAD, 0.5, u)); // start 40% drawn: a 0-start left blank half-second frames at every cut
   x.setTransform(1, 0, 0, 1, 0, 0);
   x.clearRect(0, 0, 1080, 1920);
   const cut = 1 - sm(-LEAD, 0.22 - LEAD, u);
