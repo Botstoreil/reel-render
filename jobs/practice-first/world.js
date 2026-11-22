@@ -220,7 +220,7 @@ function drawInk(t) {
     if (N > 0) person(720, 1150, P.warrior, 0.6 * s, VIOLET, { a: N });
     tag("NEW POSE", 720, 720, VIOLET, N, 42);
     // NOT PRACTICED is circled and crossed out in red chalk
-    tag("NOT PRACTICED", 720, 1300, RED, Np, 42);
+    tag("NOT PRACTICED", 720, 1420, RED, Np, 46);
     const Xk = sm(at("s1", "practiced") + 0.05, at("s1", "practiced") + 0.35, u);
     if (Xk > 0) { x.save(); x.strokeStyle = RED; x.lineWidth = 14; x.lineCap = "round"; x.beginPath(); x.moveTo(560, 820); x.lineTo(lerp(560, 880, Xk), lerp(820, 1180, Xk)); x.stroke(); x.restore(); }
   }
@@ -241,7 +241,7 @@ function drawInk(t) {
     bubble("UMM... KIND OF... THERE?", 560, 760, RED, sm(at("s3", "vague") - 0.2, at("s3", "vague") + 0.1, u), 360, 950, 40);
     const L = sm(at("s3", "late") - 0.2, at("s3", "late") + 0.3, u);
     clock(760, 1150, 120, sm(at("s3", "late") - 0.3, at("s3", "late") - 0.1, u), L, RED);
-    tag("LATE", 760, 1330, RED, L, 48);
+    tag("LATE", 760, 1420, RED, L, 50);
     tag("VAGUE", 260, 960, RED, sm(at("s3", "vague") - 0.1, at("s3", "vague") + 0.1, u), 46);
   }
   if (id === "s4") {
