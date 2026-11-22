@@ -143,11 +143,13 @@ function stamp(kind, X, Y, s, p, color) {
 // ===================== end of kit =====================
 
 // ---------- road geometry: up the page, then a right-hand bend ----------
-const HW = 115;                       // half road width
-const RX = 400, Y0 = 1460, YB = 960;  // straight x, bottom, bend start
-const RAD = 290, OCX = RX + RAD, OCY = YB; // bend centre
+const HW = 105;                       // half road width
+const RX = 400, Y0 = 1240, YB = 900;  // straight x, bottom, bend start
+const RAD = 250, OCX = RX + RAD, OCY = YB; // bend centre
 const L1 = Y0 - YB, ARC = RAD * Math.PI / 2, L3 = 420, LEN = L1 + ARC + L3;
-const SB = L1 + ARC * 0.3;            // where the wrong-way rider brakes
+const S0 = -320;                      // road runs off the bottom of the frame
+const BS = 0.8;                       // bike scale
+const SB = L1 + ARC * 0.36;          // where the wrong-way rider brakes
 function pathAt(s) {
   if (s <= L1) return [RX, Y0 - s, 0];
   if (s <= L1 + ARC) { const th = Math.PI + (s - L1) / RAD; return [OCX + RAD * Math.cos(th), OCY + RAD * Math.sin(th), th - Math.PI]; }
@@ -167,16 +169,16 @@ function pts(f, s0, s1, off = 0, step = 18) {
 // the road: dark asphalt band, neon edges (outer edge can flash red), dashed centre line
 function road(p, edgeC = VIOLET, outerHot = 0) {
   if (p <= 0) return;
-  const c = pts(pathAt, 0, LEN);
+  const c = pts(pathAt, S0, LEN);
   x.save(); x.lineCap = "butt"; x.lineJoin = "round"; x.globalAlpha = cl(p * 2);
   x.strokeStyle = "#0b0e28"; x.lineWidth = HW * 2; x.beginPath(); c.forEach(([a, b], i) => (i ? x.lineTo(a, b) : x.moveTo(a, b))); x.stroke();
   x.restore();
-  draw(pts(pathAt, 0, LEN, HW), edgeC, 9, p, 201, { noTip: p > 0.98 });
-  draw(pts(pathAt, 0, LEN, -HW), outerHot > 0.05 ? mix(edgeC, RED, outerHot) : edgeC, 9 + 6 * outerHot, p, 202, { noTip: p > 0.98 });
-  for (let s = 30, i = 0; s < LEN - 40; s += 90, i++) draw(pts(pathAt, s, s + 40, 0, 20), mix(VIOLET, BG, 0.45), 5, cl(p * 1.6 - (s / LEN) * 0.6), 210 + i, { blur: 8, amp: 1.2, noTip: true });
+  draw(pts(pathAt, S0, LEN, HW), edgeC, 9, p, 201, { noTip: p > 0.98 });
+  draw(pts(pathAt, S0, LEN, -HW), outerHot > 0.05 ? mix(edgeC, RED, outerHot) : edgeC, 9 + 6 * outerHot, p, 202, { noTip: p > 0.98 });
+  for (let s = S0 + 30, i = 0; s < LEN - 40; s += 90, i++) draw(pts(pathAt, s, s + 40, 0, 20), mix(VIOLET, BG, 0.45), 5, cl(p * 1.6 - ((s - S0) / (LEN - S0)) * 0.6), 210 + i, { blur: 8, amp: 1.2, noTip: true });
 }
 // top-down motorcycle: tyres, body, bars, rider shoulders, helmet; rear light glow `brake`
-function bike(X, Y, rot, c, brake = 0, s = 1) {
+function bike(X, Y, rot, c, brake = 0, s = BS) {
   x.save(); x.translate(X, Y); x.rotate(rot); x.scale(s, s);
   if (brake > 0) {
     x.save(); x.globalCompositeOperation = "lighter"; x.globalAlpha = brake; x.shadowColor = RED; x.shadowBlur = 60;
@@ -198,15 +200,15 @@ function bike(X, Y, rot, c, brake = 0, s = 1) {
 function streaks(X, Y, rot, a, c = WHITE) {
   if (a <= 0) return;
   for (let i = 0; i < 5; i++) {
-    const o = (i - 2) * 26, l = 90 + 40 * hs(i + boil());
-    const bx = X + Math.cos(rot) * o - Math.sin(rot) * 150, by = Y + Math.sin(rot) * o + Math.cos(rot) * 150;
+    const o = (i - 2) * 22, l = 75 + 35 * hs(i + boil());
+    const bx = X + Math.cos(rot) * o - Math.sin(rot) * 125, by = Y + Math.sin(rot) * o + Math.cos(rot) * 125;
     draw(L(bx, by, bx - Math.sin(rot) * l, by + Math.cos(rot) * l), c, 4, 1, 400 + i, { a: 0.6 * a, blur: 10, noTip: true });
   }
 }
 // speed gauge (left of the road), needle v 0..1
 function gauge(v, c, a) {
   if (a <= 0) return;
-  const GX = 165, GY = 1150, r = 92;
+  const GX = 170, GY = 1070, r = 88;
   const a0 = Math.PI * 0.8, a1 = Math.PI * 2.2;
   fill(C(GX, GY, r + 14, 0, 1), "rgba(5,6,12,0.85)", a);
   draw(C(GX, GY, r, a0, 0.7), mix(c, BG, 0.3), 8, a, 501, { blur: 14, noTip: true });
@@ -233,20 +235,20 @@ function frame(t) {
   x.save(); x.translate(CX + shake, 900 - shake * 0.5); x.scale(z, z); x.translate(-CX, -900);
 
   if (id === "s1") {
-    const s = lerp(0, 170, cl(u / d));
+    const s = lerp(-80, 90, cl(u / d));
     const [bx, by, br] = pathAt(s);
     road(pr(-0.05, 0.8));
     // the corner gets marked as soon as the voice names it
     const k = sm(at("s1", "corner") - 0.05, at("s1", "corner") + 0.3, u);
-    draw(C(OCX, OCY, RAD + HW + 40, Math.PI * 1.02, 0.23), RED, 8, k, 601, { amp: 3 });
-    tag("TIGHT CORNER", OCX - 40, OCY - RAD - HW - 80 + 20, RED, k, 42);
+    draw(C(OCX, OCY, RAD + HW + 36, Math.PI * 1.04, 0.2), RED, 8, k, 601, { amp: 3 });
+    tag("TIGHT CORNER", 235, 640, RED, k, 40);
     streaks(bx, by, br, 0.6);
     bike(bx, by, br, VIOLET, 0);
     gauge(0.85, RED, pr(0.2, 0.4));
   }
   if (id === "s2") {
     const reach = at("s2", "middle");
-    const s = u < reach ? lerp(170, SB, sm(0, reach, u) * 0.6 + cl(u / reach) * 0.4) : SB + 25 * sm(reach, d, u);
+    const s = u < reach ? lerp(90, SB, sm(0, reach, u) * 0.6 + cl(u / reach) * 0.4) : SB + 25 * sm(reach, d, u);
     const [bx, by, br] = pathAt(s);
     const Bk = sm(reach - 0.1, reach + 0.05, u);
     road(1);
@@ -254,12 +256,12 @@ function frame(t) {
     streaks(bx, by, br, 1 - Bk * 0.6);
     bike(bx, by, br, Bk > 0.5 ? RED : VIOLET, Bk * (0.75 + 0.25 * Math.sin(u * 30)));
     gauge(0.88 - 0.12 * Bk, RED, 1);
-    tag("TOO FAST", 720, 1260, RED, sm(at("s2", "fast") - 0.05, at("s2", "fast") + 0.2, u) * (1 - Bk), 42);
-    tag("BRAKE!", bx + 170, by + 30, RED, Bk, 46);
+    tag("TOO FAST", 760, 1080, RED, sm(at("s2", "fast") - 0.05, at("s2", "fast") + 0.2, u) * (1 - Bk), 42);
+    tag("BRAKE!", bx + 230, by + 80, RED, Bk, 46);
   }
   if (id === "s3") {
     const e = at("s3", "edge");
-    const run = 280;
+    const run = 262;
     const k = sm(0, e, u);
     const s = SB + 25 + (run - 25) * k;
     const [bx, by, br] = wideAt(s);
@@ -268,40 +270,40 @@ function frame(t) {
     draw(pts(pathAt, SB, L1 + ARC, 0, 16), mix(VIOLET, BG, 0.2), 5, pr(0.0, 0.5), 621, { a: 0.5, noTip: true });
     draw(pts(wideAt, SB, s, 0, 10), RED, 10, 1, 622, { a: 0.85, amp: 2, noTip: true });
     bike(bx, by, br, RED, 0.6 * (1 - hot));
-    tag("STANDS UP", 760, 1180, RED, sm(at("s3", "stands") - 0.05, at("s3", "stands") + 0.2, u), 42);
-    tag("RUNS WIDE", bx - 40, by - 170, RED, sm(at("s3", "wide") - 0.05, at("s3", "wide") + 0.2, u), 42);
-    stamp("x", bx + 60, by + 160, 0.6, pr(e + 0.15, 0.4), RED);
+    tag("STANDS UP", 760, 1080, RED, sm(at("s3", "stands") - 0.05, at("s3", "stands") + 0.2, u), 42);
+    tag("RUNS WIDE", 220, 740, RED, sm(at("s3", "wide") - 0.05, at("s3", "wide") + 0.2, u), 42);
+    stamp("x", bx - 170, by + 40, 0.6, pr(e + 0.15, 0.4), RED);
     gauge(0.72, RED, 1);
   }
   if (id === "s4") {
     const k = cl(u / d);
-    const s = lerp(40, 360, 1 - Math.pow(1 - k, 2));
+    const s = lerp(-60, 250, 1 - Math.pow(1 - k, 2));
     const [bx, by, br] = pathAt(s);
     road(1, VIOLET);
     // brake zone on the straight
-    const z0 = 150, z1 = 400, Z = sm(at("s4", "braking") - 0.1, at("s4", "braking") + 0.2, u);
+    const z0 = 20, z1 = 220, Z = sm(at("s4", "braking") - 0.1, at("s4", "braking") + 0.2, u);
     const zone = R(RX - HW + 10, Y0 - z1, HW * 2 - 20, z1 - z0, 18);
     fill(zone, "rgba(70,255,154,0.10)", Z);
     draw(zone, GREEN, 7, Z, 631, { closed: true });
-    tag("BRAKE ZONE", 720, Y0 - (z0 + z1) / 2, GREEN, Z, 42);
+    tag("BRAKE ZONE", 760, 1140, GREEN, Z, 42);
     const St = sm(at("s4", "straight") - 0.1, at("s4", "straight") + 0.15, u);
-    draw(L(RX, by - 160, RX, by - 360), GREEN, 8, St, 632, { amp: 2 });
-    draw([[RX - 26, by - 330], [RX, by - 370], [RX + 26, by - 330]], GREEN, 8, St, 633, { amp: 1.5 });
-    tag("STILL STRAIGHT", 720, 760, VIOLET, St, 40);
+    draw(L(RX, by - 130, RX, by - 290), GREEN, 8, St, 632, { amp: 2 });
+    draw([[RX - 24, by - 262], [RX, by - 298], [RX + 24, by - 262]], GREEN, 8, St, 633, { amp: 1.5 });
+    tag("STILL STRAIGHT", 760, 1010, VIOLET, St, 40);
     bike(bx, by, br, GREEN, 0.7 * sm(at("s4", "braking") - 0.05, at("s4", "braking") + 0.1, u) * (1 - sm(at("s4", "straight"), d, u)));
     gauge(lerp(0.85, 0.42, sm(at("s4", "braking"), at("s4", "straight"), u)), GREEN, 1);
   }
   if (id === "s5") {
-    const s = lerp(360, L1 + 30, sm(0, d, u) * 0.5 + cl(u / d) * 0.5);
+    const s = lerp(250, L1 + 30, sm(0, d, u) * 0.5 + cl(u / d) * 0.5);
     const [bx, by, br] = pathAt(s);
     road(1, VIOLET);
-    tag("SPEED SET", 720, 1250, GREEN, sm(at("s5", "speed") - 0.05, at("s5", "speed") + 0.2, u), 42);
+    tag("SPEED SET", 760, 1100, GREEN, sm(at("s5", "speed") - 0.05, at("s5", "speed") + 0.2, u), 42);
     const Lk = sm(at("s5", "look") - 0.15, at("s5", "through") + 0.35, u);
-    const ahead = pts(pathAt, s + 150, L1 + ARC + 160, 0, 16);
+    const ahead = pts(pathAt, s + 120, L1 + ARC + 160, 0, 16);
     draw(ahead, GREEN, 8, Lk, 641, { amp: 2.5 });
     // head turns toward the exit: a small sight arrow from the helmet
-    draw(L(bx + 10, by - 40, bx + 90, by - 150), GREEN, 6, Lk, 642, { a: 0.8, blur: 14 });
-    tag("LOOK THROUGH", 760, 520, GREEN, Lk, 40);
+    draw(L(bx + 8, by - 32, bx + 72, by - 120), GREEN, 6, Lk, 642, { a: 0.8, blur: 14 });
+    tag("LOOK THROUGH", 760, 870, GREEN, Lk, 40);
     bike(bx, by, br, GREEN, 0);
     gauge(0.42, GREEN, 1);
   }
@@ -311,10 +313,10 @@ function frame(t) {
     road(1, VIOLET);
     draw(pts(pathAt, L1 - 60, s - 30, 0, 12), GREEN, 11, 1, 651, { a: 0.9, amp: 2, noTip: true });
     const Th = sm(at("s6", "throttle") - 0.05, at("s6", "gently") + 0.2, u);
-    tag("GENTLE THROTTLE", 330, 1330, GREEN, Th * (1 - sm(at("s6", "holds") - 0.2, at("s6", "holds"), u)), 38);
+    tag("GENTLE THROTTLE", 740, 1120, GREEN, Th, 38);
     const Ln = sm(at("s6", "line") - 0.1, at("s6", "line") + 0.2, u);
-    tag("HOLDS ITS LINE", 520, 1250, VIOLET, Ln, 42);
-    stamp("v", 760, 1050, 0.6, pr(at("s6", "holds"), 0.4), GREEN);
+    tag("HOLDS ITS LINE", 740, 1010, VIOLET, Ln, 40);
+    stamp("v", 720, 890, 0.6, pr(at("s6", "holds"), 0.4), GREEN);
     streaks(bx, by, br, 0.35, GREEN);
     bike(bx, by, br, GREEN, 0);
     gauge(lerp(0.42, 0.6, Th), GREEN, 1);
@@ -358,23 +360,23 @@ function frame(t) {
   if (id === "s7") {
     x.save(); x.fillStyle = "rgba(5,6,12,0.55)"; x.fillRect(0, 0, 1080, 1920); x.restore();
     const sw = at("s7", "brake") - 0.1;
-    words(["SLOW IN"], ORANGE, 690, 0.0, 1 - sm(sw - 0.1, sw, u), 150, flash(u, 0.05));
-    words(["SMOOTH OUT"], ORANGE, 880, at("s7", "smooth") - 0.05, 1 - sm(sw - 0.1, sw, u), 150, flash(u, at("s7", "smooth")));
-    words(["BRAKE BEFORE"], ORANGE, 690, sw, sm(sw - 0.05, sw, u), 150, flash(u, at("s7", "brake")));
-    words(["THE BEND"], ORANGE, 880, at("s7", "the") - 0.05, sm(sw - 0.05, sw, u), 160, flash(u, at("s7", "bend")), at("s7", "bend") - 0.05);
+    words(["SLOW IN"], ORANGE, 860, 0.0, 1 - sm(sw - 0.1, sw, u), 150, flash(u, 0.05));
+    words(["SMOOTH OUT"], ORANGE, 1040, at("s7", "smooth") - 0.05, 1 - sm(sw - 0.1, sw, u), 150, flash(u, at("s7", "smooth")));
+    words(["BRAKE BEFORE"], ORANGE, 860, sw, sm(sw - 0.05, sw, u), 150, flash(u, at("s7", "brake")));
+    words(["THE BEND"], ORANGE, 1040, at("s7", "the") - 0.05, sm(sw - 0.05, sw, u), 160, flash(u, at("s7", "bend")), at("s7", "bend") - 0.05);
   }
   if (id === "s8") {
     x.save(); x.fillStyle = "rgba(5,6,12,0.6)"; x.fillRect(0, 0, 1080, 1920); x.restore();
     const [c1 = "DOWNLOAD", c2 = "APEX"] = BRAND.cta || [];
     // a wheel badge that draws itself on
-    draw(C(CX, 540, 110), ORANGE, 12, pr(0.0, 0.45), 701);
-    draw(C(CX, 540, 64), VIOLET, 8, pr(0.15, 0.4), 702);
-    for (let i = 0; i < 6; i++) { const an = (i / 6) * TAU + u * 2; draw(L(CX + Math.cos(an) * 22, 540 + Math.sin(an) * 22, CX + Math.cos(an) * 62, 540 + Math.sin(an) * 62), VIOLET, 6, pr(0.3, 0.3), 703 + i, { blur: 12, noTip: true }); }
-    draw(C(CX, 540, 150, u * 3, 0.23), GREEN, 10, 1, 710, { amp: 2 });
-    words([c1], WHITE, 780, 0.15, 1, 130);
-    words([c2], ORANGE, 930, 0.3, 1, 170, flash(u, at("s8", "apex")) * 0.5, 0.6);
-    tag("3 FREE RIDES A MONTH", CX, 1090, GREEN, sm(at("s8", "three") - 0.05, at("s8", "three") + 0.2, u), 46);
-    if (BRAND.sub) tag(BRAND.sub, CX, 1200, VIOLET, sm(at("s8", "free") - 0.05, at("s8", "free") + 0.2, u), 46);
+    draw(C(CX, 470, 110), ORANGE, 12, pr(0.0, 0.45), 701);
+    draw(C(CX, 470, 64), VIOLET, 8, pr(0.15, 0.4), 702);
+    for (let i = 0; i < 6; i++) { const an = (i / 6) * TAU + u * 2; draw(L(CX + Math.cos(an) * 22, 470 + Math.sin(an) * 22, CX + Math.cos(an) * 62, 470 + Math.sin(an) * 62), VIOLET, 6, pr(0.3, 0.3), 703 + i, { blur: 12, noTip: true }); }
+    draw(C(CX, 470, 150, u * 3, 0.23), GREEN, 10, 1, 710, { amp: 2 });
+    words([c1], WHITE, 710, 0.15, 1, 130);
+    words([c2], ORANGE, 860, 0.3, 1, 170, flash(u, at("s8", "apex")) * 0.5, 0.6);
+    tag("3 FREE RIDES A MONTH", CX, 1020, GREEN, sm(at("s8", "three") - 0.05, at("s8", "three") + 0.2, u), 46);
+    if (BRAND.sub) tag(BRAND.sub, CX, 1120, VIOLET, sm(at("s8", "free") - 0.05, at("s8", "free") + 0.2, u), 46);
   }
 }
 
