@@ -137,7 +137,7 @@ function room() {
 }
 function windowFrame(X, Y, a, k) {
   if (a <= 0) return;
-  x.save(); x.globalAlpha = a; glow(SKY, 20 + 30 * k); x.fillStyle = mix("#10204a", "#2a6aa0", k); x.strokeStyle = SKY; x.lineWidth = 10;
+  x.save(); x.globalAlpha = a; glow(SKY, 20 + 30 * k); x.fillStyle = "#10204a"; x.strokeStyle = SKY; // Minimal Line: outline only (a lit fill turned into a black block) x.lineWidth = 10;
   rr(X - 90, Y - 150, 180, 300, 10); x.fill(); x.stroke();
   x.beginPath(); x.moveTo(X, Y - 150); x.lineTo(X, Y + 150); x.moveTo(X - 90, Y); x.lineTo(X + 90, Y); x.stroke();
   x.restore();
@@ -208,8 +208,8 @@ function frame(t) {
     const wk = sm(at("s5", "window") - 0.2, at("s5", "window") + 0.1, u);
     windowFrame(110, 760, sm(-0.05, 0.3, u), wk);
     person(CX, TY, raise(0, 0), 0.95, GREEN, { face: true });
-    tag("LANDMARKS", 760, 560, GREEN, sm(at("s5", "landmarks") - 0.1, at("s5", "landmarks") + 0.15, u), 42);
-    bubble("ARM BY THE WINDOW", 640, 420, GREEN, sm(at("s5", "arm") - 0.15, at("s5", "closer") + 0.1, u), CX, 640, 44);
+    tag("LANDMARKS", 790, 900, GREEN, sm(at("s5", "landmarks") - 0.1, at("s5", "landmarks") + 0.15, u), 42);
+    bubble("ARM BY THE WINDOW", 640, 560, GREEN, sm(at("s5", "arm") - 0.15, at("s5", "closer") + 0.1, u), CX, 640, 44);
     const c = sm(at("s5", "window") - 0.05, at("s5", "window") + 0.3, u);
     students(c, 0, GREEN);
     if (c > 0.3) { x.save(); x.globalAlpha = c; glow(SKY, 20); x.strokeStyle = SKY; x.lineWidth = 6; x.setLineDash([16, 12]); x.beginPath(); x.moveTo(200, 900); x.lineTo(ROW[0] - 40, SY - 260); x.stroke(); x.restore(); }
