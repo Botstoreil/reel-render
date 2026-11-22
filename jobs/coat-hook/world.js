@@ -316,7 +316,8 @@ function frame(t) {
     cone.scale.set(0.9 * C, 0.9 * C, len * C);
     hook.ledMat.opacity = C;
     L.Sh = Sh; L.Bd = Bd; focusY = 1050;
-    hemi.intensity = 1.1; // the far room needs more fill to read
+    hemi.intensity = 0.75; // 1.1 washed the tiles out to flat white (render 2); a little fill + dim keeps the room readable
+    dim = 0.12;
 
   }
   if (id === "s4") {
@@ -370,8 +371,8 @@ function frame(t) {
     words(["SOLD", "ONLINE"], RED, 360, 0.0, 1, 150, flash(u, U("online")) * 0.6);
   }
   if (id === "s3") {
-    const [sx2, sy2] = scr(V(-2.3, 0, -1.2)), [bx2, by2] = scr(V(2.2, 0, 0.6));
-    tag("SHOWER", sx2, sy2 + 70, RED, L.Sh * (1 - L.Bd), 42);
+    const [sx2, sy2] = scr(V(-2.3, 2.3, -1.2)), [bx2, by2] = scr(V(2.2, 0, 0.6));
+    tag("SHOWER", Math.max(150, sx2), sy2 - 50, RED, L.Sh * (1 - L.Bd), 42); // above the shower head: below it the caption chip covered it
     tag("BED", bx2, by2 + 70, RED, L.Bd, 42);
     words(["IT FACES", "THE SHOWER"], RED, 360, 0.0, 1, 150, flash(u, U("shower")) * 0.6);
   }
