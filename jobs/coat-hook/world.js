@@ -278,6 +278,8 @@ function frame(t) {
   const U = (w, n) => at(id, w, n);
   const L = {};
   let focusY = 1000, dim = 0;
+  // s3 is the wide room shot: the camera sits far back, so the normal fog turned it into a grey murk. Push fog away.
+  scene.fog.near = id === "s3" ? 60 : 14; scene.fog.far = id === "s3" ? 120 : 40;
 
   if (id === "s1") {
     showDoor();
@@ -314,6 +316,8 @@ function frame(t) {
     cone.scale.set(0.9 * C, 0.9 * C, len * C);
     hook.ledMat.opacity = C;
     L.Sh = Sh; L.Bd = Bd; focusY = 1050;
+    hemi.intensity = 1.1; // the far room needs more fill to read
+
   }
   if (id === "s4") {
     showDoor();
