@@ -160,11 +160,11 @@ function room() {
   wall.addColorStop(0, "#1e1a4a"); wall.addColorStop(1, "#2f2a6e");
   x.fillStyle = wall; x.fillRect(0, 0, 1080, 1110);
   // window
-  x.fillStyle = "#000000"; x.fillRect(640, 420, 330, 420);
-  const sky = x.createLinearGradient(0, 440, 0, 820); sky.addColorStop(0, "#2a3a7a"); sky.addColorStop(1, "#ff6a1a");
-  x.fillStyle = sky; x.fillRect(660, 440, 290, 380);
-  x.fillStyle = "#ffd84a"; x.fillRect(860, 490, 48, 48);
-  x.fillStyle = "#4b3fa8"; x.fillRect(800, 440, 12, 380); x.fillRect(660, 620, 290, 12);
+  x.fillStyle = "#000000"; x.fillRect(680, 600, 300, 380);
+  const sky = x.createLinearGradient(0, 620, 0, 960); sky.addColorStop(0, "#2a3a7a"); sky.addColorStop(1, "#ff6a1a");
+  x.fillStyle = sky; x.fillRect(700, 620, 260, 340);
+  x.fillStyle = "#ffd84a"; x.fillRect(880, 660, 44, 44);
+  x.fillStyle = "#4b3fa8"; x.fillRect(824, 620, 12, 340); x.fillRect(700, 780, 260, 12);
   // floor
   const fl = x.createLinearGradient(0, 1110, 0, 1920); fl.addColorStop(0, "#4b3fa8"); fl.addColorStop(1, "#1e1a4a");
   x.fillStyle = fl; x.fillRect(0, 1110, 1080, 810);
@@ -218,7 +218,7 @@ function frame(t0) {
   x.clearRect(0, 0, 1080, 1920);
   const cut = 1 - sm(-LEAD, 0.22 - LEAD, u);
   const z = 1 + 0.035 * cl(u / Math.max(1, d)) + 0.05 * cut * cut;
-  room();
+  if (id === "s8") { x.fillStyle = BG; x.fillRect(0, 0, 1080, 1920); } else room();
   x.save(); x.translate(CX, ZY); x.scale(z, z); x.translate(-CX, -ZY);
   zoomM = [z, 0, 0, z, CX - CX * z, ZY - ZY * z];
 
@@ -260,10 +260,10 @@ function frame(t0) {
     mat(330, 1400, 320, 1, GREEN);
     person(330, 1400, P.lunge, 0.75, GREEN);
     const O = sm(at("s4", "out") - 0.1, at("s4", "out") + 0.1, u), I = sm(at("s4", "in") - 0.1, at("s4", "in") + 0.1, u);
-    tag("WAY IN", 300, 640, GREEN, I, 48);
-    tag("= AS CLEAR AS =", 520, 780, YELLOW, sm(at("s4", "clearly") - 0.1, at("s4", "clearly") + 0.1, u), 40);
-    tag("WAY OUT", 740, 920, GREEN, O, 48);
-    bubble("STEP BY STEP", 760, 1060, GREEN, sm(at("s4", "cue") - 0.1, at("s4", "cue") + 0.15, u), 820, 1100, 40);
+    tag("WAY OUT", 330, 620, GREEN, O, 48);
+    tag("= AS CLEAR AS =", 330, 740, YELLOW, sm(at("s4", "clearly") - 0.1, at("s4", "clearly") + 0.1, u), 40);
+    tag("WAY IN", 330, 860, GREEN, I, 48);
+    bubble("STEP BY STEP", 700, 1010, GREEN, sm(at("s4", "cue") - 0.1, at("s4", "cue") + 0.15, u), 820, 1100, 40);
   }
   if (id === "s5") {
     const k = sm(at("s5", "same") - 0.1, at("s5", "order") + 0.4, u);
