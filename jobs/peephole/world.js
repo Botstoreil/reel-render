@@ -68,7 +68,7 @@ function words(lines, color, cy, t0, a = 1, maxPx = 150, flashK = 0) {
   let y = cy - tot / 2, wi = 0;
   lines.forEach((L, li) => {
     const px = sizes[li]; x.font = FONT(px);
-    const parts = L.split(" "), sp = x.measureText(" ").width;
+    const parts = L.split(" "), sp = x.measureText(" ").width + px * 0.22;
     const ws = parts.map((p) => x.measureText(p).width), full = ws.reduce((s, w) => s + w, 0) + sp * (parts.length - 1);
     let X = CX - full / 2; const Y = y + px * 0.52;
     parts.forEach((p, i) => {
@@ -241,7 +241,7 @@ function frame(t0) {
     viewer(lerp(150, CX - 60, sm(at("s2", "viewer") - 0.1, at("s2", "can"), u)), 860, V, u > at("s2", "reversed") - 0.05 ? 1 : 0, RED);
     const L = sm(at("s2", "look") - 0.15, at("s2", "in") + 0.1, u);
     beamTo(CX + 60, 860, 1000, 1180, 260, L, RED);
-    tag("THEY SEE IN", 800, 1250, RED, L, 42);
+    tag("THEY SEE IN", 780, 1430, RED, L, 42);
   }
   if (id === "s3") {
     // a row of doors, every peephole bare
@@ -258,8 +258,8 @@ function frame(t0) {
     const a = sm(-0.05, 0.25, u);
     const B = sm(at("s4", "blurry") - 0.1, at("s4", "blurry") + 0.25, u), Dk = sm(at("s4", "dark") - 0.1, at("s4", "dark") + 0.25, u);
     fisheye(CX, 880, 360, a, 1 - B, Dk * 0.85);
-    tag("CLEAR", CX, 1320, GREEN, sm(0.2, 0.5, u) * (1 - B), 44);
-    tag("BLURRY OR DARK?", CX, 1320, ORANGE, B, 44);
+    tag("CLEAR", CX, 1430, GREEN, sm(0.2, 0.5, u) * (1 - B), 44);
+    tag("BLURRY OR DARK?", CX, 1430, ORANGE, B, 44);
   }
   if (id === "s5") {
     // sticky note slaps over the peephole
@@ -283,7 +283,7 @@ function frame(t0) {
     const ding = flash(u, at("s6", "desk") + 0.05);
     if (ding > 0) { x.save(); x.globalAlpha = ding; x.strokeStyle = GREEN; x.lineWidth = 6; for (let i = 0; i < 3; i++) { x.beginPath(); x.arc(780, 690, 40 + i * 30, Math.PI * 1.2, Math.PI * 1.8); x.stroke(); } x.restore(); }
     const K = back(at("s6", "another") - 0.1, at("s6", "room") + 0.2, u);
-    keycard(CX, 1230, K * 1.2, u > at("s6", "another") - 0.1 ? 1 : 0, GREEN, -0.08);
+    keycard(CX, 1450, K * 1.2, u > at("s6", "another") - 0.1 ? 1 : 0, GREEN, -0.08);
   }
   if (id === "s7") {
     door(CX, 1150, 0.9, 0.8, GREEN, 1, VIOLET);
