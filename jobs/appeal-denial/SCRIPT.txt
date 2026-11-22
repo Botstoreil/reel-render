@@ -1,0 +1,8 @@
+s1|Your insurer denied a hospital claim? Never just accept it.
+s2|Denials can come from a coding mistake or missing paperwork.
+s3|Pay the full bill, and the insurer's share becomes yours.
+s4|Instead, read the denial letter for the reason and the deadline.
+s5|For most plans, you have 180 days to file an internal appeal.
+s6|Ask your doctor for a letter, and send the appeal in writing.
+s7|Read the reason. Appeal in writing.
+s8|Save this for the next bill you get.
