@@ -41,6 +41,7 @@ function shape(path, color, lw = 10) { path(); x.fillStyle = color; x.fill(); in
 // halftone dots in a box; dot size grows toward one corner (dir: "br" bottom-right, "b" bottom, "c" from centre out)
 function halftone(X, Y, w, h, color, gap = 22, maxR = 7, dir = "br", a = 1) {
   x.save(); x.globalAlpha *= a; x.fillStyle = color;
+  x.beginPath(); x.rect(X, Y, w, h); x.clip();
   for (let j = 0, py = Y; py < Y + h + gap; py += gap, j++) {
     for (let px = X + (j % 2) * gap / 2; px < X + w + gap; px += gap) {
       let k;
