@@ -1,0 +1,8 @@
+s1|Parked cars on your right? Never ride close to their doors.
+s2|You hug the parked cars to stay away from the traffic.
+s3|A driver opens a door without looking, right in your path.
+s4|Instead, leave a full door's width between you and the cars.
+s5|Watch for heads in the seats, brake lights, and wheels turning out.
+s6|Cover your brakes, and keep your speed down past the row.
+s7|Give doors space. Watch for people in cars.
+s8|Download Apex. Three full rides a month are free.
