@@ -209,7 +209,7 @@ function frame(t) {
 
   if (id === "s1") {
     // dark room, a flashlight whips its light back and forth far too fast
-    const a = sm(-0.05, 0.3, u);
+    const a = lerp(0.55, 1, sm(-LEAD, 0.15, u)); // never an empty page at a cut
     shelf(a, VIOLET);
     const F = sm(at("s1", "sweep") - 0.15, at("s1", "sweep"), u);
     const ph = (u * 2.6) % 1, sx = lerp(-150, 1230, ph < 0.5 ? ph * 2 : 2 - ph * 2);
@@ -219,7 +219,7 @@ function frame(t) {
   }
   if (id === "s2") {
     // eye + flashlight; the glint only lights up when the beam hits the lens from the right angle
-    const a = sm(-0.05, 0.25, u);
+    const a = lerp(0.55, 1, sm(-LEAD, 0.15, u)); // never an empty page at a cut
     shelf(a, VIOLET);
     eye(240, 1560, 0.9, a, VIOLET); flashlight(270, 1450, 0.6, a, VIOLET, -0.9);
     const Ang = sm(at("s2", "right") - 0.35, at("s2", "right") + 0.05, u);
@@ -231,7 +231,7 @@ function frame(t) {
   }
   if (id === "s3") {
     // one quick wave: the glint flickers for a moment and the light is already gone
-    const a = sm(-0.05, 0.25, u);
+    const a = lerp(0.55, 1, sm(-LEAD, 0.15, u)); // never an empty page at a cut
     const p = sm(at("s3", "quick") - 0.05, at("s3", "skips") + 0.1, u);
     const sx = lerp(-150, 1230, p);
     shelf(a, VIOLET);
@@ -245,7 +245,7 @@ function frame(t) {
   }
   if (id === "s4") {
     // lights go off at the switch, then the flashlight comes up next to the eye
-    const a = sm(-0.05, 0.25, u);
+    const a = lerp(0.55, 1, sm(-LEAD, 0.15, u)); // never an empty page at a cut
     const off = sm(at("s4", "off") - 0.05, at("s4", "off") + 0.15, u);
     ceilingLamp(CX, 700, a * (1 - 0.6 * sm(at("s4", "hold") - 0.2, at("s4", "hold") + 0.2, u)), 1 - off);
     lightSwitch(870, 1000, a * (1 - sm(at("s4", "hold") - 0.2, at("s4", "hold") + 0.2, u)), off > 0.5 ? GREEN : VIOLET, 1 - off);
@@ -259,7 +259,7 @@ function frame(t) {
   }
   if (id === "s5") {
     // the light spot crawls slowly in rows from the floor up the wall; it finds the glint on the shelf row
-    const a = sm(-0.05, 0.25, u);
+    const a = lerp(0.55, 1, sm(-LEAD, 0.15, u)); // never an empty page at a cut
     shelf(a, VIOLET);
     const p = sm(at("s5", "move") - 0.05, at("s5", "high") + 0.3, u) * 4;
     const rows = [1450, 1270, 1090, 910];
@@ -276,7 +276,7 @@ function frame(t) {
   }
   if (id === "s6") {
     // looking through a paper tube: only one circle of the wall is visible, and the glint pops inside it
-    const a = sm(-0.05, 0.25, u);
+    const a = lerp(0.55, 1, sm(-LEAD, 0.15, u)); // never an empty page at a cut
     shelf(a, VIOLET, 0.6);
     const T = sm(at("s6", "tube") - 0.3, at("s6", "tube") + 0.1, u);
     const R = lerp(900, 230, T);
