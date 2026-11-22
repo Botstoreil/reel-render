@@ -1,0 +1,8 @@
+s1|Got a bill from a nonprofit hospital? Never think it is too late for help.
+s2|It is easy to think the chance for financial aid has passed.
+s3|Then you may pay a bill you did not have to.
+s4|Instead, find the date of your first bill after you left the hospital.
+s5|Nonprofit hospitals must accept aid applications for at least 240 days from that bill.
+s6|Send the full application, and keep a copy.
+s7|Check the date. Apply within 240 days.
+s8|Save this for the next bill you get.
