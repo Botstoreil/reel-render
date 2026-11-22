@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <script type="importmap">
+      { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.181.2/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.181.2/examples/jsm/"
+      } }
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #080622; }
+      #world { position: absolute; inset: 0; width: 1080px; height: 1920px; display: block; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="25.566" data-width="1080" data-height="1920">
+      <div id="stage" class="clip" data-start="0" data-duration="25.566" data-track-index="1" style="position:absolute;inset:0"><canvas id="world" width="1080" height="1920" data-layout-allow-overflow></canvas></div>
+      <div id="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="25.566" data-track-index="2" data-track-kind="captions" data-width="1080" data-height="1920" style="z-index: 10"></div>
+      <audio id="vo-s1" class="clip" src="assets/vo/s1.wav" data-start="0.050" data-duration="4.032" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s2" class="clip" src="assets/vo/s2.wav" data-start="4.252" data-duration="3.989333333333333" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s3" class="clip" src="assets/vo/s3.wav" data-start="8.411" data-duration="3.264" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s4" class="clip" src="assets/vo/s4.wav" data-start="11.845" data-duration="2.7306666666666666" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s5" class="clip" src="assets/vo/s5.wav" data-start="14.746" data-duration="2.688" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s6" class="clip" src="assets/vo/s6.wav" data-start="17.604" data-duration="2.432" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s7" class="clip" src="assets/vo/s7.wav" data-start="20.206" data-duration="2.474666666666667" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s8" class="clip" src="assets/vo/s8.wav" data-start="22.851" data-duration="1.5146666666666666" data-track-index="3" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__EV = {"S":{"s1":[0,4.202],"s2":[4.202,4.159],"s3":[8.361,3.434],"s4":[11.795,2.901],"s5":[14.696,2.858],"s6":[17.554,2.602],"s7":[20.156,2.645],"s8":[22.801,2.765]},"W":{"s1":{"dur":4.032,"words":[{"text":"At","start":0,"end":0.113},{"text":"the","start":0.113,"end":0.282},{"text":"front","start":0.282,"end":0.564},{"text":"desk,","start":0.564,"end":0.789},{"text":"they","start":0.789,"end":1.015},{"text":"offer","start":1.015,"end":1.296},{"text":"you","start":1.296,"end":1.465},{"text":"a","start":1.465,"end":1.522},{"text":"medical","start":1.522,"end":1.916},{"text":"credit","start":1.916,"end":2.255},{"text":"card.","start":2.255,"end":2.536},{"text":"Never","start":2.536,"end":2.818},{"text":"sign","start":2.818,"end":3.044},{"text":"up","start":3.044,"end":3.156},{"text":"on","start":3.156,"end":3.269},{"text":"the","start":3.269,"end":3.438},{"text":"spot.","start":3.438,"end":3.72}]},"s2":{"dur":3.989333333333333,"words":[{"text":"Many","start":0,"end":0.224},{"text":"of","start":0.224,"end":0.336},{"text":"these","start":0.336,"end":0.615},{"text":"cards","start":0.615,"end":0.894},{"text":"have","start":0.894,"end":1.118},{"text":"deferred","start":1.118,"end":1.565},{"text":"interest.","start":1.565,"end":2.031},{"text":"Zero","start":2.031,"end":2.282},{"text":"percent,","start":2.282,"end":2.759},{"text":"but","start":2.759,"end":2.927},{"text":"only","start":2.927,"end":3.151},{"text":"for","start":3.151,"end":3.318},{"text":"a","start":3.318,"end":3.384},{"text":"while.","start":3.384,"end":3.72}]},"s3":{"dur":3.264,"words":[{"text":"Miss","start":0,"end":0.21},{"text":"the","start":0.21,"end":0.367},{"text":"payoff","start":0.367,"end":0.681},{"text":"date,","start":0.681,"end":0.891},{"text":"and","start":0.891,"end":1.048},{"text":"interest","start":1.048,"end":1.468},{"text":"can","start":1.468,"end":1.625},{"text":"be","start":1.625,"end":1.73},{"text":"charged","start":1.73,"end":2.097},{"text":"back","start":2.097,"end":2.306},{"text":"to","start":2.306,"end":2.411},{"text":"the","start":2.411,"end":2.568},{"text":"first","start":2.568,"end":2.83},{"text":"day.","start":2.83,"end":3.04}]},"s4":{"dur":2.7306666666666666,"words":[{"text":"Instead,","start":0,"end":0.43},{"text":"ask","start":0.43,"end":0.591},{"text":"the","start":0.591,"end":0.753},{"text":"hospital","start":0.753,"end":1.183},{"text":"for","start":1.183,"end":1.344},{"text":"its","start":1.344,"end":1.505},{"text":"own","start":1.505,"end":1.666},{"text":"payment","start":1.666,"end":2.043},{"text":"plan","start":2.043,"end":2.258},{"text":"first.","start":2.258,"end":2.58}]},"s5":{"dur":2.688,"words":[{"text":"Ask","start":0,"end":0.143},{"text":"if","start":0.143,"end":0.238},{"text":"there","start":0.238,"end":0.477},{"text":"is","start":0.477,"end":0.572},{"text":"interest,","start":0.572,"end":0.954},{"text":"and","start":0.954,"end":1.097},{"text":"what","start":1.097,"end":1.288},{"text":"the","start":1.288,"end":1.431},{"text":"monthly","start":1.431,"end":1.765},{"text":"payment","start":1.765,"end":2.098},{"text":"would","start":2.098,"end":2.337},{"text":"be.","start":2.337,"end":2.48}]},"s6":{"dur":2.432,"words":[{"text":"If","start":0,"end":0.098},{"text":"you","start":0.098,"end":0.245},{"text":"still","start":0.245,"end":0.489},{"text":"want","start":0.489,"end":0.685},{"text":"the","start":0.685,"end":0.832},{"text":"card,","start":0.832,"end":1.077},{"text":"read","start":1.077,"end":1.272},{"text":"when","start":1.272,"end":1.468},{"text":"the","start":1.468,"end":1.615},{"text":"promotion","start":1.615,"end":2.055},{"text":"ends.","start":2.055,"end":2.3}]},"s7":{"dur":2.474666666666667,"words":[{"text":"Ask","start":0,"end":0.162},{"text":"for","start":0.162,"end":0.324},{"text":"a","start":0.324,"end":0.378},{"text":"hospital","start":0.378,"end":0.809},{"text":"plan","start":0.809,"end":1.025},{"text":"first.","start":1.025,"end":1.349},{"text":"Read","start":1.349,"end":1.565},{"text":"before","start":1.565,"end":1.888},{"text":"you","start":1.888,"end":2.05},{"text":"sign.","start":2.05,"end":2.32}]},"s8":{"dur":1.5146666666666666,"words":[{"text":"Save","start":0,"end":0.195},{"text":"this","start":0.195,"end":0.39},{"text":"for","start":0.39,"end":0.537},{"text":"the","start":0.537,"end":0.683},{"text":"next","start":0.683,"end":0.878},{"text":"bill","start":0.878,"end":1.073},{"text":"you","start":1.073,"end":1.219},{"text":"get.","start":1.219,"end":1.415}]}},"LEAD":0.05,"BRAND":{"cta":["SAVE THIS","FOR LATER"],"sub":"RED PEN"}};
+      const tl = gsap.timeline({ paused: true });
+      tl.set({}, {}, 25.566);
+      window.__timelines["main"] = tl;
+    </script>
+    <script type="module" src="world.js"></script>
+  </body>
+</html>

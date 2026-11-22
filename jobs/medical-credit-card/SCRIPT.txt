@@ -1,0 +1,8 @@
+s1|At the front desk, they offer you a medical credit card. Never sign up on the spot.
+s2|Many of these cards have deferred interest. Zero percent, but only for a while.
+s3|Miss the payoff date, and interest can be charged back to the first day.
+s4|Instead, ask the hospital for its own payment plan first.
+s5|Ask if there is interest, and what the monthly payment would be.
+s6|If you still want the card, read when the promotion ends.
+s7|Ask for a hospital plan first. Read before you sign.
+s8|Save this for the next bill you get.
