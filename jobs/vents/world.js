@@ -152,9 +152,9 @@ function vent(X, Y, w, h, p, rim = VIOLET, inside = null) {
   if (inside) { x.save(); x.beginPath(); x.rect(X - w / 2 + 10, Y - h / 2 + 10, w - 20, h - 20); x.clip(); inside(); x.restore(); }
   const n = Math.max(4, Math.round(h / 52)), gap = (h - 40) / n;
   for (let i = 0; i < n; i++) {
-    const y = Y - h / 2 + 24 + i * gap, q = cl(p * 1.5 - 0.3 - i * 0.04);
+    const y = Y - h / 2 + 24 + i * gap, q = cl(p * 1.9 - 0.15 - i * (0.7 / n));
     const sl = R(X - w / 2 + 24, y, w - 48, gap * 0.55, 6);
-    fill(sl, "#121433", q > 0 ? 1 : 0);
+    fill(sl, "#121433", q > 0 ? (inside ? 0.45 : 1) : 0);
     draw(sl, mix(rim, "#05060c", 0.35), 4, q, Y + i * 13, { closed: true, blur: 10, amp: 1.6 });
   }
   draw(box, rim, 10, cl(p * 1.2), X * 3 + Y, { closed: true });
