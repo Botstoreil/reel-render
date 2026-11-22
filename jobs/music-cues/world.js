@@ -180,8 +180,8 @@ function fit(pts, dirArr, bx) {
 const WIDE = boxPts(-2.0, 2.3, 0, 2.1, -3.5, 2.0);
 const SHOTS = {
   s1: () => fit(WIDE, [0.3, 0.55, 1], [70, 600, 1010, 1440]),
-  s2: () => fit(boxPts(-1.8, 1.7, 0, 1.4, -1.3, 0.1), [1, 0.5, -0.32], [90, 640, 990, 1320]),
-  s3: () => fit(boxPts(-1.8, 2.3, 0, 1.3, -3.4, 2.1), [0.55, 0.95, -0.45], [90, 620, 990, 1440]),
+  s2: () => fit(boxPts(-1.8, 1.7, 0, 2.1, -2.9, 0.1), [-1, 0.55, -0.32], [90, 640, 990, 1360]),
+  s3: () => fit(boxPts(-1.8, 2.3, 0, 1.4, -3.4, 2.1), [0.3, 0.65, 1], [90, 620, 990, 1440]),
   s4: () => fit(boxPts(-1.6, 1.6, 0, 2.1, -3.2, 2.7), [1, 0.6, 0.2], [70, 620, 1010, 1440]),
   s5: () => fit(boxPts(-0.5, 2.3, 0, 2.2, -3.6, -2.2), [0.05, 0.3, 1], [130, 600, 950, 1420]),
   s6: () => fit(boxPts(-1.8, 1.8, 0, 2.6, -1.4, 2.2), [0.45, 0.5, 1], [70, 680, 1010, 1440]),
@@ -423,9 +423,9 @@ function frame(t) {
     const [fx, fy] = scr(V(0, 1.6, ROWS[0])), [bx3, by3] = scr(V(0, 1.6, ROWS[1]));
     const [sx, sy] = scr(SPKTOP());
     notes(sx, sy, 0.5, 1, VIOLET, u, 4, 0.7);
-    bars(fx + 240, fy, 1, 1, GREEN, 0.8);
-    bars(bx3 + 260, by3, lerp(0.6, 0.2, L.Ls), L.Bk, L.Ls > 0.5 ? RED : ORANGE, 0.8);
-    tag("HEARS LEAST", bx3, by3 + 60, RED, L.Ls, 42);
+    bars(Math.min(fx + 260, 840), fy, 1, 1, GREEN, 0.8);
+    bars(Math.min(bx3 + 300, 840), by3, lerp(0.6, 0.2, L.Ls), L.Bk, L.Ls > 0.5 ? RED : ORANGE, 0.8);
+    tag("HEARS LEAST", bx3, Math.min(by3 + 80, 1180), RED, L.Ls, 42);
     words(["THE BACK ROW", "HEARS LEAST"], RED, 360, 0.0, 1, 140, flash(u, U("least")) * 0.6);
   }
   if (id === "s4") {
@@ -442,7 +442,7 @@ function frame(t) {
     bubble("LA LA LA", sx - 60, sy - 150, RED, sm(U("songs") - 0.15, U("songs") + 0.15, u), sx, sy, 48);
     if (Wd > 0) { x.save(); x.lineCap = "round"; x.strokeStyle = INK; x.lineWidth = 26; x.beginPath(); x.moveTo(sx - 250, sy - 110); x.lineTo(lerp(sx - 250, sx + 130, Wd), lerp(sy - 110, sy - 200, Wd)); x.stroke(); x.strokeStyle = RED; x.lineWidth = 14; x.stroke(); x.restore(); }
     notes(sx, sy + 40, 0.4, Wd, GREEN, u, 5, 0.6);
-    tag("NO LYRICS", sx - 40, sy + 330, GREEN, Wd, 42);
+    tag("NO LYRICS", sx - 40, sy - 290, GREEN, Wd, 42);
     const [hx, hy] = scr(headP(teacher, 0.0));
     waves(hx + 40, hy, Tk, GREEN, u);
     tag("YOUR CUES", hx - 60, hy - 170, GREEN, Tk, 42);
