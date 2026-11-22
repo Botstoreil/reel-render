@@ -17,7 +17,7 @@ endCard([["ASK FOR SELF-PAY", 1], ["GET IT IN WRITING", 1]]);
 const SH = [
   { at: 0, cam: I.wide },
   { at: s("s2"), cam: I.close }, { at: g("s2", "full") - 0.15, cam: E.screen },
-  { at: s("s3"), cam: E.wide },
+  { at: s("s3"), cam: E.face }, { at: g("s3", "more") - 0.15, cam: E.screen },
   { at: s("s4"), cam: Ph.close }, { at: g("s4", "self-pay") - 0.15, cam: Ph.wide },
   { at: s("s5"), cam: M.onB }, { at: g("s5", "cash") - 0.15, cam: M.wide },
   { at: s("s6"), cam: I.close }, { at: g("s6", "writing") - 0.15, cam: I.wide },
@@ -26,7 +26,7 @@ const SH = [
 
 run("self-pay-discount", (t) => {
   const wrong = t < s("s4");
-  I.set(t, { amount: wrong ? "$11,200" : "CASH PRICE", stamp: wrong ? "LIST PRICE" : "IN WRITING", stampHex: wrong ? RED : GREEN, tear: 0, cheer: wrong ? 0 : 1 });
+  I.set(t, { amount: wrong ? "$11,200" : "$6,100", stamp: wrong ? "DUE NOW" : "AGREED", stampHex: wrong ? RED : GREEN, tear: 0, cheer: wrong ? 0 : 1 });
   E.set(t, { label: "LIST PRICE", hex: RED, slump: 0.7, type: 0.2, p: 0.3 });
   Ph.set(t, { phone: 1 });
   M.set(t, { a: { nod: 1 }, b: { nod: 1 } });
