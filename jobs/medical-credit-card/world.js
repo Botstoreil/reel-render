@@ -26,7 +26,7 @@ const SH = [
 
 run("medical-credit-card", (t) => {
   const wrong = t < s("s4");
-  I.set(t, { amount: "0% FOR 12 MO", stamp: "READ TERMS", stampHex: VIOLET, tear: 0 });
+  I.set(t, { amount: "0% PROMO", stamp: "READ IT", stampHex: VIOLET, tear: 0 });
   E.set(t, { label: "INTEREST", hex: RED, slump: 0.7, type: 0.2, p: ((t - s("s2")) % 5) / 5 });
   Ph.set(t, { phone: 1, shrug: t > s("s2") && wrong ? 0.4 : 0 });
   M.set(t, { a: { nod: 1 }, b: { nod: 1 } });
