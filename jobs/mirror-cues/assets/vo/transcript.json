@@ -1,0 +1,50 @@
+[
+  {
+    "text": "Many",
+    "start": 0.05,
+    "end": 0.22,
+    "id": "w0"
+  },
+  {
+    "text": "students",
+    "start": 0.22,
+    "end": 0.58,
+    "id": "w1"
+  },
+  {
+    "text": "copy",
+    "start": 0.67,
+    "end": 0.88,
+    "id": "w2"
+  },
+  {
+    "text": "your",
+    "start": 0.88,
+    "end": 1.1,
+    "id": "w3"
+  },
+  {
+    "text": "body,",
+    "start": 1.1,
+    "end": 1.43,
+    "id": "w4"
+  },
+  {
+    "text": "not",
+    "start": 1.43,
+    "end": 1.59,
+    "id": "w5"
+  },
+  {
+    "text": "your",
+    "start": 1.59,
+    "end": 1.81,
+    "id": "w6"
+  },
+  {
+    "text": "words.",
+    "start": 1.81,
+    "end": 2.12,
+    "id": "w7"
+  }
+]
