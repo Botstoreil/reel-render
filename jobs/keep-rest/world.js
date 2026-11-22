@@ -63,7 +63,7 @@ function present(focusY = 1000, dim = 0) {
 const scene = new THREE.Scene();
 const BGC = 0x2c2436;
 scene.background = new THREE.Color(BGC);
-scene.fog = new THREE.Fog(BGC, 9, 24);
+scene.fog = new THREE.Fog(BGC, 14, 40);
 {
   const pm = new THREE.PMREMGenerator(renderer);
   scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture;
@@ -219,13 +219,14 @@ function fit(pts, dirArr, bx) {
   return { look, dir, dist };
 }
 // [points, direction, screen box, orbit amount, focus y]
-const PLAN_PTS = () => boxPts(-2.8, 2.8, 0.8, 2.6, -0.5, 0.5);
+const PLAN_PTS = () => boxPts(-2.8, 2.8, 0.9, 2.0, -0.5, 0.5);
+const CLOCK_Y = 2.7;
 const SHOTS = {
-  s1: () => fit(boxPts(-2.8, 2.8, 0.8, 4.6, -0.5, 0.5), [0.25, 0.18, 1], [110, 620, 930, 1440]),
+  s1: () => fit(boxPts(-2.8, 2.8, 0.9, 3.1, -0.5, 0.5), [0.25, 0.18, 1], [70, 560, 1010, 1110]),
   s2: () => fit(boxPts(-1.1, 1.1, 0, 0.5, -0.4, 0.4), [0.35, 0.7, 1], [130, 900, 950, 1300]),
   s3: () => fit(boxPts(-2.4, 2.4, 0, 2.4, -0.3, 0.3), [-0.15, 0.22, 1], [100, 640, 940, 1420]),
-  s4: () => fit(PLAN_PTS(), [-0.2, 0.25, 1], [110, 700, 930, 1300]),
-  s5: () => fit(boxPts(-2.8, 2.8, 0.8, 4.6, -0.5, 0.5), [0.2, 0.2, 1], [110, 620, 930, 1440]),
+  s4: () => fit(PLAN_PTS(), [-0.2, 0.25, 1], [70, 760, 1010, 1110]),
+  s5: () => fit(boxPts(-2.8, 2.8, 0.9, 3.1, -0.5, 0.5), [0.2, 0.2, 1], [70, 560, 1010, 1100]),
   s6: () => fit(boxPts(-1.1, 1.1, 0, 1.0, -0.4, 0.4), [0.3, 0.45, 1], [140, 820, 940, 1360]),
   s7: () => fit(boxPts(-1.1, 1.1, 0, 0.5, -0.4, 0.4), [0.1, 1.2, 1], [180, 1000, 900, 1400]),
   s8: () => fit(boxPts(-0.6, 0.6, 0, 1.0, -0.6, 0.6), [0, 0.3, 1], [400, 380, 680, 760]),
@@ -333,14 +334,14 @@ function frame(t) {
   let focusY = 1000, dim = 0;
 
   if (id === "s1") {
-    clockG.visible = true; clockG.position.set(0, 3.9, -0.3);
+    clockG.visible = true; clockG.position.set(0.4, CLOCK_Y, -0.3); clockG.scale.setScalar(0.8);
     const spin = u * 9; minH.rotation.z = -spin; hourH.rotation.z = -spin / 12;
     const fall = sm(U("rest") - 0.05, U("save") + 0.25, u);
     L.pos = planRow([
       { c: C3.violet, w: 1.35 }, { c: C3.violet, w: 1.2 }, { c: C3.violet, w: 1.0 },
       { c: fall > 0.05 ? C3.red : C3.green, w: 0.95, dx: 0.9 * fall, dy: -2.2 * fall * fall, rot: -1.3 * fall, a: 1 },
     ]);
-    L.fall = fall; focusY = 1050;
+    L.fall = fall; focusY = 880;
   }
   if (id === "s2") {
     const br = 0.5 + 0.5 * Math.sin(u * 2.4);
@@ -372,10 +373,10 @@ function frame(t) {
     L.pos = planRow([{ c: C3.violet, w: 1.35 }, { c: C3.violet, w: 1.2 }, { c: C3.violet, w: 1.0 }, { c: C3.green, w: 0.95, a: cl(R) }]);
     const D = sm(U("protected") - 0.25, U("protected") + 0.15, u);
     dome.visible = D > 0.01; dome.position.copy(L.pos[3]).add(V(0, 1.6 * (1 - D) + 0.02, 0)); dome.material.opacity = 0.55 * D;
-    L.D = D; focusY = 1000;
+    L.D = D; focusY = 900;
   }
   if (id === "s5") {
-    clockG.visible = true; clockG.position.set(1.9, 3.95, -0.3);
+    clockG.visible = true; clockG.position.set(1.9, CLOCK_Y, -0.3); clockG.scale.setScalar(0.8);
     const spin = u * 6; minH.rotation.z = -spin; hourH.rotation.z = -spin / 12;
     const pop = sm(U("pose") - 0.1, U("middle") + 0.2, u);
     const close = sm(U("middle") + 0.05, U("instead") + 0.25, u);
@@ -384,7 +385,7 @@ function frame(t) {
       { c: pop > 0.08 ? C3.orange : C3.violet, w: 0.85, dy: 2.4 * pop * pop, rot: 0.5 * pop, a: 1 - sm(0.8, 1, pop) },
       { c: C3.violet, w: 1.0, dx: -0.42 * close }, { c: C3.green, w: 0.95, dx: -0.42 * close },
     ]);
-    L.pop = pop; L.close = close; focusY = 1050;
+    L.pop = pop; L.close = close; focusY = 880;
   }
   if (id === "s6") {
     const k1 = sm(U("come") - 0.15, U("up") + 0.15, u), k2 = sm(U("slowly") - 0.05, U("end") + 0.35, u);
@@ -413,10 +414,10 @@ function frame(t) {
 
   // ---------- overlay ----------
   if (id === "s1") {
-    const [cx, cy] = scr(V(0, 3.9, -0.3));
-    tag("RUNNING LATE", cx, cy + 150, ORANGE, sm(0, 0.3, u), 40);
+    const [cx, cy] = scr(V(0.4, CLOCK_Y, -0.3));
+    tag("RUNNING LATE", cx - 300, cy, ORANGE, sm(0, 0.3, u), 40);
     const names = ["WARM UP", "FLOW", "PEAK", "REST"];
-    L.pos.forEach((p, i) => { const [X, Y] = scr(p); tag(names[i], X, Y + 95, i === 3 ? (L.fall > 0.05 ? RED : GREEN) : VIOLET, (i === 3 ? 1 - sm(0.4, 0.8, L.fall) : 1) * sm(0.05, 0.35, u), 30); });
+    L.pos.forEach((p, i) => { const [X, Y] = scr(p); tag(names[i], X, Y, i === 3 ? (L.fall > 0.05 ? RED : GREEN) : VIOLET, (i === 3 ? 1 - sm(0.4, 0.8, L.fall) : 1) * sm(0.05, 0.35, u), 30); });
     words(["NEVER CUT", "THE FINAL REST"], RED, 380, 0.0, 1, 140, Math.max(flash(u, 0.05), flash(u, U("never"))));
   }
   if (id === "s2") {
@@ -430,18 +431,18 @@ function frame(t) {
   }
   if (id === "s4") {
     const names = ["WARM UP", "FLOW", "PEAK", "REST"];
-    L.pos.forEach((p, i) => { const [X, Y] = scr(p); tag(names[i], X, Y + 90, i === 3 ? GREEN : VIOLET, i === 3 ? sm(U("last"), U("five"), u) : sm(-0.05, 0.25, u), 30); });
+    L.pos.forEach((p, i) => { const [X, Y] = scr(p); tag(names[i], X, Y, i === 3 ? GREEN : VIOLET, i === 3 ? sm(U("last"), U("five"), u) : sm(-0.05, 0.25, u), 30); });
     const [rx, ry] = scr(L.pos[3]);
-    tag("LAST 5 MIN", rx, ry - 170, GREEN, sm(U("five") - 0.1, U("minutes") + 0.1, u), 36);
-    lockIcon(CX, 1330, back(U("protected") - 0.1, U("protected") + 0.3, u), L.D, GREEN);
+    tag("LAST 5 MIN", rx, ry - 150, GREEN, sm(U("five") - 0.1, U("minutes") + 0.1, u), 36);
+    lockIcon(rx, ry - 300, 0.8 * back(U("protected") - 0.1, U("protected") + 0.3, u), L.D, GREEN);
     words(["PROTECT THE", "LAST 5 MINUTES"], GREEN, 380, 0.0, 1, 140, flash(u, U("protected")) * 0.6);
   }
   if (id === "s5") {
-    const [cx, cy] = scr(V(1.9, 3.95, -0.3));
+    const [cx, cy] = scr(V(1.9, CLOCK_Y, -0.3));
     tag("RUN OVER?", cx - 330, cy, ORANGE, sm(U("run") - 0.1, U("over") + 0.1, u), 40);
     const names = ["WARM", "POSE", "POSE", "PEAK", "REST"];
-    L.pos.forEach((p, i) => { if (i === 2 && L.pop > 0.3) return; const [X, Y] = scr(p); tag(names[i], X, Y + 90, i === 4 ? GREEN : VIOLET, sm(-0.05, 0.25, u), 26); });
-    tag("CUT FROM THE MIDDLE", CX, 1330, ORANGE, sm(U("middle") - 0.05, U("middle") + 0.2, u), 40);
+    L.pos.forEach((p, i) => { if (i === 2 && L.pop > 0.3) return; const [X, Y] = scr(p); tag(names[i], X, Y, i === 4 ? GREEN : VIOLET, sm(-0.05, 0.25, u), 26); });
+    tag("CUT FROM THE MIDDLE", CX, 1180, ORANGE, sm(U("middle") - 0.05, U("middle") + 0.2, u), 40);
     words(["CUT A POSE", "INSTEAD"], GREEN, 380, 0.0, 1, 140, flash(u, U("instead")) * 0.6);
   }
   if (id === "s6") {
