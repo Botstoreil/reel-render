@@ -19,14 +19,14 @@ const SH = [
   { at: s("s2"), cam: M.onA }, { at: g("s2", "even") - 0.15, cam: M.wide },
   { at: s("s3"), cam: I.close }, { at: g("s3", "much") - 0.15, cam: I.wide },
   { at: s("s4"), cam: E.wide }, { at: g("s4", "EOB") - 0.15, cam: E.screen },
-  { at: s("s5"), cam: E.face }, { at: g("s5", "federal") - 0.15, cam: E.wide },
+  { at: s("s5"), cam: E.face }, { at: g("s5", "federal") - 0.15, cam: E.screen },
   { at: s("s6"), cam: Ph.close }, { at: g("s6", "call") - 0.15, cam: Ph.wide },
   { at: s("s7"), cam: M.wide },
 ];
 
 run("surprise-er-bill", (t) => {
   const wrong = t < s("s4");
-  I.set(t, { amount: "$6,300", stamp: "OUT OF NETWORK", stampHex: RED, tear: 0, slump: 0.5 });
+  I.set(t, { amount: "$6,300", stamp: "BALANCE", stampHex: RED, tear: 0, slump: 0.5 });
   E.set(t, { label: "EOB", hex: GREEN, slump: 0, type: 0.8, p: ((t - s("s4")) % 4) / 4 });
   Ph.set(t, { phone: 1 });
   M.set(t, { a: { nod: 1 }, b: { nod: 1 } });
