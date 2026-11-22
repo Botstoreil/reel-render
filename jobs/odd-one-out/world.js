@@ -85,7 +85,7 @@ const WALL_Z = -4;
   // outside: a simple clay city on a hill under blue sky
   const cityM = [0xff9f7a, 0xffd36e, 0x9ad0ff, 0xc6a6ff, 0x8fe0b0];
   for (let i = 0; i < 9; i++) { const h = 1.2 + ((i * 37) % 5) * 0.45; const b = rbox(0.9, h, 0.9, 0.18, clay(cityM[i % 5])); b.position.set(-4.2 + i * 0.85, 0.8 + h / 2, -9 - (i % 3) * 0.8); }
-  const hill = add(new THREE.Mesh(new THREE.SphereGeometry(6, 32, 16), clay(0x86d27a))); hill.scale.set(2, 0.35, 1); hill.position.set(-1, 0.2, -11);
+  const hill = add(new THREE.Mesh(new THREE.SphereGeometry(6, 32, 16), clay(0x86d27a))); hill.scale.set(2, 0.35, 1); hill.position.set(-1, -1.5, -11); // round 1: hill filled the whole window green
   for (const [cx, cy] of [[-2.6, 4.6], [0.4, 5.2]]) { const g = new THREE.Group(); for (const [dx, r] of [[0, 0.5], [0.5, 0.4], [-0.5, 0.38]]) { const s = new THREE.Mesh(new THREE.SphereGeometry(r, 24, 16), clay(0xffffff, 1)); s.position.x = dx; g.add(s); } g.position.set(cx, cy, -12); scene.add(g); }
 }
 // bed under the window
@@ -139,7 +139,7 @@ const lensRing3 = new THREE.Mesh(new THREE.TorusGeometry(0.055, 0.012, 12, 40), 
   rbox(0.05, 0.03, 0.09, 0.012, clay(0xd0d0d0, 0.6), chG).position.set(0.24, -0.53, 0.72);
 }
 function placeCharger(out = 0, turn = 0) {
-  chG.position.copy(SOCK).add(V(0.55 * out, -0.1 * out, 0.4 * out));
+  chG.position.copy(SOCK).add(V(0.55 * out, -0.41 * out, 0.4 * out)); // unplugged = set down on the floor, not floating
   chG.rotation.set(0, Math.PI * turn, 0);
   chG.updateMatrixWorld(true);
 }
@@ -217,7 +217,7 @@ const SHOTS = {
   s5: () => fit(CH, [-0.25, 0.1, 1], [250, 640, 830, 1250]),
   s6: () => fit(boxPts(SOCK.x - 0.4, SOCK.x + 0.8, 0.0, 0.9, WALL_Z, WALL_Z + 0.9), [0.3, 0.15, 1], [140, 600, 940, 1300]),
   s7: () => fit(WIDE, [0.0, 0.3, 1], [70, 600, 1010, 1440]),
-  s8: () => fit(CH, [0.1, 0.1, 1], [380, 380, 700, 760]),
+  s8: () => fit(CH, [0.1, 0.1, 1], [380, 350, 700, 710]),
 };
 const ORBIT = { s1: 0.16, s2: 0.2, s2b: 0.12, s3: 0.14, s4: -0.14, s5: 0.12, s6: -0.1, s7: 0.08, s8: 0.3 };
 const shotCache = {};
@@ -325,6 +325,7 @@ function frame(t) {
   } else chG.scale.setScalar(1);
   if (id === "s2") {
     ceilG.visible = shotKey === "s2";
+    head.rotation.x = -0.45; // the guest looks up at the detectors
     const blink = (u * 2) % 1 > 0.5 ? 1 : 0;
     ledMats[0].color.set(blink ? 0xff2a3a : 0x55151a); ledMats[1].color.set(blink ? 0x55151a : 0xff2a3a);
     if (shotKey === "s2b") {
@@ -419,14 +420,14 @@ function frame(t) {
   if (id === "s8") {
     const [c1 = "DOWNLOAD", c2 = "HIDDEN CAM"] = BRAND.cta || [];
     const k = back(0.0, 0.4, u);
-    x.save(); x.translate(CX, 565); x.scale(Math.max(0.01, k), Math.max(0.01, k));
+    x.save(); x.translate(CX, 530); x.scale(Math.max(0.01, k), Math.max(0.01, k));
     x.strokeStyle = INK; x.lineWidth = 22; x.beginPath(); x.arc(0, 0, 220, 0, Math.PI * 2); x.stroke();
     x.strokeStyle = "#8fb0ff"; x.lineWidth = 12; x.stroke();
     x.strokeStyle = GREEN; x.lineWidth = 12; x.lineCap = "round"; x.beginPath(); x.arc(0, 0, 252, u * 2, u * 2 + 1.4); x.stroke();
     x.restore();
-    words([c1], WHITE, 900, 0.15, 1, 130);
-    words([c2], "#8fb0ff", 1050, 0.3, 1, 150);
-    if (BRAND.sub) tag(BRAND.sub, CX, 1210, GREEN, sm(0.5, 0.75, u), 50);
+    words([c1], WHITE, 870, 0.15, 1, 130);
+    words([c2], "#8fb0ff", 1020, 0.3, 1, 150);
+    if (BRAND.sub) tag(BRAND.sub, CX, 1165, GREEN, sm(0.5, 0.75, u), 50); // clear of the caption pill at ~1290
   }
 }
 
