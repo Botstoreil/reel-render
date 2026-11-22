@@ -1,0 +1,8 @@
+s1|There's a pothole in your lane. Never stare at it.
+s2|Your eyes lock on it, and the bike follows your eyes.
+s3|You ride straight into the thing you were trying to miss.
+s4|Spot it early, then move your eyes to the clear line past it.
+s5|Turn your head and look where you want the bike to go.
+s6|Smooth inputs, and the bike follows you around it.
+s7|Your bike goes where you look. Look at the way out.
+s8|Download Apex. Three full rides a month are free.
