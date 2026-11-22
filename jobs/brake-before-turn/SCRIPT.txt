@@ -1,0 +1,8 @@
+s1|A tight corner is coming up. Never grab the brakes in it.
+s2|You come in too fast and brake hard in the middle of the turn.
+s3|The bike stands up and runs wide, toward the edge of the road.
+s4|Do your braking early, while the bike is still straight.
+s5|Set your speed before the turn, then look through it.
+s6|Roll on the throttle gently, and the bike holds its line.
+s7|Slow in, smooth out. Brake before the bend.
+s8|Download Apex. Three full rides a month are free.
