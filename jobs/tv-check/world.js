@@ -126,9 +126,9 @@ function burst(txt, X, Y, k, rot = -0.12, px = 92, fillC = YELLOW, txtC = RED) {
 }
 const pop = (u, t0, hold = 99) => (u < t0 ? 0 : back(t0, t0 + 0.28, u) * (1 - sm(t0 + hold, t0 + hold + 0.2, u)));
 // speed lines from a point (motion / impact)
-function speed(X, Y, r0, r1, n, a, seed = 1) {
+function speed(X, Y, r0, r1, n, a, seed = 1, color = INK) {
   if (a <= 0) return;
-  x.save(); x.globalAlpha *= a; ink(6);
+  x.save(); x.globalAlpha *= a; ink(6); x.strokeStyle = color;
   for (let i = 0; i < n; i++) { const an = (i / n) * TAU + hs(i + seed) * 0.2, rr0 = r0 * (0.9 + hs(i * 3 + seed) * 0.3); x.beginPath(); x.moveTo(X + Math.cos(an) * rr0, Y + Math.sin(an) * rr0); x.lineTo(X + Math.cos(an) * r1, Y + Math.sin(an) * r1); x.stroke(); }
   x.restore();
 }
@@ -348,7 +348,7 @@ function frame(t) {
     };
   }
   if (id === "s7") {
-    inner = () => { tv(CX, 800, 620, 360, 1, GREEN, 0); beamTo(840, 1300, CX, 800, 240, 0.9); };
+    inner = () => speed(CX, 840, 260, 900, 40, 0.35, 9, "#ffd21a");
   }
 
   x.save(); x.translate(CX, 880); x.scale(z, z); x.translate(-CX, -880); x.translate(0, 40);
@@ -374,7 +374,6 @@ function frame(t) {
     words(["OR TURN IT"], GREEN, 380, sw, sm(sw - 0.05, sw, u), 135);
   }
   if (id === "s7") {
-    x.save(); x.fillStyle = "rgba(251,241,216,0.72)"; x.fillRect(0, 0, 1080, 1920); x.restore();
     words(["LIGHTS OFF."], ORANGE, 700, 0.0, 1, 150, flash(u, 0.05));
     words(["LIGHT ON THE SCREEN"], ORANGE, 890, at("s7", "light", 2) - 0.05, 1, 115, flash(u, at("s7", "screen")));
   }
