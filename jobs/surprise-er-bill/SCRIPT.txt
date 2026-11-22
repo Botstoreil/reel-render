@@ -1,0 +1,8 @@
+s1|Got an out-of-network bill after an emergency? Never pay it as is.
+s2|The ER doctor may not be in your plan, even if the hospital is.
+s3|The bill can ask for much more than your plan's share.
+s4|Instead, check your EOB for what your plan says you owe.
+s5|For emergency care, federal law limits you to your in-network cost sharing.
+s6|If they still bill more, call the No Surprises Help Desk.
+s7|Check your EOB. Report the extra.
+s8|Save this for the next bill you get.
