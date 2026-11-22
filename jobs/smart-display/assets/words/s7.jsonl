@@ -1,2 +1,2 @@
-{"type":"words","model":"small.en","words":[{"text":"Better","start":0,"end":0.286},{"text":"closed,","start":0.286,"end":0.619},{"text":"plug","start":0.619,"end":0.81},{"text":"out.","start":0.81,"end":1}],"through":1}
-{"type":"words","model":"small.en","words":[],"through":1.1544375}
+{"type":"words","model":"small.en","words":[{"text":"Better","start":0,"end":0.261},{"text":"closed,","start":0.261,"end":0.565},{"text":"unplugged.","start":0.565,"end":1}],"through":1}
+{"type":"words","model":"small.en","words":[],"through":1.1758125}

@@ -362,7 +362,7 @@ function frame(t) {
   if (id === "s7") {
     x.save(); x.fillStyle = "rgba(11,8,32,0.5)"; x.fillRect(0, 0, 1080, 1920); x.restore();
     words(["SHUTTER CLOSED."], ORANGE, 560, 0.0, 1, 130, flash(u, 0.05));
-    words(["PLUG OUT."], ORANGE, 750, U("plug") - 0.05, 1, 150, flash(u, U("out")));
+    words(["UNPLUGGED."], ORANGE, 750, U("unplugged") - 0.05, 1, 150, flash(u, U("unplugged") + 0.1));
   }
   if (id === "s8") {
     const g = x.createRadialGradient(CX, 560, 130, CX, 560, 900);
