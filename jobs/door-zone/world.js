@@ -319,7 +319,7 @@ function frame(t) {
     L.Z = sm(U("close") - 0.15, U("doors") + 0.2, u);
     zoneMat.opacity = 0.45 * L.Z;
     DOOR.hinge.rotation.y = -0.18 * L.Z * (0.5 + 0.5 * Math.sin(u * 7)); // the door twitches: a hint of what is coming
-    shoot(id, u, d, [...bikePts(bx, 9), ...carPts(cars[0]), ...carPts(cars[2])], [...bikePts(bx, 6.5), ...carPts(cars[1]), ...carPts(cars[2])], [-0.25, 0.75, 1]);
+    shoot(id, u, d, [...bikePts(bx, 9), ...carPts(cars[0]), ...carPts(cars[1])], [...bikePts(bx, 6.5), ...carPts(cars[0]), ...carPts(cars[1])], [-0.25, 0.65, 1]);
   }
   if (id === "s2") {
     const Hg = sm(U("hug") - 0.1, U("cars") + 0.1, u);
@@ -350,13 +350,13 @@ function frame(t) {
     camera.position.x += Math.sin(u * 70) * sh; camera.position.y += Math.cos(u * 61) * sh;
   }
   if (id === "s4") {
-    bx = -0.4; bz = lerp(3, -6.2, cl(u / d));
+    bx = -0.4; bz = lerp(1.2, -4.6, cl(u / d));
     setBike(bx, bz, 0x2fd27a);
     const Op = sm(U("full") - 0.1, U("door's") + 0.3, u);
     DOOR.hinge.rotation.y = -1.05 * Op;
     zoneMat.opacity = 0.35; pathMat.opacity = 0.5 * sm(0, 0.4, u);
     L.Op = Op; L.Wd = sm(U("width") - 0.1, U("between") + 0.2, u);
-    shoot(id, u, d, [...bikePts(-0.4, 3), ...carPts(DOOR)], [...bikePts(-0.4, -6.2), ...carPts(DOOR)], [-0.15, 1.15, 0.9]);
+    shoot(id, u, d, [...bikePts(-0.4, 1.2), ...boxPts(CAR_SIDE, CARX + 0.9, 0, 1.5, -5.1, -1.9)], [...bikePts(-0.4, -4.6), ...boxPts(CAR_SIDE, CARX + 0.9, 0, 1.5, -5.1, -1.9)], [-0.15, 1.0, 0.9]);
   }
   if (id === "s5") {
     bx = -0.4; bz = lerp(-4, -10.5, cl(u / d));
@@ -439,7 +439,7 @@ function frame(t) {
   }
   if (id === "s6") {
     tag("COVER BRAKES", bikeTop[0] + 150, bikeTop[1] - 50, VIOLET, L.Cv, 40);
-    bars(250, 1140, lerp(0.95, 0.45, L.Sp), sm(U("keep") - 0.2, U("keep"), u), L.Sp > 0.5 ? GREEN : ORANGE, 0.9);
+    bars(790, 1150, lerp(0.95, 0.45, L.Sp), sm(U("keep") - 0.2, U("keep"), u), L.Sp > 0.5 ? GREEN : ORANGE, 0.9);
     check(bikeTop[0] + 140, bikeTop[1] - 160, back(U("row") - 0.05, U("row") + 0.3, u) * 0.6, sm(U("row") - 0.05, U("row") + 0.1, u));
     const sw = U("keep") - 0.12;
     words(["COVER YOUR", "BRAKES"], VIOLET, 400, 0.0, 1 - sm(sw - 0.08, sw, u), 140);
