@@ -127,10 +127,10 @@ function ad(H, tau) {
   g.addColorStop(0, "#fffaf0"); g.addColorStop(1, CREAM); x.fillStyle = g; x.fillRect(0, 0, 400, H);
   x.textAlign = "center"; x.textBaseline = "middle";
   // hook: counter 0 -> 56 (the app's own number, from its store page) + "POSES"
-  const n = Math.round(56 * sm(0.1, 1.2, tau));
+  const n = Math.round(lerp(12, 56, sm(0.1, 1.2, tau)));
   const hk = back(0, 0.35, tau);
   x.save(); x.translate(200, 110); x.scale(hk, hk);
-  x.fillStyle = DKG; x.font = SERIF(84); x.fillText(`${n} poses`, 0, 0);
+  x.fillStyle = DKG; x.font = SERIF(68); x.fillText(`${n} poses`, 0, 0);
   x.fillStyle = SAGE; x.font = SERIF(34); x.globalAlpha = sm(0.9, 1.3, tau); x.fillText("fully explained", 0, 62);
   x.restore();
   // hero: one figure flowing mountain -> warrior -> tree -> mountain
@@ -184,17 +184,17 @@ function frame(t) {
   const tau = t - adStart;
 
   if (id === "s1") {
-    const a = sm(0.15, 0.6, u), w = 380;
-    phone(CX, 560 + (1 - a) * 80, w, WHITE, (H) => still(H, 0, 0), a);
+    const a = sm(0.15, 0.6, u), w = 360;
+    phone(CX, 610 + (1 - a) * 80, w, WHITE, (H) => still(H, 0, 0), a);
   }
   if (id === "s2") {
     const sc = sm(at("s2", "scroll") - 0.05, at("s2", "past") + 0.15, u), ret = sm(at("s2", "still") - 0.25, at("s2", "still") + 0.1, u);
     const dy = -1200 * sc * (1 - ret) ;
     const grey = sm(at("s2", "still") - 0.1, at("s2", "screen"), u);
-    phone(CX, 560, 380, mix(WHITE, RED, grey), (H) => {
+    phone(CX, 610, 360, mix(WHITE, RED, grey), (H) => {
       // the feed: other grey posts around the screenshot
       x.fillStyle = "#1c1c24"; x.fillRect(0, 0, 400, H);
-      for (let i = -2; i <= 2; i++) if (i) { x.fillStyle = "#2c2c38"; rr(10, i * (H + 20) + dy + 10, 380, H - 20, 20); x.fill(); }
+      for (let i = -2; i <= 2; i++) if (i) { const Y0 = i * (H + 20) + dy; x.fillStyle = "#3a3a4c"; rr(10, Y0 + 10, 380, H - 20, 20); x.fill(); x.fillStyle = "#55556c"; for (let b = 0; b < 4; b++) { rr(40, Y0 + 80 + b * 190, 320, 120, 14); x.fill(); } }
       x.save(); x.translate(0, dy); still(H, grey, 0); x.restore();
     });
     // a thumb swiping up
@@ -209,9 +209,9 @@ function frame(t) {
   }
   if (["s3", "s4", "s5"].includes(id)) {
     const grow = sm(adStart - 0.1, adStart + 0.4, t);
-    const w = lerp(380, 430, grow);
+    const w = lerp(360, 430, grow);
     const flip = sm(at("s3", "now") - 0.2, at("s3", "now") + 0.15, id === "s3" ? u : 9);
-    phone(CX, lerp(560, 470, grow), w, mix(WHITE, GREEN, flip), (H) => {
+    phone(CX, lerp(610, 470, grow), w, mix(WHITE, GREEN, flip), (H) => {
       if (flip < 1) still(H, 1 - flip, 0);
       if (flip > 0) { x.save(); x.globalAlpha = flip; ad(H, Math.max(0, tau - at("s3", "now"))); x.restore(); }
     });
@@ -225,29 +225,28 @@ function frame(t) {
     }
   }
   if (id === "s6") {
-    phone(CX, 520, 300, VIOLET, (H) => ad(H, 1.8 + u), 0.35);
   }
 
   if (id === "s1") {
-    words(["YOUR APP DESERVES"], WHITE, 330, 0.0, 1, 110);
-    words(["MORE THAN", "SCREENSHOTS"], RED, 470, at("s1", "more") - 0.05, 1, 120, flash(u, at("s1", "screenshots")));
+    words(["YOUR APP DESERVES"], WHITE, 290, 0.0, 1, 110);
+    words(["MORE THAN", "SCREENSHOTS"], RED, 450, at("s1", "more") - 0.05, 1, 120, flash(u, at("s1", "screenshots")));
   }
   if (id === "s2") words(["A STILL SCREEN"], RED, 380, 0.0, 1, 130, flash(u, at("s2", "still")) * 0.6);
   if (id === "s3") words(["NOW IT MOVES"], GREEN, 340, at("s3", "now") - 0.1, 1, 140, flash(u, at("s3", "moves")) * 0.5);
   if (id === "s4") words(["6 SECOND AD"], GREEN, 340, 0.0, 1, 130);
   if (id === "s5") {
-    x.save(); x.fillStyle = "rgba(8,6,34,0.6)"; x.fillRect(0, 0, 1080, 1920); x.restore();
+    x.save(); x.fillStyle = "rgba(8,6,34,0.78)"; x.fillRect(0, 0, 1080, 1920); x.restore();
     words(["STOP THE SCROLL."], ORANGE, 640, 0.0, 1, 140, flash(u, 0.05));
     words(["SHOW THE APP."], ORANGE, 830, at("s5", "show") - 0.05, 1, 150, flash(u, at("s5", "app")));
   }
   if (id === "s6") {
     x.save(); x.fillStyle = "rgba(8,6,34,0.55)"; x.fillRect(0, 0, 1080, 1920); x.restore();
     const [c1 = "ANIMATED ADS", c2 = "FOR YOUR APP"] = BRAND.cta || [];
-    words([c1], WHITE, 520, 0.05, 1, 140);
-    words([c2], VIOLET, 680, 0.2, 1, 140);
+    words([c1], WHITE, 560, 0.05, 1, 140);
+    words([c2], VIOLET, 720, 0.2, 1, 140);
     const cm = sm(at("s6", "comment") - 0.15, at("s6", "comment") + 0.1, u);
-    tag("COMMENT “APP”", CX, 900, GREEN, cm, 70);
-    if (BRAND.sub) tag("FOR A FREE SAMPLE AD", CX, 1050, WHITE, sm(at("s6", "free") - 0.2, at("s6", "free"), u), 46);
+    tag("COMMENT “APP”", CX, 940, GREEN, cm, 70);
+    if (BRAND.sub) tag("FOR A FREE SAMPLE AD", CX, 1090, WHITE, sm(at("s6", "free") - 0.2, at("s6", "free"), u), 54);
   }
 }
 
