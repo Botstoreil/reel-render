@@ -1,0 +1,8 @@
+s1|No insurance and a big hospital bill? Never pay before you ask one question.
+s2|The first bill often shows the hospital's full list prices.
+s3|Pay that, and you may pay more than the hospital accepts from others.
+s4|Instead, ask the billing office if there is a self-pay discount.
+s5|Also ask for their posted cash price for your services.
+s6|Get the new amount in writing before you pay.
+s7|Ask for the self-pay price. Get it in writing.
+s8|Save this for the next bill you get.
