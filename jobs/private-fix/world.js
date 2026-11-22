@@ -275,7 +275,7 @@ function frame(t) {
       pointer(880, 900, 0.42, 560, 950, Cl, RED);
     };
     over = () => {
-      tag("RISKY KNEE", 400, 1190, ORANGE, Rk, 38);
+      tag("RISKY KNEE", 500, 600, ORANGE, Rk * (1 - Cl), 40);
       bubble("HEY YOU! YOUR KNEE!", 520, 610, Cl, 860, 740, 42, RED);
     };
   }
@@ -292,7 +292,7 @@ function frame(t) {
       person(CX + 30 + tr, FY + 10, pose(P.risky, P.stiff, St), 0.85, St > 0.5 ? ORANGE : VIOLET, { blush: Em, sweat: St });
     };
     over = () => {
-      tag("SINGLED OUT", CX, 1190, RED, sm(at("s2", "singled") - 0.1, at("s2", "singled") + 0.15, u), 42);
+      tag("SINGLED OUT", CX, 575, RED, sm(at("s2", "singled") - 0.1, at("s2", "singled") + 0.15, u), 42);
       tag("STIFF", 220, 660, ORANGE, St, 44);
       tag("EMBARRASSED", 740, 660, RED, Em, 40);
     };
@@ -332,7 +332,7 @@ function frame(t) {
     };
     over = () => {
       bubble("KNEE OVER ANKLE!", 560, 650, Cu, 230, 880, 44);
-      tag("NO NAME", 650, 1190, GREEN, sm(at("s4", "without") - 0.1, at("s4", "name") + 0.1, u), 42);
+      tag("NO NAME", 800, 790, GREEN, sm(at("s4", "without") - 0.1, at("s4", "name") + 0.1, u), 42);
     };
   }
   if (id === "s5") {
@@ -367,7 +367,7 @@ function frame(t) {
       stamp("v", 790, 640, back(at("s6", "working") - 0.1, at("s6", "working") + 0.25, u) * 0.6, Wo, GREEN);
       tag("STRONG ARMS!", 790, 770, GREEN, Wo, 38);
       burst("NICE!", 230, 640, pop(u, at("s6", "working") - 0.05, 0.9), -0.1, 70, YELLOW, GREEN);
-      tag("THEN: KNEE BACK", CX, 1190, ORANGE, sm(at("s6", "change") - 0.1, at("s6", "change") + 0.15, u), 40);
+      tag("THEN: KNEE BACK", 240, 830, ORANGE, sm(at("s6", "change") - 0.1, at("s6", "change") + 0.15, u), 34);
     };
   }
   if (id === "s7") {
