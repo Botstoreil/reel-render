@@ -315,7 +315,7 @@ function frame(t0) {
     bike(BX, BY, BS, 0.62 * L, RED, ICE, 0, 0, u * 5);
     therm(TX, 0.12, 1);
     tag("HARD LEAN", BX - 200, 760, RED, sm(U("hard") - 0.05, U("hard") + 0.2, u), 42);
-    tag("1ST BEND", BX + 120, 640, ORANGE, sm(U("first") - 0.05, U("bend") + 0.1, u), 40);
+    tag("1ST BEND", BX - 40, 640, ORANGE, sm(U("first") - 0.05, U("bend") + 0.1, u), 40);
     tag("COLD TYRES", TX - 40, 640, ICE, 1, 40);
   }
   if (id === "s3") {
@@ -338,7 +338,7 @@ function frame(t0) {
     bike(BX, BY, BS, 0.02 * Math.sin(u * 2.5), GREEN, mix(ICE, ORANGE, 0.15 * sm(0, d, u)), 0, 0, u * 2.5);
     therm(TX, lerp(0.12, 0.3, sm(0, d, u)), 1);
     const C = sm(U("first") - 0.15, U("first") + 0.1, u);
-    clock(170, 790, back(U("first") - 0.15, U("first") + 0.25, u) * 0.9, C, GREEN, 0.4 + 2.4 * sm(U("first"), d, u));
+    clock(150, 800, back(U("first") - 0.15, U("first") + 0.25, u) * 0.9, C, GREEN, 0.4 + 2.4 * sm(U("first"), d, u));
     tag("FIRST MINUTES", 230, 930, GREEN, sm(U("few") - 0.1, U("minutes") + 0.1, u), 40);
     tag("GENTLE", BX + 60, 600, GREEN, sm(U("gently") - 0.1, U("gently") + 0.15, u), 42);
   }
@@ -369,7 +369,7 @@ function frame(t0) {
     world(0.0, 1.6 * t, 0.3);
     bike(BX, BY, BS, 0.02 * Math.sin(u * 2), GREEN, ORANGE, 0, 0, u * 2.5);
     therm(TX, 0.88, 1);
-    dim = id === "s7" ? 0.55 : 0.72;
+    dim = id === "s7" ? 0.7 : 0.78;
   }
   x.restore();
   zoomM = [1, 0, 0, 1, 0, 0];
