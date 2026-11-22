@@ -271,7 +271,7 @@ function frame(t) {
     const fade = 1 - sm(at("s2", "can't") - 0.1, at("s2", "see") + 0.1, u);
     const [kx, ky] = Sp("kL"), [hx, hy] = Sp("hip"), [sx, sy] = Sp("sh");
     const I = pr(at("s2", "injury") - 0.1, 0.3), Pg = pr(at("s2", "pregnancy") - 0.1, 0.3), Bk = pr(at("s2", "sore") - 0.1, 0.3);
-    ring(kx, ky, 60, ORANGE, I, fade, 81); tag("INJURY", kx - 210, ky, ORANGE, Math.min(1, I * 2) * fade, 40);
+    ring(kx, ky, 60, ORANGE, I, fade, 81); tag("INJURY", kx - 200, ky - 90, ORANGE, Math.min(1, I * 2) * fade, 40);
     ring(hx + 10, (hy + sy) / 2 + 60, 72, ORANGE, Pg, fade, 82); tag("PREGNANCY", hx + 250, (hy + sy) / 2 + 60, ORANGE, Math.min(1, Pg * 2) * fade, 40);
     ring(hx, hy - 30, 60, ORANGE, Bk, fade, 83); tag("SORE BACK", hx - 240, hy - 120, ORANGE, Math.min(1, Bk * 2) * fade, 40);
     blindEye(CX, 560, 0.95, pr(at("s2", "can't") - 0.1, 0.45), RED);
@@ -320,8 +320,8 @@ function frame(t) {
     const E = sm(at("s6", "easier") - 0.15, at("s6", "option") + 0.2, u);
     arrow(470, 1000, 575, 1000, GREEN, E, 190);
     mat(740, 1240, 260, E, GREEN, 191); person(740, 1240, P.lowlunge, 0.85, GREEN, E, 195);
-    tag("EASIER OPTION", 740, 1330, GREEN, E, 38);
-    stamp("v", 740, 760, 0.55, pr(at("s6", "before") - 0.1, 0.4), GREEN);
+    tag("EASIER OPTION", 700, 720, GREEN, E, 38);
+    stamp("v", 522, 850, 0.5, pr(at("s6", "before") - 0.1, 0.4), GREEN);
   }
   if (id === "s7") {
     mat(CX, 1130, 260, 0.6, GREEN);
