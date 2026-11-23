@@ -22,7 +22,9 @@ const RED = "#ff2a3a", GREEN = "#3dff8a", VIOLET = "#a596ff", ORANGE = "#ff6a1a"
 const CX = 510;
 const cv = document.getElementById("world");
 const raw = cv.getContext("2d");
-const PAPER = "#fbfaf7", INKC = "#121212", ACCENT = "#ff3b30";
+// INKC is a light colour on purpose: lineColor() maps every light non-red colour to the black line (#121212);
+// passing #121212 itself would be read as a dark fill and turn into paper.
+const PAPER = "#fbfaf7", INK_OUT = "#121212", INKC = "#a596ff", ACCENT = "#ff3b30";
 let drawK = 1;
 function lineColor(v) {
   if (typeof v !== "string") return "rgba(0,0,0,0)";
@@ -31,7 +33,7 @@ function lineColor(v) {
   else { const m = v.match(/rgba?\(([^)]+)\)/); if (!m) return v; [r, g, b, a = 1] = m[1].split(",").map(Number); }
   if (0.3 * r + 0.59 * g + 0.11 * b < 70) return `rgba(251,250,247,${a})`;
   if (r > g + 60 && r > b + 60) return a < 1 ? `rgba(255,59,48,${a})` : ACCENT;
-  return a < 1 ? `rgba(18,18,18,${a})` : INKC;
+  return a < 1 ? `rgba(18,18,18,${a})` : INK_OUT;
 }
 const x = new Proxy(raw, {
   get(t, k) {
@@ -108,14 +110,14 @@ const ESC = [400, 720];            // the space beside the car ahead
 function street(a) {
   if (a <= 0) return;
   x.save(); x.globalAlpha = a; x.strokeStyle = INKC; x.lineWidth = 4; x.lineCap = "round";
-  x.beginPath(); x.moveTo(LL, 430); x.lineTo(LL, 1560); x.moveTo(LR, 430); x.lineTo(LR, 1560); x.stroke();
+  x.beginPath(); x.moveTo(LL, 540); x.lineTo(LL, 1560); x.moveTo(LR, 540); x.lineTo(LR, 1560); x.stroke();
   x.lineWidth = 5; x.beginPath(); x.moveTo(LL, STOP); x.lineTo(LR, STOP); x.stroke();
-  // traffic light on the corner, red on
-  x.lineWidth = 4; x.fillStyle = "rgba(8,6,34,1)"; rr(800, 440, 70, 180, 18); x.fill(); x.stroke();
-  x.beginPath(); x.moveTo(835, 620); x.lineTo(835, 700); x.stroke();
-  x.fillStyle = RED; x.beginPath(); x.arc(835, 478, 20, 0, Math.PI * 2); x.fill();
+  // traffic light on the corner, red on (below the stop line so it stays clear of the title)
+  x.lineWidth = 4; x.fillStyle = "rgba(8,6,34,1)"; rr(800, 570, 70, 180, 18); x.fill(); x.stroke();
+  x.beginPath(); x.moveTo(835, 750); x.lineTo(835, 820); x.stroke();
+  x.fillStyle = RED; x.beginPath(); x.arc(835, 608, 20, 0, Math.PI * 2); x.fill();
   x.strokeStyle = INKC; x.lineWidth = 3;
-  x.beginPath(); x.arc(835, 530, 20, 0, Math.PI * 2); x.stroke(); x.beginPath(); x.arc(835, 582, 20, 0, Math.PI * 2); x.stroke();
+  x.beginPath(); x.arc(835, 660, 20, 0, Math.PI * 2); x.stroke(); x.beginPath(); x.arc(835, 712, 20, 0, Math.PI * 2); x.stroke();
   x.restore();
 }
 // car seen from above, nose up
@@ -182,7 +184,7 @@ function sight(X, Y, a) {
   // mirror sight lines from the bike back to the lane behind
   if (a <= 0) return;
   x.save(); x.globalAlpha = a * 0.8; x.fillStyle = INKC;
-  for (const ex of [LL + 40, LR - 40]) for (let i = 1; i <= 8; i++) { const f = i / 8; x.beginPath(); x.arc(lerp(X, ex, f), lerp(Y + 40, 1420, f), 5, 0, Math.PI * 2); x.fill(); }
+  for (const ex of [LL + 40, LR - 40]) for (let i = 1; i <= 8; i++) { const f = i / 8; x.beginPath(); x.arc(lerp(X, ex, f), lerp(Y + 40, 1330, f), 5, 0, Math.PI * 2); x.fill(); }
   x.restore();
 }
 function eyesDown(X, Y, a, c) {
@@ -203,7 +205,8 @@ function frame(t) {
   const cut = 1 - sm(-LEAD, 0.22 - LEAD, u);
   let z = 1 + 0.04 * cl(u / Math.max(1, d)) + 0.05 * cut * cut, fx = CX, fy = 900;
   if (id === "s3") { z = lerp(1.0, 1.12, sm(0, d, u)); fy = 980; }
-  x.save(); x.translate(CX, 900); x.scale(z, z); x.translate(-fx, -fy);
+  // the diagram sits 100 px higher than the board so the cars stay clear of the caption pill (y 1240-1350)
+  x.save(); x.translate(CX, 800); x.scale(z, z); x.translate(-fx, -fy);
 
   if (id === "s1") {
     const a = sm(-0.05, 0.3, u);
@@ -263,7 +266,7 @@ function frame(t) {
     tag("BRAKE LIGHT", 820, 1130, RED, sm(at("s5", "flash") - 0.1, at("s5", "brake") + 0.1, u), 36);
     const M = sm(at("s5", "watch") - 0.1, at("s5", "mirrors") + 0.1, u);
     sight(BRt[0], BRt[1], M);
-    car(560, 1560, sm(at("s5", "watch") - 0.2, at("s5", "watch") + 0.1, u), INKC);
+    car(560, 1480, sm(at("s5", "watch") - 0.2, at("s5", "watch") + 0.1, u), INKC);
     tag("MIRRORS", 830, 1290, INKC, M, 40);
     gear("1", 820, 900, INKC, 1);
   }
@@ -273,7 +276,7 @@ function frame(t) {
     const CY = lerp(1560, 1150, k);
     car(BW[0], CY, 1, RED);
     speed(BW[0], CY, RED, 1 - sm(at("s6", "ahead"), at("s6", "ahead") + 0.3, u));
-    tag("NOT SLOWING", 820, 1330, RED, sm(at("s6", "not") - 0.1, at("s6", "slowing") + 0.1, u), 36);
+    tag("NOT SLOWING", 820, 1270, RED, sm(at("s6", "not") - 0.1, at("s6", "slowing") + 0.1, u), 36);
     const P = sm(at("s6", "ride") - 0.25, at("s6", "ride") + 0.15, u);
     dots(BRt[0], BRt[1] - 110, ESC[0], ESC[1] - 40, INKC, P, P);
     const m = sm(at("s6", "into") - 0.05, at("s6", "ahead") + 0.1, u);
