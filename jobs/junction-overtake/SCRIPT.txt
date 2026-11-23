@@ -1,0 +1,8 @@
+s1|A slow car ahead, and a side road on the left? Never overtake here.
+s2|You pull out to pass the car, right as you reach the junction.
+s3|It turns left across your path, and there is no room to stop.
+s4|Instead, stay behind it until you are past the junction.
+s5|Watch its indicator, its wheels and the driver's head.
+s6|Overtake only on a clear straight, with room to pull back in.
+s7|No passing at junctions. Wait for a clear straight.
+s8|Download Apex. Three full rides a month are free.
