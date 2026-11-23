@@ -1,0 +1,8 @@
+s1|Need to stop fast? Never grab the front brake in one go.
+s2|Without ABS, a sudden grab can lock the front wheel.
+s3|The front tyre skids, and the bike goes down.
+s4|Instead, squeeze the lever, then press harder as the bike slows.
+s5|Use the rear brake too, and keep the bike straight and upright.
+s6|Eyes up. Look where you want to stop, not at the car.
+s7|Squeeze, don't grab. Stay straight, look ahead.
+s8|Download Apex. Three full rides a month are free.
