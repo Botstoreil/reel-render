@@ -145,7 +145,7 @@ function plant(X, Y, s, a = 1, o = {}) {
   // wire out of the back of the pot
   if ((o.wire || 0) > 0) {
     ink(14); x.beginPath(); const N = 30;
-    for (let i = 0; i <= N * o.wire; i++) { const k = i / N; const px = 60 + 260 * k, py = -20 + 60 * k + 20 * Math.sin(k * 7); i ? x.lineTo(px, py) : x.moveTo(px, py); }
+    for (let i = 0; i <= N * o.wire; i++) { const k = i / N; const px = 50 + 230 * k, py = -50 - 70 * k + 18 * Math.sin(k * 7); i ? x.lineTo(px, py) : x.moveTo(px, py); }
     x.stroke(); x.strokeStyle = RED; x.lineWidth = 7; x.stroke();
   }
   // leaves (back to front) from the top of the pot
@@ -166,12 +166,15 @@ function plant(X, Y, s, a = 1, o = {}) {
     x.restore();
   }
   // tiny light at the base of the leaves
-  if ((o.light || 0) > 0) { shape(() => circ(-34, -170, 11), mix("#551111", "#ff2a2a", o.light), 4); }
   // pot
   const pot = () => { x.beginPath(); x.moveTo(-95, -150); x.lineTo(95, -150); x.lineTo(68, 0); x.lineTo(-68, 0); x.closePath(); };
   shape(pot, o.pot || "#d4663a", 10); shade(pot, [-95, -150, 190, 150], INK, 0.35, 14, 6);
   shape(() => rr(-108, -170, 216, 36, 10), o.pot || "#d4663a", 10);
   if ((o.hole || 0) > 0) { x.save(); x.globalAlpha *= cl(o.hole * 2); shape(() => circ(-28, -78, 12), INK, 3); x.restore(); }
+  if ((o.light || 0) > 0) { // tiny light at the base of the leaves, drawn over the rim so it is never hidden
+    x.save(); x.globalAlpha *= cl(o.light * 1.5); x.shadowColor = "#ff2a2a"; x.shadowBlur = 30 * o.light;
+    shape(() => circ(-40, -192, 15), mix("#551111", "#ff2a2a", o.light), 4); x.restore();
+  }
   x.restore();
 }
 const lensPos = (X, Y, s) => [X + 18 * s, Y - 270 * s];
@@ -321,11 +324,11 @@ function frame(t) {
   }
   if (id === "s5") {
     const Wr = sm(at("s5", "wires") - 0.1, at("s5", "wires") + 0.35, u), H = sm(at("s5", "hole") - 0.15, at("s5", "hole") + 0.1, u), Lt = sm(at("s5", "light") - 0.15, at("s5", "light") + 0.1, u);
-    inner = () => { plant(CX - 40, 1180, 1.5, 1, { wire: Wr, hole: H, light: Lt * (0.6 + 0.4 * Math.sin(u * 18)) }); };
+    inner = () => { plant(CX - 60, 1150, 1.45, 1, { wire: Wr, hole: H, light: Lt * (0.7 + 0.3 * Math.sin(u * 18)) }); };
     over = () => {
-      tag("WIRES?", CX + 260, 1110, GREEN, Wr, 46);
-      tag("HOLE?", CX - 300, 1060, GREEN, H, 46);
-      tag("LIGHT?", CX - 300, 860, GREEN, Lt, 46);
+      tag("WIRES?", CX + 280, 870, GREEN, Wr, 46);
+      tag("HOLE?", CX - 320, 1060, GREEN, H, 46);
+      tag("LIGHT?", CX - 320, 860, GREEN, Lt, 46);
     };
   }
   if (id === "s6") {
@@ -334,11 +337,11 @@ function frame(t) {
     const [lx, ly] = lensPos(CX - 40, 1180, 1.3);
     inner = () => {
       plant(CX - 40, 1180, 1.3, 1, { lens: 0.35 + 0.65 * G, lensC: GREEN, part: 0.25 * on });
-      beamTo(820, 1150, lx, ly, 160, on * (0.85 + 0.15 * Math.sin(u * 7)));
+      beamTo(840, 1020, lx, ly, 160, on * (0.85 + 0.15 * Math.sin(u * 7)));
       glint(lx, ly, G, u);
     };
     over = () => {
-      phone(830, 1250, 0.8, sm(-0.05, 0.25, u), -0.4, on);
+      phone(850, 1130, 0.7, sm(-0.05, 0.25, u), -0.4, on);
       burst("GLINT!", 300, 650, pop(u, at("s6", "glint") - 0.05, 0.9), -0.12, 84);
     };
   }
