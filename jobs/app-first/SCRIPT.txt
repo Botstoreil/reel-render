@@ -1,0 +1,6 @@
+s1|Your app shows up at second twenty. Never hide it.
+s2|Before: a logo, slow music, and a long intro.
+s3|People scroll away before they ever see the app.
+s4|After: the app is on screen in the first second.
+s5|Show what it does. Then tell them why.
+s6|Want one for your app? Comment APP for a free sample.
