@@ -30,6 +30,7 @@ function frame(t) {
   const z = 1 + 0.035 * cl(u / Math.max(1, d)) + 0.05 * cut * cut;
   paper(id === "s7" ? 0.6 : 0);
   x.save(); x.translate(CX, 900); x.scale(z, z); x.translate(-CX, -900);
+  x.translate(0, -120); // keep the scene above the captions (1240-1350)
   const DIM = mix(VIOLET, BG, 0.25);
 
   if (id === "s1") {
@@ -37,11 +38,11 @@ function frame(t) {
     floor(1290, pr(-0.05, 0.5));
     mat(290, 1260, 300, pr(0.0, 0.4), VIOLET, 11);
     person(290, 1260, P.lunge, 0.85, VIOLET, pr(0.05, 0.6), 12);
-    tag("SIDE 1", 290, 760, VIOLET, sm(at("s1", "one-sided") - 0.1, at("s1", "one-sided") + 0.2, u), 44);
-    stamp("v", 290, 900, 0.55, pr(at("s1", "pose") - 0.1, 0.4), GREEN);
+    tag("SIDE 1", 290, 700, VIOLET, sm(at("s1", "one-sided") - 0.1, at("s1", "one-sided") + 0.2, u), 44);
+    stamp("v", 440, 1060, 0.5, pr(at("s1", "pose") - 0.1, 0.4), GREEN);
     const F = sm(at("s1", "second") - 0.15, at("s1", "side") + 0.1, u);
     mat(740, 1260, 300, pr(0.1, 0.4), F > 0.5 ? RED : DIM, 13);
-    tag("SIDE 2", 740, 760, RED, F, 44);
+    tag("SIDE 2", 740, 700, RED, F, 44);
     tag("?", 740, 1000, RED, sm(at("s1", "forget") - 0.1, at("s1", "forget") + 0.2, u), 110);
   }
   if (id === "s2") {
@@ -54,24 +55,23 @@ function frame(t) {
     const mx = lerp(150, 700, run);
     draw(L(mx, 860, mx, 1200), ORANGE, 8, a, 29, { amp: 1.5 });
     const Lt = sm(at("s2", "lose") - 0.1, at("s2", "track") + 0.15, u);
-    tag("WHICH SIDE?", mx, 1350, RED, Lt, 44);
-    tag("?", mx, 740, RED, Lt, 90);
+    tag("WHICH SIDE?", mx, 740, RED, Lt, 44);
     tag("LONG FLOW", CX, 820, VIOLET, sm(at("s2", "long") - 0.1, at("s2", "flow") + 0.1, u), 40);
   }
   if (id === "s3") {
     // a seesaw tips: side 1 heavy, side 2 light; the student leaves leaning
     const a = pr(-0.05, 0.4);
     const tip = 0.2 * sm(at("s3", "feeling") - 0.2, at("s3", "uneven") + 0.2, u);
-    const cx = CX, cy = 1120, Ln = 380;
+    const cx = CX, cy = 960, Ln = 380;
     const lx = cx - Math.cos(tip) * Ln, ly = cy + Math.sin(tip) * Ln, rx = cx + Math.cos(tip) * Ln, ry = cy - Math.sin(tip) * Ln;
     draw([[cx - 60, cy + 120], [cx, cy], [cx + 60, cy + 120]], VIOLET, 9, a, 31, { closed: true });
     draw(L(lx, ly, rx, ry), ORANGE, 12, a, 32);
     tag("SIDE 1", lx + 40, ly - 70, VIOLET, a, 40);
     tag("SIDE 2", rx - 40, ry - 70, RED, sm(at("s3", "students") - 0.1, at("s3", "leave") + 0.1, u), 40);
-    floor(1430, a);
+    floor(1300, a);
     const Lv = sm(at("s3", "leave") - 0.1, at("s3", "class") + 0.4, u);
-    person(lerp(CX, 820, Lv), 1430, pose(P.stand, P.lean, sm(at("s3", "uneven") - 0.2, at("s3", "uneven") + 0.2, u)), 0.55, ORANGE, pr(0.0, 0.5), 35);
-    tag("UNEVEN", CX, 760, RED, sm(at("s3", "uneven") - 0.1, at("s3", "uneven") + 0.15, u), 54);
+    person(lerp(CX, 820, Lv), 1300, pose(P.stand, P.lean, sm(at("s3", "uneven") - 0.2, at("s3", "uneven") + 0.2, u)), 0.5, ORANGE, pr(0.0, 0.5), 35);
+    tag("UNEVEN", CX, 720, RED, sm(at("s3", "uneven") - 0.1, at("s3", "uneven") + 0.15, u), 54);
   }
   if (id === "s4") {
     // the class plan: both sides written in
@@ -83,33 +83,30 @@ function frame(t) {
     line("3. TWIST - SIDE 1", 170, 980, VIOLET, sm(at("s4", "into") - 0.05, at("s4", "your") + 0.25, u));
     line("4. TWIST - SIDE 2", 170, 1090, GREEN, sm(at("s4", "class") - 0.05, at("s4", "plan") + 0.25, u));
     stamp("v", 820, 1180, 0.45, pr(at("s4", "plan") - 0.05, 0.4), GREEN);
-    floor(1430, a);
-    person(CX, 1430, P.stand, 0.45, GREEN, pr(0.0, 0.5), 45);
   }
   if (id === "s5") {
     // the same pose on both sides, the same breath count under each
     floor(1300, pr(-0.05, 0.5));
-    mat(290, 1270, 300, pr(0.0, 0.4), GREEN, 51); person(290, 1270, P.lunge, 0.8, GREEN, pr(0.0, 0.5), 52);
-    mat(740, 1270, 300, pr(0.05, 0.4), GREEN, 53); person(740, 1270, LUNGE2, 0.8, GREEN, pr(0.05, 0.5), 54);
+    mat(290, 1270, 300, pr(0.0, 0.4), GREEN, 51); person(290, 1270, P.lunge, 0.65, GREEN, pr(0.0, 0.5), 52);
+    mat(740, 1270, 300, pr(0.05, 0.4), GREEN, 53); person(740, 1270, LUNGE2, 0.65, GREEN, pr(0.05, 0.5), 54);
     const B = sm(at("s5", "number") - 0.1, at("s5", "side") + 0.2, u) * 5;
-    dots(290, 1380, 5, B, GREEN); dots(740, 1380, 5, B, GREEN);
-    tag("5 BREATHS", 290, 780, GREEN, sm(at("s5", "breaths") - 0.1, at("s5", "breaths") + 0.15, u), 40);
-    tag("5 BREATHS", 740, 780, GREEN, sm(at("s5", "each") - 0.1, at("s5", "each") + 0.15, u), 40);
+    dots(290, 1335, 5, B, GREEN); dots(740, 1335, 5, B, GREEN);
+    tag("5 BREATHS", 290, 760, GREEN, sm(at("s5", "breaths") - 0.1, at("s5", "breaths") + 0.15, u), 40);
+    tag("5 BREATHS", 740, 760, GREEN, sm(at("s5", "each") - 0.1, at("s5", "each") + 0.15, u), 40);
   }
   if (id === "s6") {
     // teacher says it out loud; an arrow carries the flow to side 2
     floor(1310, pr(-0.05, 0.5));
     person(220, 1280, with_(P.stand, { eR: [80, -330], hR: [150, -390] }), 0.85, GREEN, pr(-0.05, 0.5), 61);
-    bubble("SAME FLOW, SECOND SIDE", 600, 720, GREEN, sm(at("s6", "same") - 0.25, at("s6", "flow") + 0.1, u), 260, 900, 42);
-    tag("OUT LOUD", 260, 560, VIOLET, sm(at("s6", "out") - 0.1, at("s6", "loud") + 0.1, u), 40);
+    bubble("SAME FLOW, SECOND SIDE", 600, 760, GREEN, sm(at("s6", "same") - 0.25, at("s6", "flow") + 0.1, u), 260, 900, 42);
     const S2 = sm(at("s6", "second") - 0.15, at("s6", "side") + 0.2, u);
     mat(560, 1280, 220, 1, VIOLET, 62); person(560, 1280, P.lunge, 0.6, VIOLET, pr(0.05, 0.5), 63);
     arrow(660, 1050, 730, 1050, GREEN, S2, 64);
     mat(850, 1280, 220, S2, GREEN, 65); person(850, 1280, LUNGE2, 0.6, GREEN, S2, 66);
   }
   if (id === "s7") {
-    mat(330, 1180, 240, 0.6, GREEN); person(330, 1180, P.lunge, 0.55, GREEN, 1, 71, { a: 0.7 });
-    mat(700, 1180, 240, 0.6, GREEN); person(700, 1180, LUNGE2, 0.55, GREEN, 1, 72, { a: 0.7 });
+    mat(330, 1330, 220, 0.6, GREEN); person(330, 1330, P.lunge, 0.4, GREEN, 1, 71, { a: 0.7 });
+    mat(700, 1330, 220, 0.6, GREEN); person(700, 1330, LUNGE2, 0.4, GREEN, 1, 72, { a: 0.7 });
   }
   x.restore();
 
