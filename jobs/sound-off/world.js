@@ -132,9 +132,11 @@ function muteIcon(X, Y, s, a) {
   x.restore();
 }
 // big caption inside the phone: the words of the line, one at a time
-function phoneCap(txt, a, col = WHITE, y = SY + 560) {
+function phoneCap(txt, a, col = WHITE, y = SY + 470) {
   if (a <= 0) return;
-  x.save(); x.globalAlpha = cl(a); x.font = FONT(50); x.textAlign = "center"; x.textBaseline = "middle";
+  x.save(); x.globalAlpha = cl(a); x.font = FONT(50);
+  const fpx = Math.min(50, ((PW - 80) / x.measureText(txt).width) * 50);
+  x.font = FONT(fpx); x.textAlign = "center"; x.textBaseline = "middle";
   const w = Math.min(PW - 30, x.measureText(txt).width + 40);
   x.fillStyle = "rgba(0,0,0,0.75)"; rr(CX - w / 2, y - 42, w, 84, 20); x.fill();
   x.fillStyle = col; x.fillText(txt, CX, y + 2);
@@ -204,7 +206,7 @@ function frame(t) {
   if (id === "s5") {
     // cut to the app doing the thing, with the caption saying it
     phone(() => { appScreen(t * 1.4); phoneCap("FOLLOW ALONG", sm(-0.2, 0.1, u), WHITE, SY + 600); }, { ring: GREEN });
-    tag("SAY IT. SHOW IT.", CX, 470, GREEN, sm(at("s5", "doing") - 0.2, at("s5", "doing") + 0.05, u), 44);
+    tag("SAY IT. SHOW IT.", CX, 455, GREEN, sm(at("s5", "doing") - 0.2, at("s5", "doing") + 0.05, u), 44);
     words(["SHOW THE APP"], VIOLET, 330, -0.3, 1, 140, flash(u, at("s5", "app")) * 0.5);
   }
   if (id === "s6") {
