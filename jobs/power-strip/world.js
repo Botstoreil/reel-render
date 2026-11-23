@@ -331,8 +331,8 @@ function frame(t) {
     tag("FACES THE WALL", 500, 1090, GREEN, faced, 46);
   }
   if (id === "s7") {
-    wall(880, 0.7, 1040, 1300);
-    strip(560, 1170, 0.9, 0.7, GREEN, Math.PI, { lens: 1, lc: GREEN });
+    wall(880, 0.7, 990, 1180);
+    strip(560, 1085, 0.9, 0.7, GREEN, Math.PI, { lens: 1, lc: GREEN });
   }
   x.restore();
 
