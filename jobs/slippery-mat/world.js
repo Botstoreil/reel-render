@@ -208,8 +208,9 @@ function frame(t) {
     x.save(); x.globalAlpha = Wp; x.translate(hx + 18 * Math.sin(u * 14), hy + 6); x.rotate(0.15); mis(true, OFF_BLUE); x.fillStyle = TEAL; rr(-60, -34, 120, 68, 12); x.fill(); mis(false);
     x.fillStyle = PAPER; x.fillRect(-60, -6, 120, 8); x.restore();
     tag("DRY HANDS FIRST", 560, 600, TEAL, sm(0.0, at("s5", "hands") + 0.1, u), 44);
-    tag("DOWN DOG", 470, 760, BLUE, sm(at("s5", "down") - 0.1, at("s5", "dog") + 0.05, u), 40);
-    tag("PLANK", 760, 760, BLUE, sm(at("s5", "plank") - 0.1, at("s5", "plank") + 0.1, u), 40);
+    // round 2: DOWN DOG tag sat on the towel; moved right of the hands
+    tag("DOWN DOG", 570, 760, BLUE, sm(at("s5", "down") - 0.1, at("s5", "dog") + 0.05, u), 40);
+    tag("PLANK", 830, 760, BLUE, sm(at("s5", "plank") - 0.1, at("s5", "plank") + 0.1, u), 40);
     mark("v", 820, 900, back(at("s5", "plank"), at("s5", "plank") + 0.3, u) * 0.45, u > at("s5", "plank") ? 1 : 0, TEAL);
   }
   if (id === "s6") {
@@ -218,7 +219,10 @@ function frame(t) {
     const Ly = back(at("s6", "lay") - 0.05, at("s6", "towel") + 0.25, u);
     const La = sm(at("s6", "lay") - 0.05, at("s6", "lay") + 0.1, u);
     x.save(); x.translate(0, -(1 - Ly) * 260); towelFlat(hx0 - 130, MAT1 - 10, FY - 2, La); x.restore();
+    // round 2: the frame was empty until "top"; the teacher now stands at the back of the mat while the towel lands,
+    // then she is in down dog with the hands on the towel
     const Fa = sm(at("s6", "top") - 0.25, at("s6", "top") + 0.05, u);
+    const sFX = FX, sSC = SC; FX = 200; SC = 1.4; figure(STAND, BLUE, null, 1 - Fa); FX = sFX; SC = sSC;
     x.save(); x.translate(0, -22); figure(DOG, BLUE, TEAL, Fa); x.restore();
     tag("TOWEL ON TOP OF THE MAT", 520, 620, TEAL, sm(at("s6", "towel") - 0.05, at("s6", "top") + 0.1, u), 40);
     ring(hx0, FY - 50, 90, TEAL, sm(at("s6", "mat") - 0.15, at("s6", "mat") + 0.1, u));
