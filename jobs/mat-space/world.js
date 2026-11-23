@@ -161,7 +161,7 @@ const FY = 1080; // floor of the side view (round 2: was 1330, under the caption
 function sideMat(X, w, c, a = 1) { if (a <= 0) return; x.save(); x.globalAlpha = a; x.strokeStyle = c; x.lineWidth = 5; rr(X - w / 2, FY, w, 20, 8); x.stroke(); x.restore(); }
 function floorLine() { x.save(); x.strokeStyle = INKC; x.lineWidth = 3; x.beginPath(); x.moveTo(90, FY + 40); x.lineTo(990, FY + 40); x.stroke(); x.restore(); }
 // ---- top-down floor plan: teacher at the front wall, two rows of mats, a head circle on each mat ----
-const MW = 140, MH = 250, ROW1 = 770, ROW2 = 1080, WALL = 560; // round 2: back row was under the caption band
+const MW = 140, MH = 250, ROW1 = 770, ROW2 = 1080, WALL = 610; // round 2: back row was under the caption band
 function planMat(X, Y, c, a = 1) {
   if (a <= 0) return;
   x.save(); x.globalAlpha = a; x.strokeStyle = c; x.lineWidth = 5; rr(X - MW / 2, Y - MH / 2, MW, MH, 10); x.stroke();
@@ -210,7 +210,7 @@ function frame(t) {
     rowXs(4, pitch).forEach((X, i) => { sideMat(X, 200, VIOLET); person(X, FY, STAND, 0.5, VIOLET); });
     const E = sm(at("s1", "edge") - 0.1, at("s1", "edge", 2) + 0.1, u);
     rowXs(3, 200).forEach((X) => { if (E > 0) { x.save(); x.globalAlpha = E; x.strokeStyle = RED; x.lineWidth = 5; x.beginPath(); x.arc(X, FY + 10, 34, 0, Math.PI * 2); x.stroke(); x.restore(); } });
-    tag("EDGE TO EDGE", CX, FY + 130, RED, E, 44);
+    tag("EDGE TO EDGE", CX, FY + 95, RED, E, 44);
     tag("FULL CLASS", CX, 620, VIOLET, sm(0.0, at("s1", "class") + 0.15, u) * (1 - sm(at("s1", "never") - 0.1, at("s1", "never") + 0.1, u)), 44);
   }
   if (id === "s2") {
@@ -223,7 +223,7 @@ function frame(t) {
     rowXs(3, 200).forEach((X) => { mark("x", X, FY - 168, back(0, 1, Ar) * 0.3, Ar > 0 ? 1 : 0, RED); mark("x", X, FY - 20, back(0, 1, Ft) * 0.3, Ft > 0 ? 1 : 0, RED); });
     tag("ARMS", 300, 700, RED, Ar, 42);
     tag("FEET", 720, 700, RED, Ft, 42);
-    tag("NEIGHBOR HIT", CX, FY + 130, RED, sm(at("s2", "hit") - 0.1, at("s2", "neighbor") + 0.1, u), 44);
+    tag("NEIGHBOR HIT", CX, FY + 95, RED, sm(at("s2", "hit") - 0.1, at("s2", "neighbor") + 0.1, u), 44);
   }
   if (id === "s3") {
     // floor plan: back row sits right behind the front row; every view is blocked by a head
@@ -247,7 +247,7 @@ function frame(t) {
     const Hd = sm(at("s4", "hand's") - 0.1, at("s4", "width") + 0.1, u);
     [CX - p / 2, CX + p / 2].forEach((X) => hand(X, ROW1 + 20, 0.9, Hd));
     tag("HAND'S WIDTH", CX, ROW1 + 230, GREEN, sm(at("s4", "width") - 0.1, at("s4", "width") + 0.15, u), 44);
-    tag("FLOOR", CX, ROW1 - 200, GREEN, sm(at("s4", "floor") - 0.1, at("s4", "floor") + 0.15, u), 40);
+    tag("FLOOR", CX, ROW1 - 150, GREEN, sm(at("s4", "floor") - 0.1, at("s4", "floor") + 0.15, u), 40);
     mark("v", 820, 1120,back(at("s4", "mats") - 0.1, at("s4", "mats") + 0.25, u) * 0.5, u > at("s4", "mats") - 0.1 ? 1 : 0, GREEN);
   }
   if (id === "s5") {
@@ -270,13 +270,12 @@ function frame(t) {
     const Nk = sm(at("s6", "pick") - 0.1, at("s6", "narrow") + 0.2, u);
     rowXs(4, 200).forEach((X) => { sideMat(X, 200, GREEN); person(X, FY, pose(STAND, NARROW, Nk), 0.5, GREEN); });
     tag("STILL FULL", CX, 620, VIOLET, sm(at("s6", "room") - 0.1, at("s6", "full") + 0.1, u), 44);
-    tag("NARROW POSES", CX, FY + 130, GREEN, sm(at("s6", "narrow") - 0.15, at("s6", "narrow") + 0.15, u), 44);
+    tag("NARROW POSES", CX, FY + 95, GREEN, sm(at("s6", "narrow") - 0.15, at("s6", "narrow") + 0.15, u), 44);
     mark("v", 840, 760, back(at("s6", "narrow"), at("s6", "narrow") + 0.3, u) * 0.5, u > at("s6", "narrow") ? 1 : 0, GREEN);
   }
   if (id === "s7") {
     const p = MW + 70;
-    rowXs(3, p).forEach((X) => planMat(X, ROW1 + 100, GREEN, 0.5));
-    rowXs(2, p).forEach((X) => planMat(X, ROW2 + 100, GREEN, 0.5));
+    rowXs(3, p).forEach((X) => planMat(X, ROW1 + 260, GREEN, 0.4)); // round 3: below the end card
   }
   x.restore();
 
