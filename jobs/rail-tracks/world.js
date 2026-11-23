@@ -250,7 +250,8 @@ function drawInk(t) {
   const cut = 1 - sm(-LEAD, 0.22 - LEAD, u);
   let z = 1 + 0.04 * cl(u / Math.max(1, d)) + 0.05 * cut * cut, fx = CX, fy = 1000;
   if (id === "s3") { z = lerp(1.6, 2.3, sm(0, 1.2, u)); fx = C[0]; fy = C[1]; }
-  x.save(); x.translate(CX, 1000); x.scale(z, z); x.translate(-fx, -fy);
+  // the diagram sits 140 px higher so the bike stays clear of the caption pill (y 1240-1350)
+  x.save(); x.translate(CX, 860); x.scale(z, z); x.translate(-fx, -fy);
 
   const wp = WRONG.pc, rp = RIGHT.pc;
   if (id === "s1") {
