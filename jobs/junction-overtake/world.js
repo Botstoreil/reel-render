@@ -221,13 +221,13 @@ function frame(t) {
     L.push(() => tag("HEAD", 830, 960, VIOLET, sm(H - 0.1, H + 0.2, u)));
   }
   if (id === "s6") {
-    car(...qB(sm(0, 0.5, u)), qA(Math.max(0.001, sm(0, 0.5, u))), LINE, { a: 1 - sm(0.2, 0.55, u), blink: blinkOn(u) });
+    { const f0 = sm(0, 0.5, u), [qx, qy] = qB(f0); car(qx, qy - 25, qA(Math.max(0.001, f0)), LINE, { a: 1 - sm(0.2, 0.55, u), blink: blinkOn(u) }); }
     const c2 = lerp(860, 800, cl(u / d));
     car(LANE, c2, UP, LINE, { a: sm(0.35, 0.7, u) });
     const C = at("s6", "clear"), R = at("s6", "room"), Pb = at("s6", "pull");
     const out = sm(C - 0.1, C + 0.4, u), inn = sm(Pb - 0.1, Pb + 0.45, u);
     BX = lerp(lerp(LANE, OPP, out), LANE, inn);
-    BY = lerp(1060, 590, sm(C - 0.1, Pb + 0.3, u));
+    BY = lerp(1115, 590, sm(C - 0.1, Pb + 0.3, u));
     L.push(() => box(RL + 6, 480, MID - 6, 1180, GREEN, sm(C - 0.2, C + 0.1, u) * (1 - sm(Pb, Pb + 0.4, u))));
     L.push(() => tag("CLEAR STRAIGHT", 300, 1150, GREEN, sm(C - 0.1, C + 0.2, u)));
     L.push(() => gapBar(770, 590 + 50, c2 - 100, GREEN, sm(R - 0.1, R + 0.2, u)));
