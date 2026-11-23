@@ -179,6 +179,13 @@ function hand(X, Y, a) {
   rr(X + 62, Y + 20, 34, 80, 16); x.fill(); x.stroke();             // thumb at the side
   x.restore();
 }
+// four fingers over the bottom front edge of the box, the thumb up the right side
+function fingers(X, Y, a, k = 1) {
+  if (a <= 0) return;
+  x.save(); x.globalAlpha = a; x.translate(X, Y); x.scale(Math.max(0.3, k), 1); x.fillStyle = "#c9c3ff"; x.strokeStyle = VIOLET; x.lineWidth = 8;
+  for (let i = 0; i < 4; i++) { rr(-26 + i * 34, 30, 30, 62, 14); x.fill(); x.stroke(); }
+  x.restore();
+}
 function stamp(kind, X, Y, s, a, color) {
   if (a <= 0) return;
   x.save(); x.globalAlpha = a; x.translate(X, Y); x.scale(s, s); x.lineCap = "round";
@@ -259,8 +266,8 @@ function frame(t0) {
     const H = sm(at("s3", "small") - 0.1, at("s3", "hole") + 0.1, u);
     const pulse = 0.6 + 0.4 * Math.sin(u * 10);
     tissueBox(BX, BY, 1, 1, VIOLET, { cam: 1 - sm(at("s3", "lens") + 0.2, at("s3", "hides") + 0.2, u), hole: Math.max(H * pulse, sm(at("s3", "lens") - 0.1, at("s3", "lens") + 0.1, u)) });
-    tag("LENS", HOLE[0], HOLE[1] - 120, RED, sm(at("s3", "lens") - 0.1, at("s3", "lens") + 0.15, u), 26);
-    tag("SMALL HOLE", HOLE[0] + 40, HOLE[1] + 100, RED, sm(at("s3", "side") - 0.1, at("s3", "side") + 0.15, u), 24);
+    tag("LENS", HOLE[0] - 60, HOLE[1] - 130, RED, sm(at("s3", "lens") - 0.1, at("s3", "lens") + 0.15, u), 44);
+    tag("SMALL HOLE", HOLE[0] + 40, HOLE[1] + 125, RED, sm(at("s3", "side") - 0.1, at("s3", "side") + 0.15, u), 44);
   }
   if (id === "s4") {
     // a hand lifts the box and turns it: front, side, back, side, front
@@ -268,10 +275,13 @@ function frame(t0) {
     const L = sm(at("s4", "pick") - 0.1, at("s4", "up") + 0.15, u);
     const Sp = sm(at("s4", "look") - 0.1, at("s4", "side") + 0.25, u);
     const Y = BY - 150 * L;
-    hand(BX, Y, sm(at("s4", "pick") - 0.25, at("s4", "pick"), u));
+    const Ha = sm(at("s4", "pick") - 0.25, at("s4", "pick"), u);
+    hand(BX, Y, Ha);
     tissueBox(BX, Y, 1, 1, Sp > 0.02 ? GREEN : VIOLET, { ang: Sp * Math.PI * 2, hole: Sp > 0.95 ? 1 : 0, holeC: GREEN });
-    tag("PICK IT UP", BX - 290, 760, GREEN, sm(at("s4", "pick") - 0.05, at("s4", "up") + 0.1, u), 30);
-    tag("EVERY SIDE", BX - 290, 900, GREEN, sm(at("s4", "every") - 0.1, at("s4", "every") + 0.15, u), 30);
+    const ang = Sp * Math.PI * 2;
+    fingers(BX, Y, Ha, Math.abs(Math.cos(ang)) * 0.8 + 0.2 * Math.abs(Math.sin(ang)));
+    tag("PICK IT UP", BX - 280, 760, GREEN, sm(at("s4", "pick") - 0.05, at("s4", "up") + 0.1, u), 42);
+    tag("EVERY SIDE", BX - 280, 900, GREEN, sm(at("s4", "every") - 0.1, at("s4", "every") + 0.15, u), 42);
   }
   if (id === "s5") {
     // held box, checklist lands on hole, wire, heavy
@@ -282,10 +292,11 @@ function frame(t0) {
     const Ho = sm(at("s5", "hole") - 0.1, at("s5", "hole") + 0.15, u);
     const Wi = sm(at("s5", "wire") - 0.1, at("s5", "wire") + 0.25, u);
     tissueBox(BX, Y, 1, 1, GREEN, { hole: Ho, holeC: GREEN, wire: Wi });
-    tag("HOLE?", HOLE[0] - 70, Y - 150, GREEN, Ho, 28);
-    tag("WIRE?", BX + 190, Y - 150, GREEN, Wi, 28);
+    fingers(BX, Y, 1);
+    tag("HOLE?", HOLE[0] - 120, Y - 150, GREEN, Ho, 42);
+    tag("WIRE?", BX + 190, Y - 150, GREEN, Wi, 42);
     heavyArrow(BX - 250, Y + 120, Hv);
-    tag("TOO HEAVY?", BX - 250, Y - 60, ORANGE, Hv, 28);
+    tag("TOO HEAVY?", BX - 250, Y - 40, ORANGE, Hv, 40);
   }
   if (id === "s6") {
     // dark room, torch from the right lands on the box, the hole flashes a glint
@@ -296,11 +307,11 @@ function frame(t0) {
     torch(Tn, Bm, 930, 640, HOLE[0], HOLE[1]);
     const G = sm(at("s6", "glint") - 0.15, at("s6", "glint") + 0.1, u);
     glint(G, HOLE[0], HOLE[1]);
-    tag("GLINT = LENS", BX - 60, 1080, GREEN, G, 32);
+    tag("GLINT = LENS", BX - 60, 1090, GREEN, G, 44);
     stamp("v", BX + 170, 1050, 0.5 * back(at("s6", "glint"), at("s6", "glint") + 0.3, u), u > at("s6", "glint") ? 1 : 0, GREEN);
   }
   if (id === "s7") {
-    floorLine(0.6); bed(0.7); desk(0.7); tissueBox(BX, BY, 1, 0.8, GREEN);
+    floorLine(0.3); bed(0.35); desk(0.35); tissueBox(BX, BY, 1, 0.4, GREEN);
   }
   x.restore();
   zoomM = [1, 0, 0, 1, 0, 0];
@@ -313,7 +324,7 @@ function frame(t0) {
   if (id === "s5") words(["HOLE? WIRE?", "TOO HEAVY?"], GREEN, 340, 0.0, 1, 150, flash(u, at("s5", "heavy")) * 0.6);
   if (id === "s6") words(["TORCH ON IT.", "WATCH FOR A GLINT"], GREEN, 340, 0.0, 1, 150, flash(u, at("s6", "glint")) * 0.6);
   if (id === "s7") {
-    x.save(); x.fillStyle = "rgba(8,6,34,0.55)"; x.fillRect(0, 0, 1080, 1920); x.restore();
+    x.save(); x.fillStyle = "rgba(8,6,34,0.7)"; x.fillRect(0, 0, 1080, 1920); x.restore();
     words(["CHECK THE BOX."], ORANGE, 690, 0.0, 1, 140, flash(u, 0.05));
     words(["LOOK AT EVERY SIDE"], ORANGE, 880, at("s7", "look") - 0.05, 1, 130, flash(u, at("s7", "side")));
   }
