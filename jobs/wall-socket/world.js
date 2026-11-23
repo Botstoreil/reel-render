@@ -341,7 +341,7 @@ function frame(t) {
   }
   if (id === "s5") {
     const G = sm(at("s5", "back") - 0.15, at("s5", "back") + 0.05, u);
-    const S5 = 1.9, SX = CX - 40, SY = 980;
+    const S5 = 1.6, SX = CX - 40, SY = 900;
     const [px, py] = pinPos(SX, SY, S5);
     inner = () => {
       socket(SX, SY, S5, 1, { pin: 1, lensC: GREEN, plate: "#cfcbbd" });
@@ -350,7 +350,7 @@ function frame(t) {
     };
     over = () => {
       burst("GLINT!", 300, 680, pop(u, at("s5", "glint") - 0.05, 2), -0.12, 84);
-      tag("SMALL + BRIGHT", 640, 1150, GREEN, sm(at("s5", "small") - 0.1, at("s5", "bright") + 0.1, u), 44);
+      tag("SMALL + BRIGHT", 640, 1110, GREEN, sm(at("s5", "small") - 0.1, at("s5", "bright") + 0.1, u), 44);
     };
   }
   if (id === "s6") {
@@ -366,10 +366,9 @@ function frame(t) {
       if (T > 0) { x.save(); x.globalAlpha *= T; x.translate(400 * (1 - T), 0); bell(CX - 60, 1110, 1.5, 1, flash(u, at("s6", "front") + 0.1)); x.restore(); }
     };
     over = () => {
-      x.save(); x.globalAlpha *= 1 - T;
-      tag("OLD", 310, 1140, VIOLET, sm(at("s6", "rest") - 0.15, at("s6", "rest") + 0.1, u), 44);
-      tag("NEWER?", 700, 1140, VIOLET, N, 44);
-      x.restore();
+      const keep = 1 - sm(0, 0.5, T); // tag() sets its own alpha, so fade through its a
+      tag("OLD", 310, 1140, VIOLET, sm(at("s6", "rest") - 0.15, at("s6", "rest") + 0.1, u) * keep, 44);
+      tag("NEWER?", 700, 1140, VIOLET, N * keep, 44);
       tag("TELL THE FRONT DESK", CX, 680, GREEN, sm(at("s6", "front") - 0.1, at("s6", "front") + 0.15, u), 40);
       stamp("v", 800, 860, back(at("s6", "desk") - 0.05, at("s6", "desk") + 0.25, u) * 0.6, T > 0.5 ? 1 : 0, GREEN);
     };
