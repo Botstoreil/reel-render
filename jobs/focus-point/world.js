@@ -127,7 +127,7 @@ const P = {
 P.wobbly = Object.assign({}, P.warrior, { kL: [-80, -95], hip: [10, -160], eL: [-100, -290], hL: [-190, -250], eR: [100, -290], hR: [190, -250] });
 function pose(a, b, k) { const o = {}; for (const j in a) o[j] = [lerp(a[j][0], b[j][0], k), lerp(a[j][1], b[j][1], k)]; return o; }
 // tree pose: standing on the left leg, right foot on the inner thigh, hands together at the chest
-P.tree = { head: [0, -410], sh: [0, -335], hip: [0, -190], kL: [-6, -98], fL: [-10, 0], kR: [95, -175], fR: [8, -150], eL: [-55, -290], hL: [-4, -320], eR: [55, -290], hR: [4, -320] };
+P.tree = { head: [0, -410], sh: [0, -335], hip: [0, -190], kL: [-6, -98], fL: [-10, 0], kR: [130, -185], fR: [12, -165], eL: [-55, -290], hL: [-4, -320], eR: [55, -290], hR: [4, -320] };
 P.treeWall = Object.assign({}, P.tree, { eL: [-80, -310], hL: [-125, -300] });
 P.fallen = { head: [40, -395], sh: [25, -325], hip: [0, -185], kL: [-30, -95], fL: [-60, 0], kR: [70, -90], fR: [110, 0], eL: [-90, -300], hL: [-170, -360], eR: [110, -290], hR: [180, -230] };
 function tilted(X, Y, ang, fn) { x.save(); x.translate(X, Y); x.rotate(ang); x.translate(-X, -Y); fn(); x.restore(); }
@@ -308,7 +308,7 @@ function drawInk(t) {
   }
   x.restore();
 
-  if (id === "s1") { words(["NEVER BALANCE WITHOUT", "A FOCUS POINT"], RED, 330, 0.0, 1, 130, Math.max(flash(u, 0.05), flash(u, at("s1", "never")))); underline(480, 760, sm(0.4, 0.9, u), RED); }
+  if (id === "s1") { words(["NEVER BALANCE", "WITHOUT A FOCUS POINT"], RED, 340, 0.0, 1, 150, Math.max(flash(u, 0.05), flash(u, at("s1", "balance")))); underline(500, 760, sm(0.4, 0.9, u), RED); }
   if (id === "s2") words(["EYES ALL", "OVER THE ROOM"], RED, 330, 0.0, 1, 150, flash(u, at("s2", "around")) * 0.6);
   if (id === "s3") words(["WOBBLE.", "FALL OUT."], RED, 330, 0.0, 1, 150, flash(u, at("s3", "fall")) * 0.6);
   if (id === "s4") words(["FIND ONE", "STILL POINT"], GREEN, 330, 0.0, 1, 150, flash(u, at("s4", "point")) * 0.6);
