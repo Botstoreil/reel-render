@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <script type="importmap">
+      { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.181.2/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.181.2/examples/jsm/"
+      } }
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #080622; }
+      #world { position: absolute; inset: 0; width: 1080px; height: 1920px; display: block; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="17.203" data-width="1080" data-height="1920">
+      <div id="stage" class="clip" data-start="0" data-duration="17.203" data-track-index="1" style="position:absolute;inset:0"><canvas id="world" width="1080" height="1920" data-layout-allow-overflow></canvas></div>
+      <div id="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="17.203" data-track-index="2" data-track-kind="captions" data-width="1080" data-height="1920" style="z-index: 10"></div>
+      <audio id="vo-s1" class="clip" src="assets/vo/s1.wav" data-start="0.050" data-duration="1.9626666666666666" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s2" class="clip" src="assets/vo/s2.wav" data-start="2.183" data-duration="1.4933333333333334" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s3" class="clip" src="assets/vo/s3.wav" data-start="3.846" data-duration="2.1546666666666665" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s4" class="clip" src="assets/vo/s4.wav" data-start="6.171" data-duration="1.7706666666666666" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s5" class="clip" src="assets/vo/s5.wav" data-start="8.112" data-duration="1.344" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s6" class="clip" src="assets/vo/s6.wav" data-start="9.626" data-duration="2.2613333333333334" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s7" class="clip" src="assets/vo/s7.wav" data-start="12.057" data-duration="1.3013333333333332" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s8" class="clip" src="assets/vo/s8.wav" data-start="13.528" data-duration="2.474666666666667" data-track-index="3" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__EV = {"S":{"s1":[0,2.133],"s2":[2.133,1.663],"s3":[3.796,2.325],"s4":[6.121,1.941],"s5":[8.062,1.514],"s6":[9.576,2.431],"s7":[12.007,1.471],"s8":[13.478,3.725]},"W":{"s1":{"dur":1.9626666666666666,"words":[{"text":"Running","start":0,"end":0.352},{"text":"out","start":0.352,"end":0.504},{"text":"of","start":0.504,"end":0.604},{"text":"time?","start":0.604,"end":0.806},{"text":"Never","start":0.806,"end":1.057},{"text":"run","start":1.057,"end":1.208},{"text":"the","start":1.208,"end":1.359},{"text":"class","start":1.359,"end":1.611},{"text":"late.","start":1.611,"end":1.863}]},"s2":{"dur":1.4933333333333334,"words":[{"text":"You","start":0,"end":0.144},{"text":"add","start":0.144,"end":0.288},{"text":"one","start":0.288,"end":0.432},{"text":"more","start":0.432,"end":0.625},{"text":"pose,","start":0.625,"end":0.817},{"text":"then","start":0.817,"end":1.009},{"text":"another.","start":1.009,"end":1.393}]},"s3":{"dur":2.1546666666666665,"words":[{"text":"And","start":0,"end":0.147},{"text":"students","start":0.147,"end":0.537},{"text":"cut","start":0.537,"end":0.684},{"text":"their","start":0.684,"end":0.928},{"text":"rest","start":0.928,"end":1.123},{"text":"short","start":1.123,"end":1.367},{"text":"to","start":1.367,"end":1.465},{"text":"leave","start":1.465,"end":1.709},{"text":"on","start":1.709,"end":1.81},{"text":"time.","start":1.81,"end":2.055}]},"s4":{"dur":1.7706666666666666,"words":[{"text":"Plan","start":0,"end":0.185},{"text":"the","start":0.185,"end":0.325},{"text":"minutes","start":0.325,"end":0.65},{"text":"for","start":0.65,"end":0.789},{"text":"each","start":0.789,"end":0.975},{"text":"part","start":0.975,"end":1.16},{"text":"of","start":1.16,"end":1.253},{"text":"the","start":1.253,"end":1.393},{"text":"class.","start":1.393,"end":1.671}]},"s5":{"dur":1.344,"words":[{"text":"Keep","start":0,"end":0.172},{"text":"a","start":0.172,"end":0.215},{"text":"clock","start":0.215,"end":0.43},{"text":"where","start":0.43,"end":0.644},{"text":"you","start":0.644,"end":0.773},{"text":"can","start":0.773,"end":0.902},{"text":"see","start":0.902,"end":1.031},{"text":"it.","start":1.031,"end":1.16}]},"s6":{"dur":2.2613333333333334,"words":[{"text":"Running","start":0,"end":0.379},{"text":"late?","start":0.379,"end":0.648},{"text":"Drop","start":0.648,"end":0.865},{"text":"a","start":0.865,"end":0.918},{"text":"pose,","start":0.918,"end":1.189},{"text":"never","start":1.189,"end":1.459},{"text":"the","start":1.459,"end":1.621},{"text":"final","start":1.621,"end":1.891},{"text":"rest.","start":1.891,"end":2.161}]},"s7":{"dur":1.3013333333333332,"words":[{"text":"Plan","start":0,"end":0.195},{"text":"the","start":0.195,"end":0.341},{"text":"time.","start":0.341,"end":0.536},{"text":"End","start":0.536,"end":0.682},{"text":"on","start":0.682,"end":0.877},{"text":"time.","start":0.877,"end":1.12}]},"s8":{"dur":2.474666666666667,"words":[{"text":"Save","start":0,"end":0.217},{"text":"this","start":0.217,"end":0.434},{"text":"for","start":0.434,"end":0.597},{"text":"your","start":0.597,"end":0.814},{"text":"next","start":0.814,"end":1.031},{"text":"class.","start":1.031,"end":1.357},{"text":"Download","start":1.357,"end":1.791},{"text":"YogaFlow.","start":1.791,"end":2.28}]}},"LEAD":0.05,"BRAND":{"cta":["DOWNLOAD","YOGAFLOW"],"sub":"LINK IN BIO"}};
+      const tl = gsap.timeline({ paused: true });
+      tl.set({}, {}, 17.203);
+      window.__timelines["main"] = tl;
+    </script>
+    <script type="module" src="world.js"></script>
+  </body>
+</html>

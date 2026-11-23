@@ -1,0 +1,8 @@
+s1|Running out of time? Never run the class late.
+s2|You add one more pose, then another.
+s3|And students cut their rest short to leave on time.
+s4|Plan the minutes for each part of the class.
+s5|Keep a clock where you can see it.
+s6|Running late? Drop a pose, never the final rest.
+s7|Plan the time. End on time.
+s8|Save this for your next class. Download YogaFlow.
