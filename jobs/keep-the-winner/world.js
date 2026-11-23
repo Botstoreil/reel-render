@@ -146,8 +146,8 @@ function frame(t) {
     // the winner pops in, its results climb; at "kill" a red X threatens it
     tile(WINNER, CX, 780, 1.5 * back(0, 0.35, u), 1, t, { ring: sm(at("s1", "working") - 0.2, at("s1", "working"), u) > 0.5 ? GREEN : null });
     chart(250, 1180, 520, 150, sm(0.1, at("s1", "working") + 0.1, u), UP, GREEN);
-    tag("WORKING", 760, 560, GREEN, sm(at("s1", "working") - 0.15, at("s1", "working") + 0.1, u), 46);
-    cross(CX + 150, 600, back(at("s1", "kill") - 0.1, at("s1", "kill") + 0.25, u), sm(at("s1", "kill") - 0.1, at("s1", "kill"), u));
+    tag("WORKING", 800, 700, GREEN, sm(at("s1", "working") - 0.15, at("s1", "working") + 0.1, u), 46);
+    cross(CX, 780, 1.8 * back(at("s1", "kill") - 0.1, at("s1", "kill") + 0.25, u), sm(at("s1", "kill") - 0.1, at("s1", "kill"), u));
     words(["YOUR AD WORKS."], WHITE, 300, 0.0, 1, 120);
     words(["NEVER KILL IT."], RED, 430, at("s1", "never") - 0.05, 1, 140, flash(u, at("s1", "never")));
   }
@@ -165,19 +165,19 @@ function frame(t) {
     // the new ad flops: its chart sinks red, the tile goes grey, question marks
     const fl = sm(at("s3", "flops") - 0.2, at("s3", "flops") + 0.1, u);
     const gs = sm(at("s3", "back") - 0.15, at("s3", "guessing") + 0.1, u);
-    tile(NEWAD, CX, 760 + 20 * fl, 1.5 - 0.1 * fl, 1, t, { dim: 0.6 * fl });
-    chart(250, 1180, 520, 150, sm(0, at("s3", "flops") + 0.2, u), FLOP, RED);
-    cross(CX + 150, 580, back(at("s3", "flops") - 0.1, at("s3", "flops") + 0.25, u), fl);
-    tag("BACK TO GUESSING", CX, 1000, RED, gs, 50);
+    tile(NEWAD, CX, 740 + 15 * fl, 1.45 - 0.1 * fl, 1, t, { dim: 0.6 * fl });
+    chart(250, 1190, 520, 110, sm(-0.2, at("s3", "flops") + 0.2, u), FLOP, RED);
+    cross(CX + 150, 560, back(at("s3", "flops") - 0.1, at("s3", "flops") + 0.25, u), fl);
+    tag("BACK TO GUESSING", CX, 1030, RED, gs, 48);
     words(["IT FLOPS."], RED, 330, 0.0, 1, 150, flash(u, at("s3", "flops")));
   }
   if (id === "s4") {
     // the winner comes back with a green ring; "change one thing" with a single violet dial
-    const k = back(0, 0.35, u);
-    tile(WINNER, CX, 780, 1.5 * k, 1, t, { ring: GREEN });
+    const k = back(-0.3, 0.1, u);
+    tile(WINNER, CX, 780, 1.2 + 0.3 * k, 1, t, { ring: GREEN });
     check(CX + 150, 590, back(at("s4", "winner") - 0.1, at("s4", "winner") + 0.25, u) * 0.9, sm(at("s4", "winner") - 0.1, at("s4", "winner"), u));
     tag("CHANGE 1 THING", CX, 1130, VIOLET, sm(at("s4", "change") - 0.15, at("s4", "change") + 0.1, u), 50);
-    words(["KEEP THE WINNER"], GREEN, 330, 0.0, 1, 130, flash(u, at("s4", "winner")) * 0.5);
+    words(["KEEP THE WINNER"], GREEN, 330, -0.3, 1, 130, flash(u, at("s4", "winner")) * 0.5);
   }
   if (id === "s5") {
     // three tiles side by side: the winner, a new hook, a new colour. Same pose = same idea.
@@ -186,8 +186,8 @@ function frame(t) {
     tile(WINNER, 245, 800, 1.2, 1, t, { ring: GREEN });
     tile(VAR_HOOK, 510, 800, 1.2 * back(at("s5", "hook") - 0.2, at("s5", "hook") + 0.15, u), a1, t, { ring: same > 0.5 ? GREEN : null });
     tile(VAR_COLOR, 775, 800, 1.2 * back(at("s5", "color") - 0.2, at("s5", "color") + 0.15, u), a2, t, { ring: same > 0.5 ? GREEN : null });
-    tag("NEW HOOK", 510, 1060, VIOLET, a1 * (1 - same), 40);
-    tag("NEW COLOR", 775, 1060, VIOLET, a2 * (1 - same), 40);
+    tag("NEW HOOK", 510, 1060, VIOLET, a1 * (1 - same), 34);
+    tag("NEW COLOR", 790, 1060, VIOLET, a2 * (1 - same), 34);
     tag("SAME IDEA", CX, 1110, GREEN, same, 56);
     words(["ONE CHANGE EACH"], VIOLET, 330, 0.0, 1, 130, flash(u, at("s5", "works")) * 0.4);
   }
