@@ -262,7 +262,7 @@ function frame(t0) {
     ring(fx, fy - 30, 60 + pulse, ORANGE, F); tag("OFF THE MAT", fx - 120, fy - 190, ORANGE, F, 40);
     ring(lerp(sx, hx, 0.5), lerp(sy, hy, 0.5), 80 + pulse, ORANGE, C); tag("CROOKED", sx - 20, sy - 200, ORANGE, C, 44);
     const N = sm(at("s3", "next") - 0.1, at("s3", "next") + 0.2, u);
-    tag("NEXT POSE?", CX, 730, RED, N * (1 - C), 40);
+    tag("NEXT POSE?", CX, 840, RED, N * (1 - C), 40);
   }
   if (id === "s4") {
     // teacher on the right calls the step; the student steps the right foot forward between the hands, slowly
@@ -272,7 +272,7 @@ function frame(t0) {
     mat(360, 1420, 460, 1, GREEN);
     const Sp = person(380, 1420, pose(P.dog, P.lungeDown, k), 0.95, GREEN);
     const [fx] = Sp("fR");
-    tag("RIGHT FOOT", 360, 720, GREEN, sm(at("s4", "right") - 0.1, at("s4", "right") + 0.1, u), 44);
+    tag("RIGHT FOOT", 300, 850, GREEN, sm(at("s4", "right") - 0.1, at("s4", "right") + 0.1, u), 44);
     arrow(380 - 140, 1330, 380 + 160, 1330, sm(at("s4", "right"), at("s4", "forward") + 0.3, u), GREEN, 1 - sm(at("s4", "forward") + 0.3, at("s4", "forward") + 0.5, u) * 0.6);
     void fx;
   }
@@ -283,9 +283,9 @@ function frame(t0) {
     mat(CX, 1420, 460, 1, GREEN);
     const Sp = person(CX - 10, 1420, pose(P.lungeDown, P.lunge, k), 1.0, GREEN);
     const [hx, hy] = Sp("sh");
-    tag("1 MOVE", 240, 720, GREEN, sm(at("s5", "move") - 0.1, at("s5", "move") + 0.1, u), 44);
-    tag("= 1 BREATH", 240, 830, VIOLET, sm(at("s5", "breath") - 0.1, at("s5", "breath") + 0.1, u), 44);
-    tag("INHALE", 800, 760, VIOLET, sm(I - 0.1, I + 0.1, u), 44);
+    tag("1 MOVE", 240, 830, GREEN, sm(at("s5", "move") - 0.1, at("s5", "move") + 0.1, u), 44);
+    tag("= 1 BREATH", 240, 940, VIOLET, sm(at("s5", "breath") - 0.1, at("s5", "breath") + 0.1, u), 44);
+    tag("INHALE", 800, 840, VIOLET, sm(I - 0.1, I + 0.1, u), 44);
     arrow(800, 1200, 800, 880, sm(I, R + 0.2, u), VIOLET, 1);
     void hx; void hy;
   }
@@ -299,8 +299,8 @@ function frame(t0) {
     person(610, 1400, pose(P.lungeDown, P.lunge, Rm), 0.45, VIOLET);
     person(850, 1400, pose(P.dog, P.lungeDown, Rm), 0.45, VIOLET);
     const br = 1 + 0.15 * IDLE;
-    ring(260, 760, 70 * br, GREEN, E);
-    tag("+1 BREATH", 260, 900, GREEN, E, 44);
+    ring(430, 820, 70 * br, GREEN, E);
+    tag("+1 BREATH", 430, 950, GREEN, E, 44);
     tag("WAIT FOR THEM", 740, 1180, VIOLET, sm(at("s6", "room") - 0.1, at("s6", "room") + 0.1, u), 36);
   }
   if (id === "s7") {
