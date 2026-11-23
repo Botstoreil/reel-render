@@ -1,0 +1,8 @@
+s1|Stopped at a red light? Never wait there in neutral, eyes down.
+s2|You stop right behind the car ahead, in neutral, not watching.
+s3|A car behind comes in too fast, and you have nowhere to go.
+s4|Instead, stay in first gear, clutch in, ready to move.
+s5|Leave a gap in front, flash your brake light, and watch your mirrors.
+s6|If the car behind is not slowing, ride into the space beside the car ahead.
+s7|Stay in gear. Keep a way out.
+s8|Download Apex. Three full rides a month are free.
