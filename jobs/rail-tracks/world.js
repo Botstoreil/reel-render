@@ -256,7 +256,7 @@ function drawInk(t) {
   if (id === "s1") {
     const a = sm(-0.05, 0.3, u);
     road(a); rails(sm(at("s1", "railway") - 0.1, at("s1", "tracks") + 0.1, u));
-    const p = lerp(0.05, wp * 0.55, sm(0.2, d, u));
+    const p = lerp(0.2, wp * 0.6, sm(0.2, d, u));
     const B = WRONG.pos(p); bike(B.X, B.Y, B.h, 0.95, a, RED);
     const sl = sm(at("s1", "slant") - 0.1, at("s1", "slant") + 0.25, u);
     strokePath(WRONG, p, wp, RED, sl * 0.8);
@@ -265,7 +265,7 @@ function drawInk(t) {
   if (id === "s2") {
     const a = sm(-0.05, 0.25, u);
     road(1); rails(1);
-    const p = lerp(wp * 0.55, wp - 0.035, sm(0, at("s2", "bends") + 0.2, u));
+    const p = lerp(wp * 0.6, wp - 0.035, sm(0, at("s2", "bends") + 0.2, u));
     strokePath(WRONG, p, 1, RED, 0.75);
     const B = WRONG.pos(p); bike(B.X, B.Y, B.h, 0.95, a, RED);
     const A = sm(at("s2", "shallow") - 0.1, at("s2", "angle") + 0.15, u);
@@ -284,9 +284,9 @@ function drawInk(t) {
     const steer = (RA - h0) * St * 1.1, yaw = -0.25 * St;
     bike(fx0 + 20 * St, fy0 + 30 * St, h0 + yaw, 0.95, 1, RED, steer, 0);
     if (D > 0) { x.save(); x.globalAlpha = D; x.strokeStyle = RED; x.lineWidth = 5; x.beginPath(); x.arc(gp[0], gp[1], 46, 0, Math.PI * 2); x.stroke(); x.restore(); }
-    tag("GROOVE", gp[0] - 150, gp[1] + 70, RED, sm(at("s3", "groove") - 0.1, at("s3", "groove") + 0.15, u), 26);
+    tag("GROOVE", 640, 1060, RED, sm(at("s3", "groove") - 0.1, at("s3", "groove") + 0.15, u), 26);
     arrow(gp[0] + 20, gp[1] - 50, gp[0] + 20 + RD[0] * 120, gp[1] - 50 + RD[1] * 120, RED, St, 8);
-    stamp("x", gp[0] + 120, gp[1] + 60, 0.5 * back(at("s3", "away") - 0.05, at("s3", "away") + 0.3, u), u > at("s3", "away") - 0.05 ? 1 : 0, RED);
+    stamp("x", 430, 1080, 0.5 * back(at("s3", "away") - 0.05, at("s3", "away") + 0.3, u), u > at("s3", "away") - 0.05 ? 1 : 0, RED);
   }
   if (id === "s4") {
     const a = sm(-0.05, 0.25, u);
@@ -294,12 +294,12 @@ function drawInk(t) {
     strokePath(WRONG, 0.3, wp + 0.05, RED, 0.35 * (1 - sm(at("s4", "straighten"), at("s4", "bike") + 0.2, u) * 0.5));
     const Dr = sm(at("s4", "straighten") - 0.1, at("s4", "cross") + 0.2, u);
     strokePath(RIGHT, 0, lerp(0, rp + 0.12, Dr), GREEN, 0.9);
-    const p = lerp(0.04, rp - 0.2, sm(0.1, d, u));
+    const p = lerp(0.18, rp - 0.2, sm(0.1, d, u));
     const B = RIGHT.pos(p); bike(B.X, B.Y, B.h, 0.95, a, GREEN);
     const Sq = sm(at("s4", "square") - 0.1, at("s4", "square") + 0.2, u);
     squareMark(GREEN, Sq);
     tag("90°", 300, 900, GREEN, Sq, 48);
-    stamp("v", 300, 1110, 0.5 * back(at("s4", "square"), at("s4", "square") + 0.3, u), u > at("s4", "square") ? 1 : 0, GREEN);
+    stamp("v", 790, 1140, 0.5 * back(at("s4", "square"), at("s4", "square") + 0.3, u), u > at("s4", "square") ? 1 : 0, GREEN);
   }
   if (id === "s5") {
     road(1); rails(1);
@@ -307,8 +307,8 @@ function drawInk(t) {
     const p = lerp(rp - 0.2, rp + 0.16, sm(0, d - 0.1, u));
     const B = RIGHT.pos(p); bike(B.X, B.Y, B.h, 0.95, 1, GREEN);
     tag("UPRIGHT", 240, 760, GREEN, sm(at("s5", "upright") - 0.1, at("s5", "upright") + 0.15, u), 40);
-    tag("STEADY GAS", 260, 1300, GREEN, sm(at("s5", "steady") - 0.1, at("s5", "throttle") + 0.1, u), 40);
-    tag("NO BRAKES", 830, 1250, ORANGE, sm(at("s5", "braking") - 0.1, at("s5", "braking") + 0.15, u), 40);
+    tag("STEADY GAS", 790, 700, GREEN, sm(at("s5", "steady") - 0.1, at("s5", "throttle") + 0.1, u), 38);
+    tag("NO BRAKES", 780, 1150, ORANGE, sm(at("s5", "braking") - 0.1, at("s5", "braking") + 0.15, u), 40);
     // upright gauge (rear view): a small tyre standing straight
     const G = sm(at("s5", "upright") - 0.1, at("s5", "upright") + 0.2, u);
     if (G > 0) { x.save(); x.globalAlpha = G; x.strokeStyle = GREEN; x.lineWidth = 8; x.beginPath(); x.arc(240, 900, 70, Math.PI * 1.1, Math.PI * 1.9); x.stroke(); x.beginPath(); x.moveTo(240, 900); x.lineTo(240, 830); x.stroke(); x.restore(); }
@@ -317,15 +317,15 @@ function drawInk(t) {
     const W = sm(at("s6", "wet") - 0.15, at("s6", "wet") + 0.1, u);
     road(1); rails(1, W, u); rain(W, u);
     const Sz = sm(at("s6", "slow") - 0.1, at("s6", "before") + 0.1, u);
-    zone(RIGHT, rp - 0.3, rp - 0.1, GREEN, Sz);
+    zone(RIGHT, rp - 0.22, rp - 0.07, GREEN, Sz);
     const Nz = sm(at("s6", "not") - 0.1, at("s6", "them") + 0.1, u);
     zone(RIGHT, rp - 0.05, rp + 0.05, RED, Nz, 150);
     // fast, then slower in the green zone, then a steady crossing
-    const k = cl(u / d), p = k < 0.35 ? lerp(0.08, rp - 0.3, k / 0.35) : k < 0.75 ? lerp(rp - 0.3, rp - 0.12, (k - 0.35) / 0.4) : lerp(rp - 0.12, rp + 0.04, (k - 0.75) / 0.25);
+    const k = cl(u / d), p = k < 0.35 ? lerp(0.2, rp - 0.22, k / 0.35) : k < 0.75 ? lerp(rp - 0.22, rp - 0.08, (k - 0.35) / 0.4) : lerp(rp - 0.08, rp + 0.05, (k - 0.75) / 0.25);
     const B = RIGHT.pos(p); bike(B.X, B.Y, B.h, 0.95, 1, GREEN);
-    tag("SLOW HERE", 250, 1330, GREEN, Sz, 40);
+    tag("SLOW HERE", 800, 1170, GREEN, Sz, 38);
     tag("NOT ON THEM", 800, 860, RED, Nz, 40);
-    tag("WET", 830, 1180, BLUE, W, 40);
+    tag("WET", 250, 760, BLUE, W, 44);
   }
   if (id === "s7") {
     road(0.6); rails(0.7); strokePath(RIGHT, 0, 1, GREEN, 0.4);
