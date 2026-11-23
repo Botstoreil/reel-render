@@ -1,0 +1,8 @@
+s1|Checked your room on day one? Never assume it stays that way.
+s2|Cleaners, staff or the host may come in while you are out.
+s3|Things can move, and something new can appear.
+s4|Instead, take a photo of the room when you first check it.
+s5|When you come back, compare it with the photo.
+s6|Anything new or moved, check it again before you relax.
+s7|Photo the room. Check again when you come back.
+s8|Save this for your next stay. Download Hidden Cam.
