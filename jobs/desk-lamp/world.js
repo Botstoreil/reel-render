@@ -184,7 +184,7 @@ function lamp(a, o = {}) {
   // head
   x.save(); x.translate(PIV[0], PIV[1]); x.rotate(ang);
   if (on > 0) {
-    x.save(); x.globalAlpha = a * on * 0.8; x.fillStyle = YELLOW;
+    x.save(); x.globalAlpha = a * on * 0.13; x.fillStyle = YELLOW;
     x.beginPath(); x.moveTo(110, -55); x.lineTo(480, -220); x.lineTo(480, 220); x.lineTo(110, 55); x.closePath(); x.fill(); x.restore();
   }
   x.strokeStyle = c; x.fillStyle = BG;
@@ -244,11 +244,13 @@ function frame(t) {
     const On = sm(at("s3", "light") - 0.1, at("s3", "on") + 0.1, u);
     lamp(1, { on: On });
     const G = sm(at("s3", "glare") - 0.1, at("s3", "glare") + 0.15, u);
-    sparkle(PIV[0] - 40, PIV[1] + 40, 120 * G, G, YELLOW);
+    if (G > 0) { x.save(); x.globalAlpha = G; x.strokeStyle = INKC; x.lineWidth = 4; x.lineCap = "round";
+      for (let i = 0; i < 12; i++) { const h = i * Math.PI / 6, r0 = 70, r1 = 70 + 70 * G * (i % 2 ? 0.6 : 1); x.beginPath(); x.moveTo(PIV[0] - 60 + Math.cos(h) * r0, PIV[1] + 50 + Math.sin(h) * r0); x.lineTo(PIV[0] - 60 + Math.cos(h) * r1, PIV[1] + 50 + Math.sin(h) * r1); x.stroke(); }
+      x.restore(); }
     tag("GLARE", 470, 640, RED, G, 40);
     const L = sm(at("s3", "tiny") - 0.1, at("s3", "lens") + 0.1, u);
     if (L > 0) { x.save(); x.globalAlpha = L; x.strokeStyle = RED; x.lineWidth = 5; x.beginPath(); x.arc(HOLE[0], HOLE[1], 26, 0, Math.PI * 2); x.stroke(); x.restore(); }
-    tag("TINY LENS", HOLE[0] - 40, 1020, RED, L, 36);
+    tag("TINY LENS", HOLE[0] - 170, 925, RED, L, 36);
   }
   if (id === "s4") {
     floorLine(1); desk(1);
@@ -256,7 +258,7 @@ function frame(t) {
     lamp(1, { on: 1 - Off, c: Off > 0.5 ? GREEN : VIOLET });
     tag("LAMP OFF", 560, 640, GREEN, Off, 34);
     lens(BASE[0] - 30, BASE[1], 90, sm(at("s4", "base") - 0.1, at("s4", "base") + 0.2, u));
-    tag("BASE", BASE[0] - 30, 1035, GREEN, sm(at("s4", "base") - 0.05, at("s4", "base") + 0.2, u), 32);
+    tag("BASE", BASE[0] - 240, 925, GREEN, sm(at("s4", "base") - 0.05, at("s4", "base") + 0.2, u), 32);
     lens(ELBOW[0], ELBOW[1], 70, sm(at("s4", "neck") - 0.1, at("s4", "neck") + 0.2, u));
     tag("NECK", ELBOW[0] + 20, 650, GREEN, sm(at("s4", "neck") - 0.05, at("s4", "neck") + 0.2, u), 32);
   }
@@ -265,7 +267,7 @@ function frame(t) {
     const H = sm(at("s5", "small") - 0.1, at("s5", "hole") + 0.1, u);
     const Ld = sm(at("s5", "light") - 0.1, at("s5", "light") + 0.15, u);
     lamp(1, { ring: H, ringC: RED, led: Ld, t: u, c: GREEN });
-    tag("SMALL HOLE?", HOLE[0] - 20, 1035, RED, H, 32);
+    tag("SMALL HOLE?", HOLE[0] - 160, 880, RED, H, 32);
     tag("LIGHT STAYS ON?", 760, 640, RED, sm(at("s5", "stays") - 0.1, at("s5", "on") + 0.1, u), 30);
   }
   if (id === "s6") {
@@ -274,10 +276,10 @@ function frame(t) {
     lamp(1, { ang: lerp(A_BED, A_WALL, Tu), c: Tu > 0.5 ? GREEN : VIOLET });
     sightCone(0.7 * (1 - Tu), RED);
     tag("AWAY FROM THE BED", 700, 590, GREEN, sm(at("s6", "away") - 0.1, at("s6", "bed") + 0.1, u), 38);
-    stamp("v", 260, 760, 0.5 * back(at("s6", "bed"), at("s6", "bed") + 0.3, u), u > at("s6", "bed") ? 1 : 0, GREEN);
+    stamp("v", 260, 760, 0.8 * back(at("s6", "bed"), at("s6", "bed") + 0.3, u), u > at("s6", "bed") ? 1 : 0, GREEN);
   }
   if (id === "s7") {
-    floorLine(0.3); bed(0.3); desk(0.3); lamp(0.3, { ang: A_WALL, c: GREEN });
+    floorLine(0.12); bed(0.12); desk(0.12); lamp(0.12, { ang: A_WALL, c: GREEN });
   }
   x.restore();
 
