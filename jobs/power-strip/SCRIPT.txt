@@ -1,0 +1,8 @@
+s1|Power strip pointing at the bed? Never ignore it.
+s2|Some hidden cameras are built into chargers and power strips.
+s3|A tiny dark hole on the side can be a lens.
+s4|Instead, turn off the lights and shine your phone torch across it.
+s5|A lens throws back a small bright glint.
+s6|Not sure? Unplug it and turn it to face the wall.
+s7|Check the power strip. Turn it away if unsure.
+s8|Save this for your next stay. Download Hidden Cam.
