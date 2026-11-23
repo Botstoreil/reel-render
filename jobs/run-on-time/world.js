@@ -150,7 +150,7 @@ function lie(f, s, k) {
 }
 
 // ---------- wall clock ----------
-const CLOCK = V(0.4, 5.5, -2.52), CR = 1.0;
+const CLOCK = V(0.6, 4.4, -2.52), CR = 0.85;
 const clockG = new THREE.Group(); clockG.position.copy(CLOCK); scene.add(clockG);
 {
   const face = shade(new THREE.Mesh(new THREE.CylinderGeometry(CR, CR, 0.12, 44), plastic(C.white))); face.rotation.x = Math.PI / 2; clockG.add(face);
@@ -210,15 +210,15 @@ function fit(pts, dirArr, box) {
   }
   return { look, dir, dist };
 }
-const ROOM = boxPts(-3.8, 4.6, 0, 6.6, -2.6, 3.6);
+const ROOM = boxPts(-3.6, 4.4, 0, 5.3, -2.0, 3.6);
 const SHOTS = {
-  s1: () => fit(ROOM, [0.12, 0.5, 1], [110, 700, 930, 1200]),
-  s2: () => fit(ROOM, [0.3, 0.42, 1], [110, 700, 930, 1200]),
-  s3: () => fit(ROOM, [-0.25, 0.55, 1], [110, 700, 930, 1200]),
-  s4: () => fit(ROOM, [0, 0.5, 1], [120, 730, 920, 1200]),
-  s5: () => fit(boxPts(-0.8, 4.6, 0.6, 6.6, -2.6, 1.2), [-0.35, 0.12, 1], [140, 640, 910, 1200]),
-  s6: () => fit(ROOM, [0.2, 0.5, 1], [120, 730, 920, 1200]),
-  s7: () => fit(ROOM, [-0.12, 0.55, 1], [110, 760, 930, 1200]),
+  s1: () => fit(ROOM, [0.12, 0.35, 1], [90, 650, 940, 1220]),
+  s2: () => fit(ROOM, [0.3, 0.3, 1], [90, 650, 940, 1220]),
+  s3: () => fit(ROOM, [-0.25, 0.45, 1], [90, 650, 940, 1220]),
+  s4: () => fit(ROOM, [0, 0.35, 1], [100, 720, 940, 1220]),
+  s5: () => fit(boxPts(-0.8, 4.6, 0.6, 5.4, -2.6, 1.2), [-0.35, 0.12, 1], [120, 640, 930, 1220]),
+  s6: () => fit(ROOM, [0.2, 0.35, 1], [100, 720, 940, 1220]),
+  s7: () => fit(ROOM, [-0.12, 0.4, 1], [90, 740, 940, 1220]),
 };
 SHOTS.s8 = SHOTS.s7;
 const shotCache = {};
@@ -304,7 +304,7 @@ function block(X0, w, Y, h, color, label, a, dy = 0, rot = 0) {
   x.fillStyle = color; x.strokeStyle = INK; x.lineWidth = 6;
   [-w / 4, w / 4].forEach((sx) => { rr(sx - 16, -h / 2 - 13, 32, 16, 5); x.fill(); x.stroke(); });
   rr(-w / 2 + 2, -h / 2, w - 4, h, 10); x.fill(); x.stroke();
-  x.font = FONT(28); x.textAlign = "center"; x.textBaseline = "middle"; x.fillStyle = WHITE; x.fillText(label, 0, 2);
+  x.font = FONT(30); x.textAlign = "center"; x.textBaseline = "middle"; x.fillStyle = WHITE; x.fillText(label, 0, 2);
   x.restore();
 }
 // the plan bar. Units: 0..1 = the class, END line at 1. px = X0 + u * UW
@@ -430,7 +430,7 @@ function frame(t) {
     words(["REST CUT SHORT"], RED, 420, 0.0, 1, 130, flash(u, at("s3", "short")) * 0.6);
     const [mx, my] = scr(V(STUDENTS[1].x, 1.2, MAT_Z + 1.3));
     stamp("x", mx, my - 60, back(at("s3", "short") - 0.05, at("s3", "short") + 0.25, u) * 0.55, u > at("s3", "short") - 0.05 ? 1 : 0, RED);
-    tag("NO FINAL REST", CX, my - 230, RED, sm(at("s3", "rest") - 0.05, at("s3", "rest") + 0.15, u), 40);
+    tag("NO FINAL REST", CX, 570, RED, sm(at("s3", "rest") - 0.05, at("s3", "rest") + 0.15, u), 40);
   }
   if (id === "s4") {
     words(["PLAN THE MINUTES"], GREEN, 400, 0.0, 1, 120, flash(u, at("s4", "minutes")) * 0.6);
