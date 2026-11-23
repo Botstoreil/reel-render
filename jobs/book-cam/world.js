@@ -203,7 +203,10 @@ function cone(hex) {
   return m;
 }
 const redCone = cone(0xff2a2a);
-const torchCone = cone(0xfff0a0);
+const torchCone = cone(0xffe680);
+// the bright spot the torch makes on the spines
+const spotG = new THREE.Mesh(new THREE.CircleGeometry(0.42, 28), new THREE.MeshBasicMaterial({ color: 0xfff6c0, transparent: true, opacity: 0, depthWrite: false }));
+spotG.renderOrder = 6; spotG.visible = false; scene.add(spotG);
 
 // ---------- framing: fit a set of points into a screen box (px) along a view direction ----------
 const tv = new THREE.Vector3();
@@ -233,7 +236,7 @@ const SHOTS = {
   s2: () => fit(SHELF_PTS, [0.15, 0.2, 1], [110, 660, 920, 1390]),
   s3: () => fit(boxPts(-1.7, -0.3, TOP + 0.1, TOP + 1.4, -2.4, -1.2), [0.25, 0.12, 1], [230, 660, 850, 1380]),
   s4: () => fit([...boxPts(-2.5, 2.5, SHELF_Y - 0.3, TOP + 1.5, -2.6, -1.0), ...boxPts(-1.6, 1.6, BED_TOP, BED_TOP + 0.6, 1.9, 3.2)], [0.1, 0.45, 1], [130, 640, 910, 1390]),
-  s5: () => fit(boxPts(-1.6, 1.6, BED_TOP, BED_TOP + 1.4, 1.8, 3.2), [0, 1.0, 1], [140, 720, 900, 1340]),
+  s5: () => fit(boxPts(-2.9, 1.7, BED_TOP, BED_TOP + 1.4, 1.8, 3.2), [0, 1.0, 1], [120, 720, 910, 1340]),
   s6: () => fit(boxPts(-2.5, 2.5, SHELF_Y - 0.4, TOP + 1.6, -2.6, 0.4), [-0.12, 0.18, 1], [110, 660, 920, 1390]),
   s7: () => fit([...ROOM_PTS, ...BED_PTS], [-0.45, 0.55, 1], [130, 780, 900, 1390]),
 };
@@ -321,7 +324,7 @@ function reset() {
   spineHole.scale.setScalar(0.001);
   setLens(lensFake, 0); setLens(lensBox, 0);
   realG.position.copy(REAL_HOME); realG.visible = false; coverPivot.rotation.z = 0; pagePivot.rotation.z = 0;
-  phoneG.visible = false;
+  phoneG.visible = false; spotG.visible = false;
   redCone.set(V(0, 0, 0), V(0, 1, 0), 0, 0, 0); torchCone.set(V(0, 0, 0), V(0, 1, 0), 0, 0, 0);
 }
 // the fake book lying flat on the bed, spine toward the camera
@@ -382,9 +385,13 @@ function frame(t) {
     phoneG.visible = true;
     const sw = sm(U("shine") - 0.05, U("glint") + 0.05, uq);
     const tx = lerp(-2.2, 1.8, sw);
-    phoneG.position.set(tx - 0.3, TOP + 1.0, 1.0);
-    phoneG.rotation.set(-0.35, 0, 0);
-    torchCone.set(phoneG.localToWorld(V(0.12, 0.38, -0.1)), V(tx, TOP + 0.6, SHELF_Z + 0.62), 0.05, 0.42, 0.32 * sm(U("shine") - 0.05, U("shine") + 0.15, uq));
+    // phone held low and to the left of the spot it lights, so it never covers a spine
+    phoneG.position.set(tx - 1.1, SHELF_Y - 0.5, 0.9);
+    phoneG.rotation.set(0.5, -0.5, -0.3);
+    const tA = sm(U("shine") - 0.05, U("shine") + 0.15, uq);
+    const spot = V(tx, TOP + 0.6, SHELF_Z + 0.63);
+    torchCone.set(phoneG.localToWorld(V(0.12, 0.38, -0.1)), spot, 0.06, 0.5, 0.45 * tA);
+    spotG.visible = tA > 0.01; spotG.position.copy(spot); spotG.material.opacity = 0.75 * tA;
     const g = sm(U("glint") - 0.08, U("glint") + 0.05, uq);
     setLens(lensBox, g, 2.2 + 3 * flash(uq, U("glint") + 0.05));
   }
@@ -424,12 +431,12 @@ function frame(t) {
     words(["REAL ONE", "OPENS"], GREEN, 420, 0.0, 1 - sm(sw - 0.1, sw, u), 140, flash(u, at("s5", "opens")) * 0.6);
     words(["CAMERA BOX", "WON'T"], GREEN, 420, sw, sm(sw - 0.05, sw, u), 140);
     const [rx, ry] = pin(V(REAL_HOME.x, BED_TOP + 0.5, REAL_HOME.z + 0.7));
-    stamp("v", rx, ry + 130, back(at("s5", "opens") - 0.05, at("s5", "opens") + 0.25, u) * 0.5, u > at("s5", "opens") - 0.05 ? 1 : 0, GREEN);
+    stamp("v", rx, ry - 20, back(at("s5", "opens") - 0.05, at("s5", "opens") + 0.25, u) * 0.5, u > at("s5", "opens") - 0.05 ? 1 : 0, GREEN);
     const [fx, fy] = pin(V(FAKE_BED.x, BED_TOP + 0.5, FAKE_BED.z + 0.7));
     tag("HOLLOW?", fx + 40, fy - 330, RED, sm(at("s5", "hollow") - 0.05, at("s5", "hollow") + 0.15, u), 38);
     tag("HEAVY?", fx + 40, fy - 245, RED, sm(at("s5", "heavy") - 0.05, at("s5", "heavy") + 0.15, u), 38);
     tag("WON'T OPEN?", fx + 10, fy - 160, RED, sm(at("s5", "not") - 0.05, at("s5", "not") + 0.15, u), 38);
-    stamp("x", fx, fy + 130, back(at("s5", "open", 2) - 0.05, at("s5", "open", 2) + 0.25, u) * 0.5, u > at("s5", "open", 2) - 0.05 ? 1 : 0, RED);
+    stamp("x", fx, fy - 20, back(at("s5", "open", 2) - 0.05, at("s5", "open", 2) + 0.25, u) * 0.5, u > at("s5", "open", 2) - 0.05 ? 1 : 0, RED);
   }
   if (id === "s6") {
     words(["SWEEP A LIGHT", "ON THE SPINES"], GREEN, 420, 0.0, 1, 130, flash(u, at("s6", "spines")) * 0.6);
