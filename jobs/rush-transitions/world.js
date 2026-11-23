@@ -222,8 +222,10 @@ function frame(t0) {
   const cut = 1 - sm(-LEAD, 0.22 - LEAD, u);
   const z = 1 + 0.035 * cl(u / Math.max(1, d)) + 0.05 * cut * cut;
   if (id === "s8") { x.fillStyle = BG; x.fillRect(0, 0, 1080, 1920); } else room();
-  x.save(); x.translate(CX, ZY); x.scale(z, z); x.translate(-CX, -ZY);
-  zoomM = [z, 0, 0, z, CX - CX * z, ZY - ZY * z];
+  // the whole scene sits 240 px higher so people stay above the caption pill (1240-1350)
+  const DY = id === "s8" ? 0 : 240;
+  x.save(); x.translate(CX, ZY); x.scale(z, z); x.translate(-CX, -ZY); x.translate(0, -DY);
+  zoomM = [z, 0, 0, z, CX - CX * z, ZY - ZY * z - DY * z];
 
   if (id === "s1") {
     // a student in down dog jumps the front foot forward in one fast hop: speed streaks, colour turns red on "rush"
@@ -241,13 +243,13 @@ function frame(t0) {
     const J = at("s2", "jump"), L = at("s2", "lose");
     xs.forEach((X, i) => {
       const k = u < J - 0.1 ? 0 : (Math.abs(Math.floor((u - J) * 6 + i)) % 2);
-      mat(X, 1300, 250, 1);
-      person(X - 20, 1300 - (k ? 40 : 0), k ? P.lungeDown : P.dog, 0.6, RED, { still: true });
+      mat(X, 1370, 250, 1);
+      person(X - 20, 1370 - (k ? 40 : 0), k ? P.lungeDown : P.dog, 0.6, RED, { still: true });
     });
     tag("POSE", 260, 820, RED, sm(at("s2", "pose") - 0.1, at("s2", "pose") + 0.1, u), 46);
     tag("TO POSE", 760, 820, RED, sm(at("s2", "pose", 2) - 0.1, at("s2", "pose", 2) + 0.1, u), 46);
     const left = u < L ? 3 : u < L + 0.25 ? 2 : u < at("s2", "breath") ? 1 : 0;
-    hearts(CX - 130, 1380, 3, left, sm(at("s2", "and") - 0.1, at("s2", "and") + 0.1, u));
+    hearts(CX - 130, 920, 3, left, sm(at("s2", "and") - 0.1, at("s2", "and") + 0.1, u));
   }
   if (id === "s3") {
     // close on one landing: front foot off the mat, body leaning, next pose built on it
@@ -260,12 +262,12 @@ function frame(t0) {
     ring(fx, fy - 30, 60 + pulse, ORANGE, F); tag("OFF THE MAT", fx - 120, fy - 190, ORANGE, F, 40);
     ring(lerp(sx, hx, 0.5), lerp(sy, hy, 0.5), 80 + pulse, ORANGE, C); tag("CROOKED", sx - 20, sy - 200, ORANGE, C, 44);
     const N = sm(at("s3", "next") - 0.1, at("s3", "next") + 0.2, u);
-    tag("NEXT POSE?", CX, 700, RED, N * (1 - C), 40);
+    tag("NEXT POSE?", CX, 730, RED, N * (1 - C), 40);
   }
   if (id === "s4") {
     // teacher on the right calls the step; the student steps the right foot forward between the hands, slowly
-    person(850, 1300, P.stand, 0.62, GREEN);
-    bubble("STEP BY STEP", 680, 960, GREEN, sm(at("s4", "cue") - 0.1, at("s4", "cue") + 0.15, u), 830, 1020, 40);
+    person(850, 1370, P.stand, 0.62, GREEN);
+    bubble("STEP BY STEP", 680, 1000, GREEN, sm(at("s4", "cue") - 0.1, at("s4", "cue") + 0.15, u), 830, 1080, 40);
     const k = sm(at("s4", "step", 3) - 0.05, at("s4", "forward") + 0.3, u);
     mat(360, 1420, 460, 1, GREEN);
     const Sp = person(380, 1420, pose(P.dog, P.lungeDown, k), 0.95, GREEN);
@@ -302,8 +304,8 @@ function frame(t0) {
     tag("WAIT FOR THEM", 740, 1180, VIOLET, sm(at("s6", "room") - 0.1, at("s6", "room") + 0.1, u), 36);
   }
   if (id === "s7") {
-    mat(CX, 1260, 300, 0.8, GREEN);
-    person(CX, 1260, P.lunge, 0.6, GREEN);
+    mat(CX, 1380, 300, 0.8, GREEN);
+    person(CX, 1380, P.lunge, 0.6, GREEN);
   }
   x.restore();
   zoomM = [1, 0, 0, 1, 0, 0];
