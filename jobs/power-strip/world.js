@@ -207,7 +207,7 @@ function strip(X, Y, s, p, c, rot = 0, o = {}) {
   const sw = R(150, -22, 40, 44, 8);
   fill(sw, o.on === false ? "#333" : "#ff5a6a", cl(p * 2 - 1) * 0.8);
   draw(sw, c, 5, cl(p * 2 - 1), 240, { closed: true, blur: 10 });
-  if ((o.lens ?? 0) > 0) lens(-188, 0, 0.42, o.lens, o.lc || RED);
+  if ((o.lens ?? 0) > 0) lens(-188, 0, 0.62, o.lens, o.lc || RED);
   x.restore();
 }
 // world position of the lens hole for a strip at (X, Y, s, rot)
@@ -234,13 +234,13 @@ function beamTo(x0, y0, x1, y1, w, a, c) {
 function glint(X, Y, G, u) {
   if (G <= 0) return;
   const p = 0.7 + 0.3 * Math.sin(u * 16);
-  x.save(); x.globalCompositeOperation = "lighter"; x.globalAlpha = G; x.shadowColor = WHITE; x.shadowBlur = 70 * p; x.fillStyle = WHITE; x.beginPath(); x.arc(X, Y, 14 * p + 6, 0, TAU); x.fill(); x.restore();
-  for (let i = 0; i < 4; i++) { const an = i * Math.PI / 2 + u; draw(L(X + Math.cos(an) * 34, Y + Math.sin(an) * 34, X + Math.cos(an) * (60 + 20 * p), Y + Math.sin(an) * (60 + 20 * p)), WHITE, 5, G, 130 + i, { blur: 14 }); }
+  x.save(); x.globalCompositeOperation = "lighter"; x.globalAlpha = Math.min(1, G); x.shadowColor = WHITE; x.shadowBlur = 90 * p; x.fillStyle = WHITE; x.beginPath(); x.arc(X, Y, 24 * p + 10, 0, TAU); x.fill(); x.restore();
+  for (let i = 0; i < 8; i++) { const an = i * Math.PI / 4 + u, r1 = i % 2 ? 50 : 70; draw(L(X + Math.cos(an) * 46, Y + Math.sin(an) * 46, X + Math.cos(an) * (r1 + 40 * p), Y + Math.sin(an) * (r1 + 40 * p)), WHITE, 6, Math.min(1, G), 130 + i, { blur: 16 }); }
 }
-function wall(X, p) {
+function wall(X, p, y0 = 560, y1 = 1260) {
   if (p <= 0) return;
-  draw(L(X, 560, X, 1260), VIOLET, 9, p, 401);
-  hatch(X, 560, 200, 700, VIOLET, p, 410, 40, 0.18);
+  draw(L(X, y0, X, y1), VIOLET, 9, p, 401);
+  hatch(X, y0, 200, y1 - y0, VIOLET, p, 410, 40, 0.18);
 }
 
 // ---------- one frame ----------
@@ -262,7 +262,7 @@ function frame(t) {
     strip(700, 1110, 0.9, pr(0.0, 0.6), VIOLET, 0, { lens: B });
     const [lx, ly] = lensAt(700, 1110, 0.9);
     beamTo(lx, ly, 300, 790, 150, B * (0.8 + 0.2 * Math.sin(u * 7)), RED);
-    tag("AIMED AT THE BED", CX, 1300, RED, sm(at("s1", "never") - 0.1, at("s1", "never") + 0.15, u));
+    tag("AIMED AT THE BED", 690, 960, RED, sm(at("s1", "never") - 0.1, at("s1", "never") + 0.15, u));
   }
   if (id === "s2") {
     const c1 = pr(at("s2", "chargers") - 0.15, 0.35), c2 = pr(at("s2", "power") - 0.15, 0.35);
@@ -279,7 +279,6 @@ function frame(t) {
     strip(SX, SY, SS, pr(-0.05, 0.5), VIOLET, 0, { lens: h });
     const [lx, ly] = lensAt(SX, SY, SS);
     draw(C(lx, ly, 62, -Math.PI / 2, 1.15), RED, 7, pr(at("s3", "side") - 0.1, 0.4), 99, { amp: 4 });
-    beamTo(lx, ly, lx + 40, 600, 70, sm(at("s3", "lens") - 0.1, at("s3", "lens") + 0.1, u) * 0.7, RED);
     tag("TINY LENS", lx + 60, ly + 160, RED, sm(at("s3", "lens") - 0.1, at("s3", "lens") + 0.15, u), 44);
   }
   if (id === "s4") {
@@ -307,7 +306,7 @@ function frame(t) {
     strip(SX, SY, SS, pr(-0.05, 0.4), GREEN, 0, { lens: 1, lc: GREEN });
     phone(820, 1300, 0.85, 1, -0.5, 1);
     glint(lx, ly, G * (1 + 0.4 * flash(u, at("s5", "glint"))), u);
-    tag("GLINT = LENS", lx + 90, ly - 170, GREEN, G, 44);
+    tag("GLINT = LENS", lx + 120, ly - 190, GREEN, G, 52);
   }
   if (id === "s6") {
     const SX = 500, SY = 900, SS = 0.95;
@@ -329,11 +328,11 @@ function frame(t) {
     const before = 1 - sm(at("s6", "turn") - 0.1, at("s6", "turn") + 0.1, u);
     beamTo(lx, ly, 200, 860, 110, before * 0.8, RED);
     beamTo(lx, ly, 880, SY, 70, faced * 0.8, GREEN);
-    tag("FACES THE WALL", 500, 1200, GREEN, faced, 44);
+    tag("FACES THE WALL", 500, 1090, GREEN, faced, 46);
   }
   if (id === "s7") {
-    wall(880, 0.7);
-    strip(560, 900, 1.0, 0.7, GREEN, Math.PI, { lens: 1, lc: GREEN });
+    wall(880, 0.7, 1040, 1300);
+    strip(560, 1170, 0.9, 0.7, GREEN, Math.PI, { lens: 1, lc: GREEN });
   }
   x.restore();
 
