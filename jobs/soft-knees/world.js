@@ -47,7 +47,7 @@ function words(lines, color, cy, t0, a = 1, maxPx = 150, flashK = 0) {
       const k = back(t0 + wi * 0.07, t0 + wi * 0.07 + 0.32, curU), o = sm(t0 + wi * 0.07, t0 + wi * 0.07 + 0.12, curU);
       const s = (0.4 + 0.6 * k) * (1 + 0.06 * flashK);
       x.save(); x.translate(X + ws[i] / 2, Y + (1 - k) * 40); x.scale(s, s); x.rotate((wi % 2 ? 1 : -1) * 0.015); x.globalAlpha = a * o;
-      shadow(); x.lineJoin = "round"; x.lineWidth = 16; x.strokeStyle = CARD; x.strokeText(p, 0, 0); shadow(false);
+      shadow(); x.lineJoin = "round"; x.lineWidth = 16; x.strokeStyle = (color === CARD || color === "#b6a8ff") ? INK : CARD; x.strokeText(p, 0, 0); // round 2: same-colour outline glued the letters shadow(false);
       x.fillStyle = color; x.fillText(p, 0, 0);
       x.restore();
       X += ws[i] + sp; wi++;
@@ -92,7 +92,8 @@ const SOFT = { head: [78, -78], sh: [70, -140], hip: [-24, -190], kn: [26, -100]
 // deeper: chest down over the legs
 const DEEP = { head: [58, -56], sh: [58, -122], hip: [-24, -188], kn: [26, -100], ft: [0, 0], el: [66, -58], hd: [64, -4] };
 function pose(a, b, k) { const o = {}; for (const j in a) o[j] = [lerp(a[j][0], b[j][0], k), lerp(a[j][1], b[j][1], k)]; return o; }
-const FX = 470, FY = 1150, SC = 1.45;
+// round 2: the fold read too small at 1.45; scale 2.0 (s1 grows from 1.25 while standing so the head stays under the title)
+const FX = 470, FY = 1180; let SC = 2.0;
 const P = (p, j) => [FX + p[j][0] * SC, FY + p[j][1] * SC];
 function figure(p, c = VIOLET, legC = null) {
   x.save(); x.lineCap = "round"; x.lineJoin = "round";
@@ -103,7 +104,7 @@ function figure(p, c = VIOLET, legC = null) {
   seg(legC || c, 40, "hip", "kn", "ft");
   seg(c, 52, "sh", "hip");
   seg(c, 30, "sh", "el", "hd");
-  const [hx, hy] = P(p, "head"); x.fillStyle = c; x.beginPath(); x.arc(hx, hy, 46, 0, Math.PI * 2); x.fill();
+  const [hx, hy] = P(p, "head"); x.fillStyle = c; x.beginPath(); x.arc(hx, hy, 58, 0, Math.PI * 2); x.fill();
   shadow(false);
   x.restore();
 }
@@ -116,6 +117,7 @@ function frame(t) {
   curU = u;
   x.setTransform(1, 0, 0, 1, 0, 0);
   x.clearRect(0, 0, 1080, 1920);
+  SC = 2.0;
   const cut = 1 - sm(-LEAD, 0.22 - LEAD, u);
   const z = 1 + 0.035 * cl(u / Math.max(1, d)) + 0.05 * cut * cut;
   paper();
@@ -125,6 +127,7 @@ function frame(t) {
     floor(); mat();
     const F = sm(0.1, at("s1", "fold") + 0.2, u);
     const L = sm(at("s1", "lock") - 0.15, at("s1", "lock") + 0.15, u);
+    SC = lerp(1.25, 2.0, F);
     figure(pose(STAND, LOCKED, F), VIOLET, L > 0.5 ? RED : null);
     tag("FORWARD FOLD", 700, 560, VIOLET, sm(at("s1", "forward") - 0.1, at("s1", "fold") + 0.1, u) * (1 - L), 42);
     const [kx, ky] = P(LOCKED, "kn");
@@ -150,8 +153,8 @@ function frame(t) {
     const Hm = sm(at("s3", "hamstrings") - 0.3, at("s3", "hamstrings"), u);
     // hamstring band along the back of the thigh, greyed out with an X: the stretch is not there
     if (Hm > 0) { x.save(); x.globalAlpha = 0.6 * Hm; x.strokeStyle = CARD; x.lineWidth = 12; x.setLineDash([16, 12]); x.beginPath(); x.moveTo(hx - 28, hy + 30); x.lineTo(kx - 26, ky - 30); x.stroke(); x.restore(); }
-    tag("HAMSTRINGS", 760, 760, INK, Hm, 40);
-    mark("x", 760, 870, back(at("s3", "hamstrings"), at("s3", "hamstrings") + 0.3, u) * 0.4, Hm, RED);
+    tag("HAMSTRINGS", 230, 880, INK, Hm, 40);
+    mark("x", 230, 990, back(at("s3", "hamstrings"), at("s3", "hamstrings") + 0.3, u) * 0.4, Hm, RED);
   }
   if (id === "s4") {
     floor(); mat();
