@@ -163,7 +163,7 @@ function leanBadge(lean, color, a, label = "LEAN") {
   x.fillStyle = "#1c2236"; x.beginPath(); x.arc(0, 0, 108, 0, Math.PI * 2); x.fill();
   x.save(); x.beginPath(); x.arc(0, 0, 104, 0, Math.PI * 2); x.clip();
   x.fillStyle = "#3a425c"; x.fillRect(-90, 58, 180, 8); // ground
-  x.translate(0, 58); x.scale(0.6, 0.6); x.rotate(lean);
+  x.translate(0, 58); x.scale(0.92, 0.92); x.rotate(lean);
   x.fillStyle = "#0c0e16"; rr(-9, -50, 18, 50, 8); x.fill();      // rear tyre
   x.fillStyle = color; rr(-22, -78, 44, 34, 10); x.fill();        // bike tail
   x.fillStyle = "#30364a"; rr(-20, -118, 40, 44, 12); x.fill();   // rider back
