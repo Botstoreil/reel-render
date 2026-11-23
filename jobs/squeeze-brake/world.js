@@ -195,12 +195,12 @@ const brakeR = (tau) => tau < SQ ? 0 : lerp(0.3, 0.92, sm(SQ, at("s4", "harder")
 // ---------- camera: early-2000s game chase cam ----------
 function place(look, dir, dist) { camera.position.copy(look).addScaledVector(dir, dist); camera.lookAt(look); camera.updateMatrixWorld(); }
 const SH = {
-  s1: { dir: [0.28, 0.42, 1], dist: 8.6, ly: 0.9, dz: -3.6 },
-  s2: { dir: [1, 0.38, -0.32], dist: 4.4, ly: 0.75, dz: -0.55 },
-  s3: { dir: [0.75, 0.62, -0.7], dist: 6.2, ly: 0.6, dz: -0.6 },
-  s4: { dir: [0.32, 0.45, 1], dist: 6.4, ly: 0.9, dz: -1.4 },
+  s1: { dir: [0.22, 0.42, 1], dist: 8.0, ly: 0.9, dz: -0.8 },
+  s2: { dir: [1, 0.38, -0.32], dist: 5.0, ly: 0.75, dz: -0.4 },
+  s3: { dir: [1, 0.6, 0.45], dist: 6.5, ly: 0.5, dz: -0.6 },
+  s4: { dir: [0.28, 0.45, 1], dist: 6.8, ly: 0.8, dz: -0.3 },
   s5: { dir: [1, 0.42, 0.42], dist: 6.0, ly: 0.8, dz: -0.8 },
-  s6: { dir: [0.12, 0.72, 1], dist: 6.6, ly: 1.1, dz: -2.2 },
+  s6: { dir: [0.12, 0.95, 1], dist: 8.0, ly: 0.6, dz: -1.5 },
   s7: { dir: [0.5, 0.85, 1], dist: 10.0, ly: 0.8, dz: -1.6 },
 };
 SH.s8 = SH.s7;
@@ -417,7 +417,7 @@ function frame(t) {
     words(["REAR BRAKE TOO.", "STAY STRAIGHT."], GREEN, 430, 0.0, 1, 140, flash(u, at("s5", "straight")) * 0.6);
     gauge(brakeR(tau), GREEN, 1);
     const [rx, ry] = pin(V(0, WR, BZ + 0.68));
-    tag("REAR", rx + 80, ry + 110, GREEN, sm(at("s5", "rear") - 0.1, at("s5", "rear") + 0.2, u), 40);
+    tag("REAR", rx + 230, ry, GREEN, sm(at("s5", "rear") - 0.1, at("s5", "rear") + 0.2, u), 40);
     const [ux, uy] = pin(V(0, 2.6, BZ - 0.2));
     tag("UPRIGHT", ux, uy - 40, VIO, sm(at("s5", "upright") - 0.1, at("s5", "upright") + 0.2, u), 40);
   }
