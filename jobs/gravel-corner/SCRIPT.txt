@@ -1,0 +1,8 @@
+s1|Gravel spilled across a bend ahead? Never brake or lean hard on it.
+s2|You see it late, and grab the brakes right on the loose stones.
+s3|The tyres lose grip on the gravel, and the bike slides out.
+s4|Instead, look far ahead, and slow down before you reach the gravel.
+s5|Cross it upright, with a light, steady throttle and no braking.
+s6|Look past the stones, and lean again only on clean road.
+s7|Slow before gravel. Cross it upright.
+s8|Download Apex. Three full rides a month are free.
