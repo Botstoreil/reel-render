@@ -417,7 +417,7 @@ function frame(t) {
     words(["REAR BRAKE TOO.", "STAY STRAIGHT."], GREEN, 430, 0.0, 1, 140, flash(u, at("s5", "straight")) * 0.6);
     gauge(brakeR(tau), GREEN, 1);
     const [rx, ry] = pin(V(0, WR, BZ + 0.68));
-    tag("REAR", rx + 230, ry, GREEN, sm(at("s5", "rear") - 0.1, at("s5", "rear") + 0.2, u), 40);
+    tag("REAR", Math.max(rx + 230, 330), ry - 40, GREEN, sm(at("s5", "rear") - 0.1, at("s5", "rear") + 0.2, u), 40);
     const [ux, uy] = pin(V(0, 2.6, BZ - 0.2));
     tag("UPRIGHT", ux, uy - 40, VIO, sm(at("s5", "upright") - 0.1, at("s5", "upright") + 0.2, u), 40);
   }
