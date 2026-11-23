@@ -206,7 +206,7 @@ function torch(a, beam) {
   x.save(); x.globalAlpha = a; x.translate(T[0], T[1]); x.rotate(h);
   if (beam > 0) {
     x.save(); x.globalAlpha = a * beam * 0.35; x.fillStyle = YELLOW;
-    x.beginPath(); x.moveTo(-10, 0); x.lineTo(-300, -95); x.lineTo(-300, 95); x.closePath(); x.fill(); x.restore();
+    x.beginPath(); x.moveTo(10, 0); x.lineTo(320, -95); x.lineTo(320, 95); x.closePath(); x.fill(); x.restore();
   }
   x.rotate(Math.PI / 2); x.strokeStyle = VIOLET; x.lineWidth = 8; x.fillStyle = BG;
   rr(-40, -10, 80, 150, 16); x.fill(); x.stroke();
@@ -238,7 +238,7 @@ function drawInk(t) {
   x.clearRect(0, 0, 1080, 1920);
   const cut = 1 - sm(-LEAD, 0.22 - LEAD, u);
   let z = 1 + 0.04 * cl(u / Math.max(1, d)) + 0.05 * cut * cut, fx = CX, fy = 1000;
-  if (id === "s3") { z = lerp(1.2, 1.7, sm(0, 1.2, u)); fx = LENS[0] - 20; fy = LENS[1] - 40; }
+  if (id === "s3") { z = lerp(1.1, 1.4, sm(0, 1.2, u)); fx = LENS[0] - 20; fy = LENS[1] + 40; }
   if (id === "s5") { z = lerp(1.0, 1.25, sm(0, d, u)); fx = 600; fy = 980; }
   x.save(); x.translate(CX, 900); x.scale(z, z); x.translate(-fx, -fy);
 
@@ -276,8 +276,8 @@ function drawInk(t) {
     // the dot on top of the dimmed room
     if (D > 0) {
       x.save(); x.globalAlpha = D * (0.75 + 0.25 * Math.sin(u * 9)); x.fillStyle = RED;
-      x.beginPath(); x.arc(LENS[0] + 44, LENS[1] - 20, 10, 0, Math.PI * 2); x.fill();
-      x.globalAlpha = D * 0.35; x.beginPath(); x.arc(LENS[0] + 44, LENS[1] - 20, 28, 0, Math.PI * 2); x.fill(); x.restore();
+      x.beginPath(); x.arc(LENS[0] + 44, LENS[1] - 20, 14, 0, Math.PI * 2); x.fill();
+      x.globalAlpha = D * 0.35; x.beginPath(); x.arc(LENS[0] + 44, LENS[1] - 20, 36, 0, Math.PI * 2); x.fill(); x.restore();
     }
     tag("LIGHTS OFF", 250, 860, YELLOW, off, 36);
     tag("TINY LIGHT?", LENS[0] + 60, LENS[1] - 120, RED, D, 34);
