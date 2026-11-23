@@ -89,7 +89,7 @@ function stick(X, Y, p, s, c, g = 0) {
 const flowPose = (t) => { const ph = (t * 0.7) % 3, seg = Math.floor(ph), k = sm(0.5, 1, ph - seg); const L = [POSE.mountain, POSE.warrior, POSE.tree]; return blend(L[seg % 3], L[(seg + 1) % 3], k); };
 
 // ---------- the phone that plays the ad ----------
-const PW = 360, PH = 620, PY = 840;           // phone centre y; screen spans ~530..1150
+const PW = 420, PH = 680, PY = 860;           // phone centre y; screen spans 520..1200
 const SX = CX - PW / 2, SY = PY - PH / 2;
 function phone(drawScreen, o = {}) {
   x.save();
@@ -116,9 +116,9 @@ function appScreen(t, a = 1, pop = 1) {
   x.save(); x.globalAlpha = a;
   x.fillStyle = CREAM; x.fillRect(SX, SY, PW, PH);
   x.fillStyle = DKG; x.textAlign = "center"; x.textBaseline = "middle";
-  x.font = FONT(48); x.fillText("56 POSES", CX, SY + 90);
-  x.font = FONT(26); x.fillStyle = "#5c7a6b"; x.fillText("FLOW FOR YOUR MOOD", CX, SY + 140);
-  stick(CX, SY + 520, flowPose(t), 0.62 * pop, DKG);
+  x.font = FONT(62); x.fillText("56 POSES", CX, SY + 90);
+  x.font = FONT(30); x.fillStyle = "#5c7a6b"; x.fillText("FLOW FOR YOUR MOOD", CX, SY + 145);
+  stick(CX, SY + 555, flowPose(t), 0.6 * pop, DKG);
   x.restore();
 }
 function logoScreen(u, a = 1) {
@@ -126,13 +126,13 @@ function logoScreen(u, a = 1) {
   x.fillStyle = "#24204a"; x.fillRect(SX, SY, PW, PH);
   const k = sm(at("s2", "logo") - 0.2, at("s2", "logo") + 0.3, u);
   glow(WHITE, 20); x.strokeStyle = "rgba(255,255,255,0.85)"; x.lineWidth = 8;
-  x.beginPath(); x.arc(CX, SY + 260, 80 * (0.6 + 0.4 * k), 0, Math.PI * 2 * k); x.stroke(); noGlow();
-  x.fillStyle = "rgba(255,255,255,0.8)"; x.font = FONT(34); x.textAlign = "center"; x.textBaseline = "middle";
-  x.globalAlpha = a * k; x.fillText("LOGO", CX, SY + 260);
+  x.beginPath(); x.arc(CX, SY + 240, 115 * (0.6 + 0.4 * k), 0, Math.PI * 2 * k); x.stroke(); noGlow();
+  x.fillStyle = "rgba(255,255,255,0.8)"; x.font = FONT(50); x.textAlign = "center"; x.textBaseline = "middle";
+  x.globalAlpha = a * k; x.fillText("LOGO", CX, SY + 240);
   // slow music notes drifting up
   const m = sm(at("s2", "music") - 0.2, at("s2", "music") + 0.1, u);
-  x.globalAlpha = a * m; x.fillStyle = VIOLET; x.font = FONT(56);
-  for (let i = 0; i < 3; i++) { const yy = SY + 470 - ((u * 25 + i * 45) % 120); x.fillText("♪", CX - 90 + i * 90, yy); }
+  x.globalAlpha = a * m; x.fillStyle = VIOLET; x.font = FONT(80);
+  for (let i = 0; i < 3; i++) { const yy = SY + 520 - ((u * 25 + i * 45) % 120); x.fillText("♪", CX - 120 + i * 120, yy); }
   x.restore();
 }
 function feedPost(a = 1) {
@@ -154,7 +154,7 @@ function frame(t) {
     // the ad plays; the app dot sits far at the end of the bar (0:20 of a 0:22 ad)
     const p = sm(0, at("s1", "twenty") + 0.2, u) * 0.85;
     phone(() => { logoScreen(at("s2", "music") + 1, 1); progress(p, 0.9, GREEN); });
-    tag("APP AT 0:20", 760, 1060, RED, sm(at("s1", "second") - 0.15, at("s1", "twenty"), u), 46);
+    tag("APP AT 0:20", CX, 1100, RED, sm(at("s1", "second") - 0.15, at("s1", "twenty"), u), 46);
     words(["APP AT 0:20?"], WHITE, 300, -0.2, 1, 130);
     words(["NEVER HIDE IT."], RED, 440, at("s1", "never") - 0.05, 1, 140, flash(u, at("s1", "never")));
   }
@@ -163,9 +163,8 @@ function frame(t) {
     const lg = sm(at("s2", "long") - 0.15, at("s2", "intro") + 0.2, u);
     phone(() => { logoScreen(u, 1); progress(0.1 + 0.3 * cl(u / 2.2), 0.9, GREEN);
       x.save(); glow(RED, 16); x.fillStyle = RED; rr(SX + 30, SY + PH - 40, (PW - 60) * 0.88 * lg, 10, 5); x.fill(); x.restore(); });
-    tag("LOGO", 830, 640, RED, sm(at("s2", "logo") - 0.15, at("s2", "logo") + 0.1, u), 42);
-    tag("SLOW MUSIC", 830, 760, RED, sm(at("s2", "music") - 0.2, at("s2", "music") + 0.1, u), 42);
-    tag("LONG INTRO", CX, 1210, RED, lg, 46);
+    tag("SLOW MUSIC", CX, 930, RED, sm(at("s2", "music") - 0.2, at("s2", "music") + 0.1, u), 44);
+    tag("LONG INTRO", CX, 1100, RED, lg, 46);
     words(["BEFORE"], RED, 330, -0.2, 1, 150, flash(u, 0.1) * 0.5);
   }
   if (id === "s3") {
@@ -179,14 +178,14 @@ function frame(t) {
     const th = sm(at("s3", "scroll") - 0.35, at("s3", "scroll") - 0.05, u) * (1 - sm(at("s3", "away") + 0.1, at("s3", "away") + 0.4, u));
     if (th > 0) { x.save(); x.globalAlpha = th; x.fillStyle = "#f0c9a8"; glow("#000", 20);
       const ty = 1080 - 260 * sc; rr(CX + 40, ty, 90, 200, 45); x.fill(); x.restore(); }
-    tag("NEVER SAW THE APP", CX, 1210, RED, sm(at("s3", "see") - 0.15, at("s3", "app") + 0.1, u), 44);
+    tag("NEVER SAW THE APP", CX, 1100, RED, sm(at("s3", "see") - 0.15, at("s3", "app") + 0.1, u), 44);
     words(["SCROLLED AWAY"], RED, 330, -0.2, 1, 140, flash(u, at("s3", "scroll")) * 0.6);
   }
   if (id === "s4") {
     // AFTER: the app fills the screen from 0:01
     const k = back(-0.3, 0.15, u);
     phone(() => { appScreen(t, 1, 0.85 + 0.15 * k); progress(0.05 + 0.1 * cl(u / 2), 0.04, GREEN); }, { ring: GREEN });
-    tag("APP AT 0:01", 760, 1060, GREEN, sm(at("s4", "first") - 0.2, at("s4", "second") + 0.05, u), 46);
+    tag("APP AT 0:01", CX, 1110, GREEN, sm(at("s4", "first") - 0.2, at("s4", "second") + 0.05, u), 46);
     words(["AFTER"], GREEN, 330, -0.3, 1, 150, flash(u, at("s4", "app")) * 0.5);
   }
   if (id === "s5") {
@@ -194,10 +193,10 @@ function frame(t) {
     const why = sm(at("s5", "why") - 0.2, at("s5", "why") + 0.05, u);
     phone(() => { appScreen(t * 1.4, 1, 1);
       if (why > 0) { x.save(); x.globalAlpha = why; x.fillStyle = "rgba(44,74,59,0.92)"; rr(SX + 30, SY + 200, PW - 60, 90, 22); x.fill();
-        x.fillStyle = CREAM; x.font = FONT(36); x.textAlign = "center"; x.textBaseline = "middle"; x.fillText("PRACTICE SAFELY", CX, SY + 247); x.restore(); }
+        x.fillStyle = CREAM; x.font = FONT(34); x.textAlign = "center"; x.textBaseline = "middle"; x.fillText("PRACTICE SAFELY", CX, SY + 247); x.restore(); }
     }, { ring: GREEN });
-    tag("WHAT IT DOES", 780, 640, VIOLET, sm(at("s5", "show") - 0.25, at("s5", "does"), u), 40);
-    tag("THEN WHY", 780, 1000, GREEN, why, 44);
+    tag("WHAT IT DOES", CX, 1110, VIOLET, sm(at("s5", "show") - 0.25, at("s5", "does"), u) * (1 - why), 44);
+    tag("THEN WHY", CX, 1110, GREEN, why, 44);
     words(["SHOW. THEN TELL."], VIOLET, 330, -0.2, 1, 130, flash(u, at("s5", "tell")) * 0.4);
   }
   if (id === "s6") {
