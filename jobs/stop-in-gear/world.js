@@ -101,7 +101,7 @@ function mark(kind, X, Y, s, a, c) {
 }
 
 // ---------- the street (board px), traffic moves up ----------
-const LL = 300, LR = 740, STOP = 545;
+const LL = 300, LR = 740, STOP = 560;
 const AHEAD = [560, 700];          // car ahead, waiting at the stop line
 const BW = [560, 915];             // wrong: bike tight behind it, in the middle
 const BRt = [400, 1010];           // right: bike back from it, on the left wheel track
@@ -110,7 +110,7 @@ const ESC = [400, 720];            // the space beside the car ahead
 function street(a) {
   if (a <= 0) return;
   x.save(); x.globalAlpha = a; x.strokeStyle = INKC; x.lineWidth = 4; x.lineCap = "round";
-  x.beginPath(); x.moveTo(LL, 540); x.lineTo(LL, 1560); x.moveTo(LR, 540); x.lineTo(LR, 1560); x.stroke();
+  x.beginPath(); x.moveTo(LL, 560); x.lineTo(LL, 1560); x.moveTo(LR, 560); x.lineTo(LR, 1560); x.stroke();
   x.lineWidth = 5; x.beginPath(); x.moveTo(LL, STOP); x.lineTo(LR, STOP); x.stroke();
   // traffic light on the corner, red on (below the stop line so it stays clear of the title)
   x.lineWidth = 4; x.fillStyle = "rgba(8,6,34,1)"; rr(800, 570, 70, 180, 18); x.fill(); x.stroke();
@@ -204,9 +204,9 @@ function frame(t) {
   raw.fillStyle = PAPER; raw.fillRect(0, 0, 1080, 1920);
   const cut = 1 - sm(-LEAD, 0.22 - LEAD, u);
   let z = 1 + 0.04 * cl(u / Math.max(1, d)) + 0.05 * cut * cut, fx = CX, fy = 900;
-  if (id === "s3") { z = lerp(1.0, 1.12, sm(0, d, u)); fy = 980; }
+  if (id === "s3") z = lerp(1.0, 1.06, sm(0, d, u)); // anchored at the board centre so the car ahead never climbs into the title
   // the diagram sits 100 px higher than the board so the cars stay clear of the caption pill (y 1240-1350)
-  x.save(); x.translate(CX, 800); x.scale(z, z); x.translate(-fx, -fy);
+  x.save(); x.translate(CX, 830); x.scale(z, z); x.translate(-fx, -fy);
 
   if (id === "s1") {
     const a = sm(-0.05, 0.3, u);
@@ -267,7 +267,7 @@ function frame(t) {
     const M = sm(at("s5", "watch") - 0.1, at("s5", "mirrors") + 0.1, u);
     sight(BRt[0], BRt[1], M);
     car(560, 1480, sm(at("s5", "watch") - 0.2, at("s5", "watch") + 0.1, u), INKC);
-    tag("MIRRORS", 830, 1290, INKC, M, 40);
+    tag("MIRRORS", 830, 1210, INKC, M, 40);
     gear("1", 820, 900, INKC, 1);
   }
   if (id === "s6") {
