@@ -157,11 +157,11 @@ function students(sl, sr, c, a = 1) { ROW.forEach((X) => person(X, SY, raise(sl,
 const STAR = Object.assign({}, STAND, { kL: [-70, -95], fL: [-130, 0], kR: [70, -95], fR: [130, 0], eL: [-120, -330], hL: [-230, -335], eR: [120, -330], hR: [230, -335] });
 const NARROW = Object.assign({}, STAND, { eL: [-40, -440], hL: [-8, -560], eR: [40, -440], hR: [8, -560] });
 function pose(a, b, k) { const o = {}; for (const j in a) o[j] = [lerp(a[j][0], b[j][0], k), lerp(a[j][1], b[j][1], k)]; return o; }
-const FY = 1330; // floor of the side view
+const FY = 1080; // floor of the side view (round 2: was 1330, under the caption band)
 function sideMat(X, w, c, a = 1) { if (a <= 0) return; x.save(); x.globalAlpha = a; x.strokeStyle = c; x.lineWidth = 5; rr(X - w / 2, FY, w, 20, 8); x.stroke(); x.restore(); }
 function floorLine() { x.save(); x.strokeStyle = INKC; x.lineWidth = 3; x.beginPath(); x.moveTo(90, FY + 40); x.lineTo(990, FY + 40); x.stroke(); x.restore(); }
 // ---- top-down floor plan: teacher at the front wall, two rows of mats, a head circle on each mat ----
-const MW = 140, MH = 250, ROW1 = 860, ROW2 = 1170, WALL = 640;
+const MW = 140, MH = 250, ROW1 = 770, ROW2 = 1080, WALL = 560; // round 2: back row was under the caption band
 function planMat(X, Y, c, a = 1) {
   if (a <= 0) return;
   x.save(); x.globalAlpha = a; x.strokeStyle = c; x.lineWidth = 5; rr(X - MW / 2, Y - MH / 2, MW, MH, 10); x.stroke();
@@ -221,8 +221,8 @@ function frame(t) {
     xs.forEach((X) => { sideMat(X, 200, VIOLET); person(X, FY, pose(STAND, STAR, Wd), 0.5, Wd > 0.6 ? RED : VIOLET); });
     const Ar = sm(at("s2", "arms") - 0.05, at("s2", "arms") + 0.2, u), Ft = sm(at("s2", "feet") - 0.05, at("s2", "feet") + 0.2, u);
     rowXs(3, 200).forEach((X) => { mark("x", X, FY - 168, back(0, 1, Ar) * 0.3, Ar > 0 ? 1 : 0, RED); mark("x", X, FY - 20, back(0, 1, Ft) * 0.3, Ft > 0 ? 1 : 0, RED); });
-    tag("ARMS", 300, 900, RED, Ar, 42);
-    tag("FEET", 720, 900, RED, Ft, 42);
+    tag("ARMS", 300, 700, RED, Ar, 42);
+    tag("FEET", 720, 700, RED, Ft, 42);
     tag("NEIGHBOR HIT", CX, FY + 130, RED, sm(at("s2", "hit") - 0.1, at("s2", "neighbor") + 0.1, u), 44);
   }
   if (id === "s3") {
@@ -235,8 +235,7 @@ function frame(t) {
     xs.forEach((X) => planMat(X, ROW2, RED, Bk));
     const S3 = sm(at("s3", "can't") - 0.15, at("s3", "see") + 0.1, u);
     xs.forEach((X) => sight(X, ROW2 - 80, ROW1 + 10, RED, S3, true));
-    tag("BACK ROW", 770, ROW2 + 190, RED, Bk, 40);
-    tag("CAN'T SEE", CX, 1440, RED, sm(at("s3", "see") - 0.1, at("s3", "you") + 0.15, u), 48);
+    tag("BACK ROW", 175, ROW2, RED, Bk, 40);
   }
   if (id === "s4") {
     // the mats spread apart: one hand of floor between them
@@ -249,7 +248,7 @@ function frame(t) {
     [CX - p / 2, CX + p / 2].forEach((X) => hand(X, ROW1 + 20, 0.9, Hd));
     tag("HAND'S WIDTH", CX, ROW1 + 230, GREEN, sm(at("s4", "width") - 0.1, at("s4", "width") + 0.15, u), 44);
     tag("FLOOR", CX, ROW1 - 200, GREEN, sm(at("s4", "floor") - 0.1, at("s4", "floor") + 0.15, u), 40);
-    mark("v", 820, 1400, back(at("s4", "mats") - 0.1, at("s4", "mats") + 0.25, u) * 0.5, u > at("s4", "mats") - 0.1 ? 1 : 0, GREEN);
+    mark("v", 820, 1120,back(at("s4", "mats") - 0.1, at("s4", "mats") + 0.25, u) * 0.5, u > at("s4", "mats") - 0.1 ? 1 : 0, GREEN);
   }
   if (id === "s5") {
     // back row slides half a mat: every student looks through a gap to the front
@@ -262,8 +261,7 @@ function frame(t) {
     back2.forEach((X, i) => planMat(lerp(rowXs(3, p)[i], X, St), ROW2, GREEN));
     const Sg = sm(at("s5", "see") - 0.15, at("s5", "front") + 0.2, u);
     back2.forEach((X) => sight(X, ROW2 - 80, WALL + 6, GREEN, Sg * St, false));
-    tag("STAGGER", 790, ROW2 + 190, GREEN, sm(at("s5", "stagger") - 0.05, at("s5", "stagger") + 0.2, u), 42);
-    tag("EVERYONE SEES", CX, 1440, GREEN, sm(at("s5", "every") - 0.05, at("s5", "student") + 0.15, u), 44);
+    tag("STAGGER", 150, ROW2, GREEN, sm(at("s5", "stagger") - 0.05, at("s5", "stagger") + 0.2, u), 40);
     void fromX;
   }
   if (id === "s6") {
