@@ -142,7 +142,7 @@ function zone(s0, s1, color, a) {
 function bike(X, Y, ang, col, brake = 0, a = 1) {
   if (a <= 0) return;
   for (const pass of [0, 1]) {
-    x.save(); x.globalAlpha = a; x.translate(X + (pass ? 0 : 12), Y + (pass ? 0 : 16)); x.rotate(ang + Math.PI / 2); x.scale(1.15, 1.15);
+    x.save(); x.globalAlpha = a; x.translate(X + (pass ? 0 : 12), Y + (pass ? 0 : 16)); x.rotate(ang + Math.PI / 2); x.scale(1.6, 1.6);
     const sh = pass === 0, f = (c) => (sh ? SHADOW : c);
     x.fillStyle = f("#1c1f29"); rr(-9, 26, 18, 38, 8); x.fill(); rr(-9, -66, 18, 36, 8); x.fill(); // tyres
     x.fillStyle = f(col); x.beginPath(); x.ellipse(0, -2, 21, 44, 0, 0, Math.PI * 2); x.fill();     // body
@@ -159,17 +159,18 @@ function leanBadge(lean, color, a, label = "LEAN") {
   if (a <= 0) return;
   const X = 175, Y = 1060;
   x.save(); x.globalAlpha = a; x.translate(X, Y);
-  x.fillStyle = SHADOW; x.beginPath(); x.arc(8, 10, 96, 0, Math.PI * 2); x.fill();
-  x.fillStyle = "#1c2236"; x.beginPath(); x.arc(0, 0, 96, 0, Math.PI * 2); x.fill();
-  x.fillStyle = "#3a425c"; x.fillRect(-80, 52, 160, 8); // ground
-  x.save(); x.translate(0, 52); x.rotate(lean);
+  x.fillStyle = SHADOW; x.beginPath(); x.arc(8, 10, 108, 0, Math.PI * 2); x.fill();
+  x.fillStyle = "#1c2236"; x.beginPath(); x.arc(0, 0, 108, 0, Math.PI * 2); x.fill();
+  x.save(); x.beginPath(); x.arc(0, 0, 104, 0, Math.PI * 2); x.clip();
+  x.fillStyle = "#3a425c"; x.fillRect(-90, 58, 180, 8); // ground
+  x.translate(0, 58); x.scale(0.6, 0.6); x.rotate(lean);
   x.fillStyle = "#0c0e16"; rr(-9, -50, 18, 50, 8); x.fill();      // rear tyre
   x.fillStyle = color; rr(-22, -78, 44, 34, 10); x.fill();        // bike tail
   x.fillStyle = "#30364a"; rr(-20, -118, 40, 44, 12); x.fill();   // rider back
   x.fillStyle = "#f2f2f2"; x.beginPath(); x.arc(0, -132, 15, 0, Math.PI * 2); x.fill();
   x.restore();
-  x.font = FONT(28); x.textAlign = "center"; x.textBaseline = "middle"; x.fillStyle = WHITE; x.fillText(label, 0, -70 + 0 * 1);
   x.restore();
+  tag(label, X, Y + 140, color, a, 32);
 }
 function dots(A, Bp, color, a, k = 1) {
   if (a <= 0) return;
