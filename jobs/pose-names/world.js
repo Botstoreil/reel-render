@@ -310,9 +310,9 @@ function frame(t) {
     over = () => {
       const hx = X0 + P.hL[0] * s, hip = [X0 + P.hip[0] * s, FY + P.hip[1] * s];
       tag("HANDS DOWN", 760, 1150, GREEN, sm(at("s5", "hands") - 0.05, at("s5", "hands") + 0.2, u), 42);
-      arrow(hx + 60, FY - 210, hx + 60, FY - 70, sm(at("s5", "hands"), at("s5", "down") + 0.1, u), GREEN);
+      arrow(hx + 110, FY - 230, hx + 110, FY - 60, sm(at("s5", "hands"), at("s5", "down") + 0.1, u), GREEN);
       tag("HIPS UP", 260, 680, VIOLET, sm(at("s5", "hips") - 0.05, at("s5", "hips") + 0.2, u), 46);
-      arrow(hip[0] - 120, FY - 120, hip[0] - 120, FY - 330, sm(at("s5", "hips"), at("s5", "up") + 0.15, u), VIOLET);
+      arrow(hip[0], hip[1] - 50, hip[0], hip[1] - 200, sm(at("s5", "hips"), at("s5", "up") + 0.15, u), VIOLET);
     };
   }
   if (id === "s6") {
@@ -320,10 +320,10 @@ function frame(t) {
     const Dm = sm(-0.05, at("s6", "once"), u), Ev = sm(at("s6", "everyone") - 0.05, at("s6", "sees") + 0.15, u);
     inner = () => {
       floor(FY);
-      mat(250, FY, 380, GREEN); mat(600, FY, 230, VIOLET); mat(840, FY, 230, VIOLET);
-      person(230, FY, pose(STAND, DOG, Dm), 0.62, GREEN);
-      person(610, FY, pose(STAND, DOG, Ev), 0.45, "#ff9f43", { look: -1 });
-      person(850, FY, pose(STAND, DOG, sm(at("s6", "sees") - 0.1, at("s6", "pose") + 0.1, u)), 0.45, VIOLET, { look: -1 });
+      mat(240, FY, 380, GREEN); mat(570, FY, 220, VIOLET); mat(790, FY, 220, VIOLET);
+      person(220, FY, pose(STAND, DOG, Dm), 0.62, GREEN);
+      person(580, FY, pose(STAND, DOG, Ev), 0.45, "#ff9f43", { look: -1 });
+      person(800, FY, pose(STAND, DOG, sm(at("s6", "sees") - 0.1, at("s6", "pose") + 0.1, u)), 0.45, VIOLET, { look: -1 });
     };
     over = () => {
       tag("DEMO", 250, 700, GREEN, sm(at("s6", "show") - 0.05, at("s6", "show") + 0.2, u), 46);
