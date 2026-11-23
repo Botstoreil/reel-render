@@ -192,7 +192,7 @@ scene.add(doorG);
 const prints = [];
 for (let i = 0; i < 8; i++) {
   const k = i / 7, side = i % 2 ? 1 : -1;
-  const m = shade(new THREE.Mesh(rbox(0.32, 0.06, 0.5), plastic(C.grey)));
+  const m = shade(new THREE.Mesh(rbox(0.34, 0.08, 0.55), plastic(0x4a4560)));
   m.position.set(lerp(DOOR_X, -1.0, k) + side * 0.18, 0.03, lerp(-1.6, 0.6, k)); m.rotation.y = 1.02; m.visible = false;
   scene.add(m); prints.push(m);
 }
@@ -528,14 +528,14 @@ function frame(t) {
   renderer.render(scene, camera);
 
   // ---------- overlay ----------
-  const tt = sceneOf(t), u = tt.u; curU = u;
+  const u = t - S[id][0] - LEAD; curU = u; // same line as the 3D frame (no one-frame overlay jump at a cut)
   x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, 1080, 1920);
   const pin = (v, dy = 0) => { const [X, Y] = scr(v); return [X, Y + dy]; };
   const objTop = () => pin(newG.localToWorld(V(0, 1.1, 0)));
   if (id === "s1") {
     words(["NEVER ASSUME", "NOTHING CHANGED"], RED, 430, 0.0, 1, 150, Math.max(flash(u, 0.05), flash(u, at("s1", "never"))));
     const [rx, ry] = pin(V(0, TOP + 2.2, SHELF_Z));
-    tag("DAY 1: CHECKED", rx, ry, GREEN, sm(at("s1", "day") - 0.05, at("s1", "day") + 0.2, u) * (1 - sm(at("s1", "assume"), at("s1", "assume") + 0.2, u) * 0.6), 44);
+    tag("DAY 1: CHECKED", rx, ry, GREEN, sm(at("s1", "day") - 0.05, at("s1", "day") + 0.2, u) * (1 - sm(at("s1", "assume"), at("s1", "assume") + 0.2, u) * 0.6), 52);
   }
   if (id === "s2") {
     words(["SOMEONE", "COMES IN"], RED, 430, 0.0, 1, 150, flash(u, at("s2", "come")) * 0.6);
@@ -543,8 +543,7 @@ function frame(t) {
     tag("CLEANERS", dx + 60, dy - 10, RED, sm(at("s2", "cleaners") - 0.05, at("s2", "cleaners") + 0.2, u), 38);
     tag("STAFF", dx + 60, dy + 70, RED, sm(at("s2", "staff") - 0.05, at("s2", "staff") + 0.2, u), 38);
     tag("HOST", dx + 60, dy + 150, RED, sm(at("s2", "host") - 0.05, at("s2", "host") + 0.2, u), 38);
-    const [ox, oy] = pin(V(0.5, 1.0, 1.0));
-    tag("YOU'RE OUT", ox + 120, oy + 120, RED, sm(at("s2", "out") - 0.1, at("s2", "out") + 0.15, u), 40);
+    tag("YOU'RE OUT", 720, 1130, RED, sm(at("s2", "out") - 0.1, at("s2", "out") + 0.15, u), 40);
   }
   if (id === "s3") {
     words(["THINGS", "CHANGE"], RED, 430, 0.0, 1, 150, flash(u, at("s3", "move")) * 0.6);
@@ -571,15 +570,14 @@ function frame(t) {
     if (fl > 0) { x.save(); x.fillStyle = `rgba(255,255,255,${fl})`; rr(208, 628, 664, 754, 54); x.fill(); x.restore(); }
     const pk = Math.floor(back(shot + 0.35, shot + 0.7, u) * 4 + 1e-6) / 4;
     polaroid(CX, 1000, 0.62 * pk, u > shot + 0.35 ? 1 : 0, "DAY 1", -0.05);
-    tag("FIRST CHECK", CX, 1330, GREEN, sm(at("s4", "first") - 0.05, at("s4", "first") + 0.2, u), 40);
   }
   if (id === "s5") {
     words(["COMPARE IT"], GREEN, 360, 0.0, 1, 140, flash(u, at("s5", "compare")) * 0.6);
     polaroid(CX, 640, 0.42, 1, "DAY 1", -0.04);
     const [dx, dy] = pin(V(DOOR_X + 1.5, 3.2, -2.0));
-    tag("BACK", cl(dx, 160, 400), dy, GREEN, sm(at("s5", "back") - 0.1, at("s5", "back") + 0.1, u) * (1 - sm(at("s5", "compare"), at("s5", "compare") + 0.2, u)), 38);
+    tag("YOU'RE BACK", cl(dx + 80, 220, 420), dy - 40, GREEN, sm(-0.05, 0.15, u) * (1 - sm(at("s5", "compare"), at("s5", "compare") + 0.2, u)), 44);
     const kk = sm(at("s5", "photo") - 0.1, at("s5", "photo") + 0.15, u);
-    tag("SAME?", 900, 845, GREEN, kk, 40);
+    tag("SAME?", 840, 860, GREEN, kk, 50);
   }
   if (id === "s6") {
     words(["CHECK IT", "AGAIN"], GREEN, 420, 0.0, 1, 150, flash(u, at("s6", "check")) * 0.6);
