@@ -267,7 +267,7 @@ function frame(t) {
     const H = sm(at("s5", "small") - 0.1, at("s5", "hole") + 0.1, u);
     const Ld = sm(at("s5", "light") - 0.1, at("s5", "light") + 0.15, u);
     lamp(1, { ring: H, ringC: RED, led: Ld, t: u, c: GREEN });
-    tag("SMALL HOLE?", HOLE[0] - 160, 880, RED, H, 32);
+    tag("SMALL HOLE?", HOLE[0] - 95, 860, RED, H, 30);
     tag("LIGHT STAYS ON?", 760, 640, RED, sm(at("s5", "stays") - 0.1, at("s5", "on") + 0.1, u), 30);
   }
   if (id === "s6") {
@@ -279,7 +279,7 @@ function frame(t) {
     stamp("v", 260, 760, 0.8 * back(at("s6", "bed"), at("s6", "bed") + 0.3, u), u > at("s6", "bed") ? 1 : 0, GREEN);
   }
   if (id === "s7") {
-    floorLine(0.12); bed(0.12); desk(0.12); lamp(0.12, { ang: A_WALL, c: GREEN });
+    floorLine(0.1); bed(0.1); desk(0.1);
   }
   x.restore();
 
