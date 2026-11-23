@@ -238,7 +238,7 @@ function drawInk(t) {
   x.clearRect(0, 0, 1080, 1920);
   const cut = 1 - sm(-LEAD, 0.22 - LEAD, u);
   let z = 1 + 0.04 * cl(u / Math.max(1, d)) + 0.05 * cut * cut, fx = CX, fy = 1000;
-  if (id === "s3") { z = lerp(1.1, 1.4, sm(0, 1.2, u)); fx = LENS[0] - 20; fy = LENS[1] + 40; }
+  if (id === "s3") { z = lerp(1.1, 1.4, sm(0, 1.2, u)); fx = LENS[0] - 20; fy = LENS[1] + 75; }
   if (id === "s5") { z = lerp(1.0, 1.25, sm(0, d, u)); fx = 600; fy = 980; }
   x.save(); x.translate(CX, 900); x.scale(z, z); x.translate(-fx, -fy);
 
