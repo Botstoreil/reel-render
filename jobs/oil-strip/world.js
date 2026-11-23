@@ -208,7 +208,7 @@ function fit(pts, dirArr, box) {
   return { look, dir, dist };
 }
 const SHOTS = {
-  s1: () => fit(boxPts(-3.2, 3.2, 0, 1.6, -5.0, 6.0), [0.25, 1.0, 1.1], [110, 640, 910, 1390]),
+  s1: () => fit(boxPts(-3.2, 3.2, 0, 1.6, -5.0, 3.4), [0.25, 0.8, 1.1], [110, 640, 910, 1390]),
   s2: () => fit(boxPts(-2.2, 2.2, 0, 1.8, -4.6, 1.2), [0.7, 0.75, 1], [110, 660, 910, 1390]),
   s3: () => fit(boxPts(-1.9, 1.9, 0, 2.0, -1.2, 2.4), [0.95, 0.6, 0.8], [130, 660, 900, 1380]),
   s4: () => fit(boxPts(-3.2, 3.2, 0, 1.6, -4.5, 6.0), [-0.2, 1.0, 1.1], [110, 640, 910, 1390]),
@@ -262,7 +262,7 @@ function tag(txt, X, Y, color, a, px = 42) {
   if (a <= 0) return;
   x.save(); x.globalAlpha = a; x.font = FONT(px); x.textAlign = "center"; x.textBaseline = "middle";
   const w = x.measureText(txt).width + 50, h = px * 1.5, s = 0.6 + 0.4 * Math.floor(a * 4) / 4;
-  X = cl(X, 70 + w / 2, 930 - w / 2); Y = cl(Y, 640, 1380);
+  X = cl(X, 70 + w / 2, 930 - w / 2); Y = cl(Y, 640, 1190); // stay above the caption pill (1240-1350)
   x.translate(X, Y); x.scale(s, s);
   x.fillStyle = "rgba(27,27,47,0.3)"; rr(-w / 2 + 6, -h / 2 + 8, w, h, 10); x.fill();
   x.fillStyle = color; x.strokeStyle = INK; x.lineWidth = 6;
@@ -308,7 +308,7 @@ function frame(t) {
   if (id === "s1") {
     // the red bike rolls down the dark centre toward the junction; a car waits at the line
     carA.position.set(0, RY, CAR_STOP); carA.userData.bl.emissiveIntensity = 2;
-    bikeW.position.set(0, RY, lerp(5.6, 0.6, sm(-0.2, d, uq)));
+    bikeW.position.set(0, RY, lerp(3.0, 0.2, sm(-0.2, d, uq)));
   }
   if (id === "s2") {
     // a car rolls up to the stop line and drips oil onto the centre
@@ -396,7 +396,7 @@ function frame(t) {
   if (id === "s5") {
     words(["FOOT ON", "DRY ROAD"], GREEN, 430, 0.0, 1, 150, flash(u, at("s5", "dry")) * 0.6);
     const [gx, gy] = pin(V(-TRK - 0.48, RY, 0.3));
-    tag("DRY", gx, gy + 80, GREEN, sm(at("s5", "dry") - 0.1, at("s5", "dry") + 0.2, u), 42);
+    tag("DRY", gx - 140, gy, GREEN, sm(at("s5", "dry") - 0.1, at("s5", "dry") + 0.2, u), 42);
     const [rx, ry] = pin(V(0.1, RY, -0.6));
     tag("DARK STRIP", rx + 120, ry - 60, RED, sm(at("s5", "dark") - 0.1, at("s5", "strip") + 0.1, u), 38);
   }
@@ -409,9 +409,9 @@ function frame(t) {
     stamp("v", vx - 60, vy, back(kT, kT + 0.3, u) * 0.5, u > kT ? 1 : 0, GREEN);
   }
   if (id === "s7") {
-    x.save(); x.fillStyle = "rgba(20,24,44,0.35)"; x.fillRect(0, 0, 1080, 1920); x.restore();
-    words(["RIDE THE TRACKS."], ORANGE, 430, 0.0, 1, 130, flash(u, 0.05));
-    words(["KEEP OFF THE OIL."], ORANGE, 600, at("s7", "keep") - 0.05, 1, 130, flash(u, at("s7", "oily")));
+    x.save(); x.fillStyle = "rgba(20,24,44,0.55)"; x.fillRect(0, 0, 1080, 1920); x.restore();
+    words(["RIDE THE", "TRACKS."], ORANGE, 500, 0.0, 1, 170, flash(u, 0.05));
+    words(["KEEP OFF", "THE OIL."], ORANGE, 870, at("s7", "keep") - 0.05, 1, 170, flash(u, at("s7", "oily")));
   }
   if (id === "s8") {
     x.save(); x.fillStyle = "rgba(20,24,44,0.72)"; x.fillRect(0, 0, 1080, 1920); x.restore();
@@ -424,8 +424,8 @@ function frame(t) {
     x.fillStyle = "#d62828"; for (let i = 0; i < 5; i++) { const a = (i / 5) * Math.PI * 2; x.beginPath(); x.arc(Math.cos(a) * 42, Math.sin(a) * 42, 13, 0, Math.PI * 2); x.fill(); }
     x.restore();
     words([c1], WHITE, 800, 0.15, 1, 130);
-    words([c2], RED, 950, 0.3, 1, 150);
-    if (BRAND.sub) tag(BRAND.sub, CX, 1110, GREEN, sm(0.5, 0.75, u), 50);
+    words([c2], RED, 985, 0.3, 1, 150);
+    if (BRAND.sub) tag(BRAND.sub, CX, 1150, GREEN, sm(0.5, 0.75, u), 50);
   }
 }
 
