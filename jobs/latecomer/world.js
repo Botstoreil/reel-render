@@ -81,7 +81,8 @@ function words(lines, color, cy, t0, a = 1, maxPx = 150, flashK = 0) {
       const s = 0.4 + 0.6 * k;
       x.save(); x.translate(X + ws[i] / 2, Y + (1 - k) * 40); x.scale(s, s); x.globalAlpha = a * o;
       x.lineWidth = 7; x.strokeStyle = "#000000"; x.lineJoin = "round"; raw.strokeText(p, 0, 0);
-      x.fillStyle = flashK > 0.05 ? mix(color, WHITE, flashK * 0.6) : color;
+      x.fillStyle = color; // round 2: a white mix read as amber in this palette; flash = a small scale pop instead
+      if (flashK > 0.05) x.scale(1 + 0.06 * flashK, 1 + 0.06 * flashK);
       x.fillText(p, 0, 0);
       x.restore();
       X += ws[i] + sp; wi++;
@@ -248,8 +249,10 @@ function frame(t) {
       x.beginPath(); x.moveTo(170, 1220); x.quadraticCurveTo(COLS[2] - 40, 1240, lerp(170, COLS[2], Pt), lerp(1220, ROW2 + 40, Pt)); raw.stroke(); raw.setLineDash([]); x.restore();
     }
     planMat(COLS[2], ROW2, GREEN, sm(at("s4", "free") - 0.1, at("s4", "free") + 0.1, u), true);
-    tag("FREE SPOT", COLS[2], ROW2 - 160, GREEN, sm(at("s4", "free") - 0.1, at("s4", "spot") + 0.1, u), 40);
-    tag("NEAR THE BACK", COLS[1], ROW2 + 170, GREEN, sm(at("s4", "back") - 0.15, at("s4", "back") + 0.1, u), 40);
+    // round 2: NEAR THE BACK sat under the caption band; it now replaces FREE SPOT in the same place
+    const Nb = sm(at("s4", "near") - 0.1, at("s4", "near") + 0.05, u);
+    tag("FREE SPOT", COLS[2], ROW2 - 160, GREEN, sm(at("s4", "free") - 0.1, at("s4", "spot") + 0.1, u) * (1 - Nb), 40);
+    tag("NEAR THE BACK", COLS[2], ROW2 - 160, GREEN, sm(at("s4", "near") - 0.05, at("s4", "back") + 0.1, u), 40);
   }
   if (id === "s5") {
     // side view: the late student rests in child's pose at the back while the class keeps flowing
@@ -257,7 +260,7 @@ function frame(t) {
     classFlow(VIOLET, 0.5 + 0.5 * Math.sin(u * 3));
     sideMat(270, 200, GREEN);
     const Ch = sm(at("s5", "simple") - 0.2, at("s5", "pose") + 0.2, u);
-    person(250, FY, pose(STAND, CHILD, Ch), SC, GREEN);
+    person(230, FY, pose(STAND, CHILD, Ch), lerp(SC, 0.7, Ch), GREEN); // round 2: child's pose read too small at 0.5
     tag("ONE SIMPLE POSE", 290, FY - 300, GREEN, sm(at("s5", "simple") - 0.1, at("s5", "pose") + 0.1, u) * (1 - sm(at("s5", "child's") - 0.1, at("s5", "child's"), u)), 40);
     tag("CHILD'S POSE", 290, FY - 300, GREEN, sm(at("s5", "child's") - 0.05, at("s5", "child's") + 0.15, u), 44);
   }
@@ -267,21 +270,22 @@ function frame(t) {
     const Rn = sm(at("s6", "next") - 0.1, at("s6", "round") + 0.25, u);
     CLASS.forEach((X) => { sideMat(X, 160, GREEN); person(X, FY, pose(STAND, UP, Rn), SC, GREEN); });
     sideMat(270, 200, GREEN);
-    person(270, FY, pose(CHILD, UP, Rn), SC, GREEN);
+    person(lerp(230, 270, Rn), FY, pose(CHILD, UP, Rn), lerp(0.7, SC, Rn), GREEN);
     // loop arrow = next round
     const La = sm(at("s6", "next") - 0.15, at("s6", "round"), u);
     if (La > 0) {
       x.save(); x.strokeStyle = GREEN; x.lineWidth = 7; x.lineCap = "round";
-      x.beginPath(); x.arc(CX + 80, 680, 80, -Math.PI / 2, -Math.PI / 2 + Math.PI * 1.7 * La); x.stroke();
-      if (La > 0.95) { const ax = CX + 80 + 80 * Math.cos(-Math.PI / 2 + Math.PI * 1.7), ay = 680 + 80 * Math.sin(-Math.PI / 2 + Math.PI * 1.7); x.beginPath(); x.moveTo(ax - 26, ay - 4); x.lineTo(ax, ay); x.lineTo(ax - 2, ay - 28); x.stroke(); }
+      // round 2: loop and tag side by side above the raised arms (they overlapped the heads)
+      x.beginPath(); x.arc(CX + 250, 620, 70, -Math.PI / 2, -Math.PI / 2 + Math.PI * 1.7 * La); x.stroke();
+      if (La > 0.95) { const ax = CX + 250 + 70 * Math.cos(-Math.PI / 2 + Math.PI * 1.7), ay = 620 + 70 * Math.sin(-Math.PI / 2 + Math.PI * 1.7); x.beginPath(); x.moveTo(ax - 26, ay - 4); x.lineTo(ax, ay); x.lineTo(ax - 2, ay - 28); x.stroke(); }
       x.restore();
     }
-    tag("NEXT ROUND", CX + 80, 820, GREEN, sm(at("s6", "round") - 0.1, at("s6", "round") + 0.15, u), 42);
+    tag("NEXT ROUND", CX - 120, 620, GREEN, sm(at("s6", "round") - 0.1, at("s6", "round") + 0.15, u), 46);
     mark("v", 270, FY - 380, back(at("s6", "flow") - 0.1, at("s6", "flow") + 0.2, u) * 0.4, u > at("s6", "flow") - 0.1 ? 1 : 0, GREEN);
   }
   if (id === "s7") {
+    // round 2: no figures behind the end card (they cut through the words); the floor stays as a quiet line
     floorLine();
-    [270, ...CLASS].forEach((X) => person(X, FY, UP, SC, GREEN, { a: 0.35 }));
   }
   x.restore();
 
