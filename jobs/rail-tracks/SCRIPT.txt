@@ -1,0 +1,8 @@
+s1|Railway tracks across the road ahead? Never cross them at a slant.
+s2|You ride over the rails at a shallow angle, the way the road bends.
+s3|Your front tyre drops into the groove and gets steered away from you.
+s4|Instead, straighten the bike and cross as close to square as you can.
+s5|Keep the bike upright, with steady throttle and no braking on the rails.
+s6|If they are wet, slow down before the tracks, not on them.
+s7|Cross tracks square. Bike upright, no brakes.
+s8|Download Apex. Three full rides a month are free.
