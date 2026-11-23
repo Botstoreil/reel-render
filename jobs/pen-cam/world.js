@@ -279,7 +279,7 @@ function frame(t) {
     pen(PX, PY, PS, pr(-0.05, 0.5), VIOLET, 0, { lens: h });
     const [lx, ly] = penLens(PX, PY, PS);
     draw(C(lx, ly, 56, -Math.PI / 2, 1.15), RED, 7, pr(at("s3", "tiny") - 0.1, 0.4), 99, { amp: 4 });
-    tag("NEXT TO THE CLIP", 780, 560, RED, sm(at("s3", "clip") - 0.15, at("s3", "clip") + 0.1, u), 40);
+    tag("NEXT TO THE CLIP", 730, 560, RED, sm(at("s3", "clip") - 0.15, at("s3", "clip") + 0.1, u), 40);
     draw([[700, 600], [660, 620], [600, ly - 10]], RED, 6, pr(at("s3", "clip") - 0.05, 0.3), 98);
   }
   if (id === "s4") {
@@ -321,7 +321,7 @@ function frame(t) {
     tag("OUT OF SIGHT", DX, 700, GREEN, sm(at("s6", "drawer") + 0.35, at("s6", "drawer") + 0.6, u), 48);
   }
   if (id === "s7") {
-    drawer(470, 960, 0, 0.7, GREEN);
+    drawer(470, 1010, 0, 0.7, GREEN);
   }
   x.restore();
 
