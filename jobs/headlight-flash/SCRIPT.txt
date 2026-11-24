@@ -1,0 +1,8 @@
+s1|A driver flashes his lights to let you go. Never trust the flash alone.
+s2|You pull out, because the driver waved you on.
+s3|A car you could not see comes past him, straight into your path.
+s4|Instead, treat the flash as a hint, not a green light.
+s5|Look past the car for yourself, both ways, before you move.
+s6|Go only when you can see the road is clear.
+s7|A flash is not a promise. Check the road yourself.
+s8|Download Apex. Three full rides a month are free.
