@@ -50,7 +50,7 @@ function words(lines, color, cy, t0, a = 1, maxPx = 150, flashK = 0) {
   });
   x.restore();
 }
-function tag(txt, X, Y, color, a, px = 40) {
+function tag(txt, X, Y, color, a, px = 50) {
   if (a <= 0) return;
   x.save(); x.globalAlpha = Math.min(1, a * 1.5); x.font = FONT(px); x.textAlign = "center"; x.textBaseline = "middle";
   const w = x.measureText(txt).width + 46, h = px * 1.55, s = 0.7 + 0.3 * back(0, 1, a);
@@ -116,11 +116,11 @@ function bracket(len, color, a, label) {
   x.beginPath(); for (let z = 0; z <= len; z += 0.5) { const px = X(HW + 0.8, z), py = Y(z); z === 0 ? x.moveTo(px, py) : x.lineTo(px, py); } x.stroke();
   x.lineWidth = 12; x.beginPath(); x.moveTo(X(-HW, len), Y(len)); x.lineTo(X(HW + 1.4, len), Y(len)); x.stroke();
   x.restore();
-  if (label) tag(label, X(HW + 0.8, len) + 30, Y(len) - 60, color, a, 34);
+  if (label) { if (color === AMBER) tag(label, X(-HW, len) - 40, Y(len) - 60, color, a, 44); else tag(label, X(HW + 0.8, len) + 30, Y(len) - 60, color, a, 44); }
 }
 function deer(z, lat, a, lit) {
   if (a <= 0) return;
-  const s = k(z) * 0.00042, px = X(lat, z), py = Y(z);
+  const s = k(z) * 0.001, px = X(lat, z), py = Y(z);
   const lightK = cl(1 - (z - lit) / 4, 0.12, 1);
   x.save(); x.globalAlpha = a; x.translate(px, py); x.scale(s, s);
   x.fillStyle = mix("#1a120c", "#8a6a4a", lightK); x.strokeStyle = mix("#1a120c", "#3a2a1a", lightK); x.lineWidth = 16; x.lineCap = "round";
@@ -134,7 +134,7 @@ function deer(z, lat, a, lit) {
 }
 function eyes(z, lat, a) {
   if (a <= 0) return;
-  const s = k(z) * 0.00042, px = X(lat, z), py = Y(z) - 300 * s;
+  const s = k(z) * 0.0007, px = X(lat, z), py = Y(z) - 300 * s;
   x.save(); x.globalAlpha = a; x.fillStyle = "#eaffc0"; x.shadowColor = "#eaffc0"; x.shadowBlur = 26;
   x.beginPath(); x.arc(px - 22 * s * 4, py, Math.max(4, 12 * s * 4), 0, Math.PI * 2); x.arc(px + 22 * s * 4, py, Math.max(4, 12 * s * 4), 0, Math.PI * 2); x.fill(); x.restore();
 }
