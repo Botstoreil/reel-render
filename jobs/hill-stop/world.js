@@ -172,14 +172,14 @@ function frame(t) {
   if (id === "s4") {
     const Re = at("s4", "rear"), Ri = at("s4", "right");
     bike(P0, VIOLET, { rear: sm(Re - 0.1, Re + 0.1, u) });
-    L.push(() => tag("REAR BRAKE", 280, 1360,GREEN, sm(Re - 0.1, Re + 0.2, u)));
-    L.push(() => tag("RIGHT FOOT", 780, 1360,GREEN, sm(Ri - 0.1, Ri + 0.2, u)));
+    L.push(() => tag("REAR BRAKE", 280, 640, GREEN, sm(Re - 0.1, Re + 0.2, u)));
+    L.push(() => tag("RIGHT FOOT", 780, 640, GREEN, sm(Ri - 0.1, Ri + 0.2, u)));
   }
   if (id === "s5") {
     const Le = at("s5", "left"), Fr = at("s5", "free"), Th = at("s5", "throttle");
     bike(P0, VIOLET, { rear: 1, thr: sm(Fr - 0.1, Fr + 0.1, u) });
-    L.push(() => tag("LEFT FOOT DOWN", 300, 1360,VIOLET, sm(Le - 0.1, Le + 0.2, u)));
-    L.push(() => tag("HAND FREE", 780, 640, GREEN, sm(Fr - 0.1, Fr + 0.2, u)));
+    L.push(() => tag("LEFT FOOT DOWN", 300, 760,VIOLET, sm(Le - 0.1, Le + 0.2, u)));
+    L.push(() => tag("HAND FREE", 780, 620, GREEN, sm(Fr - 0.1, Fr + 0.2, u)));
     L.push(() => tag("THROTTLE", 780, 760, GREEN, sm(Th - 0.1, Th + 0.2, u)));
   }
   if (id === "s6") {
