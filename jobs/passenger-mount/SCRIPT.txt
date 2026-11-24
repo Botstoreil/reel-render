@@ -1,0 +1,8 @@
+s1|Taking a passenger? Never let them climb on before you.
+s2|They swing a leg over while you are still standing beside the bike.
+s3|The bike tips under their weight, and it goes down.
+s4|Instead, you get on first, feet down, both brakes on.
+s5|Then they step on the peg and swing over, only when you say ready.
+s6|They get off the same way, only after you tell them.
+s7|Rider on first. Passenger waits for your OK.
+s8|Download Apex. Three full rides a month are free.
