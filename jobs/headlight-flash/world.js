@@ -58,7 +58,8 @@ function words(lines, color, cy, t0, a = 1, maxPx = 150, flashK = 0) {
 // neon sign label
 function tag(txt, X, Y, color, a, px = 40) {
   if (a <= 0) return;
-  x.save(); x.globalAlpha = Math.min(1, a * 1.5); x.font = FONT(px); x.textAlign = "center"; x.textBaseline = "middle";
+  const m = x.getTransform(); X = m.a * X + m.e; Y = m.d * Y + m.f;
+  x.save(); x.setTransform(1, 0, 0, 1, 0, 0); x.globalAlpha = Math.min(1, a * 1.5); x.font = FONT(px); x.textAlign = "center"; x.textBaseline = "middle";
   const w = x.measureText(txt).width + 48, h = px * 1.55, s = 0.7 + 0.3 * back(0, 1, a);
   X = cl(X, 70 + w / 2, 930 - w / 2); Y = cl(Y, 520, 1360);
   x.translate(X, Y); x.scale(s, s);
@@ -68,8 +69,9 @@ function tag(txt, X, Y, color, a, px = 40) {
 }
 function mark(kind, X, Y, s, a, c) {
   if (a <= 0 || s <= 0) return;
+  const m = x.getTransform(); X = m.a * X + m.e; Y = m.d * Y + m.f;
   X = cl(X, 120, 880); Y = cl(Y, 560, 1300);
-  x.save(); x.globalAlpha = a; x.translate(X, Y); x.scale(s, s); x.lineCap = "round";
+  x.save(); x.setTransform(1, 0, 0, 1, 0, 0); x.globalAlpha = a; x.translate(X, Y); x.scale(s, s); x.lineCap = "round";
   x.fillStyle = "rgba(18,0,42,0.95)"; x.beginPath(); x.arc(0, 0, 76, 0, Math.PI * 2); x.fill();
   glow(c, 26); x.strokeStyle = c; x.lineWidth = 9; x.beginPath(); x.arc(0, 0, 76, 0, Math.PI * 2); x.stroke();
   x.lineWidth = 20; x.beginPath();
@@ -182,7 +184,8 @@ function frame(t) {
   curU = u;
   x.setTransform(1, 0, 0, 1, 0, 0);
   const z = 1 + 0.04 * cl(u / Math.max(1, d)) + 0.05 * Math.pow(1 - sm(-LEAD, 0.22 - LEAD, u), 2);
-  x.save(); x.translate(540, 900); x.scale(z, z); x.translate(-540, -900);
+  const ZM = 1.55;   // camera close on the junction
+  x.save(); x.translate(540, 900); x.scale(z * ZM, z * ZM); x.translate(-540, -960);
   city(t);
   const L = [];
 
