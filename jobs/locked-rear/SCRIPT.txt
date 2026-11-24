@@ -1,0 +1,8 @@
+s1|Your rear wheel locks in a hard stop. Sounds wrong, but never let go of the brake.
+s2|You panic, and release the rear brake while the back end slides sideways.
+s3|The tyre grips again all at once, and can throw the bike over.
+s4|Instead, if you are going straight, keep the rear locked until you stop.
+s5|Keep squeezing the front, look ahead, and hold the bars straight.
+s6|Better still, press the rear gently, so it never locks.
+s7|Rear locked, going straight? Keep it locked.
+s8|Download Apex. Three full rides a month are free.
