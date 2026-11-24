@@ -349,13 +349,13 @@ function frame(t) {
     wifiOff(rx, ry - 150, 0.9 * back(U("wi-fi") - 0.1, U("wi-fi") + 0.25, u), sm(U("wi-fi") - 0.1, U("wi-fi"), u) * (1 - sm(U("hidden") - 0.1, U("hidden") + 0.1, u)));
     const [cx, cy] = scr(P_CLOCK);
     ring(cx, cy, 70, sm(U("camera") - 0.1, U("camera") + 0.15, u), RED);
-    tag("SOUNDS WRONG. IT'S TRUE.", CX, 1250, "#e0262e", sm(U("sounds") - 0.05, U("sounds") + 0.25, u), 42);
+    tag("SOUNDS WRONG. IT'S TRUE.", CX, 1140, "#e0262e", sm(U("sounds") - 0.05, U("sounds") + 0.25, u), 42);
   }
   if (id === "s2") {
     words(["UNPLUG", "THE ROUTER?"], RED, 420, 0.0, 1, 150, flash(u, U("unplug")) * 0.6);
     const [px, py] = scr(plug.position);
     ring(px, py, 60, sm(U("unplug") - 0.1, U("unplug") + 0.1, u) * (1 - sm(U("think") - 0.1, U("think"), u)), RED);
-    tag("FEELS SAFE", CX, 1250, RED, sm(U("think") - 0.05, U("safe"), u), 46);
+    tag("FEELS SAFE", CX, 1140, RED, sm(U("think") - 0.05, U("safe"), u), 46);
   }
   if (id === "s3") {
     words(["RECORDS TO A", "MEMORY CARD"], RED, 420, U("record") - 0.15, 1, 150, flash(u, U("memory")) * 0.6);
@@ -384,7 +384,7 @@ function frame(t) {
     words(["TORCH ON", "EACH ONE"], GREEN, 420, 0.0, 1, 150, flash(u, U("torch")) * 0.6);
     const [lx, ly] = scr(LENS());
     ring(lx, ly, 55, sm(U("glint") - 0.1, U("glint") + 0.1, u), RED);
-    tag("A SMALL GLINT = A LENS", CX, 1250, GREEN, sm(U("small") - 0.1, U("glint") + 0.15, u), 42);
+    tag("A SMALL GLINT = A LENS", CX, 1140, GREEN, sm(U("small") - 0.1, U("glint") + 0.15, u), 42);
   }
   if (id === "s7") {
     x.save(); x.fillStyle = "rgba(10,14,22,0.5)"; x.fillRect(0, 0, 1080, 1920); x.restore();
