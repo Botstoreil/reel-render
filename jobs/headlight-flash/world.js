@@ -235,7 +235,7 @@ function frame(t) {
     L.push(() => tag("JUST A HINT", 330, 1110, AMBER, sm(H - 0.15, H + 0.15, u)));
     L.push(() => lamp(800, 1180, sm(G - 0.3, G - 0.1, u), 0.8));
     L.push(() => mark("x", 800, 1180, back(G + 0.1, G + 0.4, u) * 0.55, u > G ? 1 : 0, RED));
-    L.push(() => tag("WAIT", 560, 1300, VIOLET, sm(0.1, 0.4, u)));
+    L.push(() => tag("WAIT", 770, 1110, VIOLET, sm(0.1, 0.4, u)));
   }
   if (id === "s5") {
     const Lk = at("s5", "look"), Pa = at("s5", "past"), Bo = at("s5", "both"), M = at("s5", "move");
@@ -249,7 +249,7 @@ function frame(t) {
     sight(BXc, by - 20, Math.atan2(LA - by, 120 - BXc), 470, GREEN, sm(Lk - 0.1, Lk + 0.15, u) * (1 - sm(Bo, Bo + 0.25, u)));
     sight(BXc, by - 20, Math.atan2(LA - by, 1000 - BXc), 470, GREEN, sm(Bo, Bo + 0.25, u));
     L.push(() => tag("CAR COMING", 230, 690, GREEN, sm(Pa - 0.1, Pa + 0.2, u) * (1 - sm(M, M + 0.3, u))));
-    L.push(() => tag("BOTH WAYS", 800, 1180, VIOLET, sm(Bo - 0.1, Bo + 0.2, u)));
+    L.push(() => tag("BOTH WAYS", 800, 1075, VIOLET, sm(Bo - 0.1, Bo + 0.2, u)));
   }
   if (id === "s6") {
     const G = at("s6", "go"), C = at("s6", "clear");
