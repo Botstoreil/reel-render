@@ -1,0 +1,8 @@
+s1|Stopped on a steep hill? Never hold the bike on the front brake.
+s2|You hold the front lever, then let it go to twist the throttle.
+s3|The bike rolls back, and you stall or drop it.
+s4|Instead, hold the bike on the rear brake with your right foot.
+s5|Your left foot stays down, and your right hand is free for the throttle.
+s6|Find the clutch bite, add throttle, then ease off the rear brake.
+s7|Hold hills on the rear brake. Right hand free.
+s8|Download Apex. Three full rides a month are free.
