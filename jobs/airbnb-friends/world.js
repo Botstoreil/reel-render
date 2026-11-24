@@ -139,7 +139,7 @@ function plant(x, z, s = 1) {
   for (let i = 0; i < 9; i++) { const l = new THREE.Mesh(new THREE.SphereGeometry(0.2 + r() * 0.12, 16, 12), M.leaf); l.scale.set(1, 1.5, 0.5); l.rotation.set(r() - 0.5, r() * 6, r() - 0.5); put(l, (r() - 0.5) * 0.4, 0.62 + r() * 0.5, (r() - 0.5) * 0.4, g).castShadow = true; }
   g.scale.setScalar(s); put(g, x, 0, z); return g;
 }
-plant(-4.7, -3.5, 1.1);
+plant(-0.5, -3.6, 1.0);
 // bookshelf on the side wall: the INDOOR camera sits on it, looking at the sofa
 const shelf = new THREE.Group();
 put(rb(0.4, 2.0, 1.4, M.oak, 0.02), 0, 1.0, 0, shelf);
@@ -239,10 +239,10 @@ const redCone = cone(0xff3030), greenCone = cone(0x30e070), redCone2 = cone(0xff
 // ---------- camera shots ----------
 const SH = {
   s1: { from: V(1.2, 3.6, 5.2), to: V(-1.6, 0.8, -1.2), push: 0.08 },
-  s2: { from: V(-0.4, 2.0, 1.4), to: V(-3.6, 1.2, -1.6), push: 0.1 },
-  s3: { from: V(-2.6, 1.9, 0.6), to: V(-4.9, 1.85, -0.6), push: 0.12 },
-  s4: { from: V(OX + 2.2, 1.6, 6.5), to: V(OX, 1.7, -1.2), push: 0.1 },
-  s5: { from: V(1.4, 2.0, 1.6), to: V(3.9, 0.7, -2.6), push: 0.08 },
+  s2: { from: V(-0.2, 2.4, 2.6), to: V(-3.8, 1.3, -1.2), push: 0.1 },
+  s3: { from: V(-2.4, 2.5, 1.4), to: V(-4.95, 2.3, -0.6), push: 0.12 },
+  s4: { from: V(OX + 0.6, 1.7, 7.5), to: V(OX - 1.1, 1.8, -1.2), push: 0.1 },
+  s5: { from: V(1.2, 2.2, 2.2), to: V(4.5, 0.9, -2.2), push: 0.08 },
   s6: { from: V(3.4, 1.2, -1.6), to: V(4.33, 0.55, -3.5), push: 0.18 },
   s7: { from: V(1.2, 3.6, 5.2), to: V(-1.6, 0.8, -1.2), push: 0.04 },
 };
@@ -270,12 +270,12 @@ let curU = 0;
 function words(lines, color, cy, t0, a = 1, maxPx = 140, flashK = 0) {
   if (a <= 0) return;
   x.save(); x.textAlign = "center"; x.textBaseline = "middle"; x.lineJoin = "round";
-  const sizes = lines.map((L) => { x.font = FONT(100); return Math.min(maxPx, (800 / x.measureText(L).width) * 100); });
+  const sizes = lines.map((L) => { x.font = FONT(100); const n = L.split(" ").length - 1; return Math.min(maxPx, (800 / (x.measureText(L).width + n * x.measureText(" ").width * 0.6)) * 100); });
   const tot = sizes.reduce((s, p) => s + p * 1.08, 0);
   let y = cy - tot / 2, wi = 0;
   lines.forEach((L, li) => {
     const px = sizes[li]; x.font = FONT(px);
-    const parts = L.split(" "), sp = x.measureText(" ").width;
+    const parts = L.split(" "), sp = x.measureText(" ").width * 1.6;
     const ws = parts.map((p) => x.measureText(p).width), full = ws.reduce((s, w) => s + w, 0) + sp * (parts.length - 1);
     let X = CX - full / 2; const Y = y + px * 0.54;
     parts.forEach((p, i) => {
@@ -335,7 +335,7 @@ function frame(t) {
   if (id === "s2" || id === "s3") {
     // the indoor camera covers the sofa
     const a = id === "s2" ? sm(U("camera") - 0.1, U("camera") + 0.25, u) : 1;
-    redCone.set(camEye, V(-2.5, 0.6, -2.6), 0.03, 1.4, 0.22 * a);
+    redCone.set(camEye, V(-2.5, 0.7, -3.0), 0.03, 0.9, 0.16 * a);
   }
   if (id === "s4") {
     const tip = bullet.localToWorld(V(0, 0, 0.14));
@@ -348,7 +348,7 @@ function frame(t) {
   if (id === "s5" || id === "s6") {
     // lights off, phone torch sweeps the room
     sun.intensity = 0.25; hemi.intensity = 0.12; scene.environmentIntensity = 0.18; lamp.intensity = 0;
-    phone.visible = true; torch.intensity = 26 * (id === "s5" ? sm(U("sweep") - 0.2, U("sweep"), u) : 1);
+    phone.visible = true; torch.intensity = 60 *(id === "s5" ? sm(U("sweep") - 0.2, U("sweep"), u) : 1);
     let aim;
     if (id === "s5") {
       const a = sm(U("sweep"), U("bathroom") + 0.3, u);
@@ -359,7 +359,7 @@ function frame(t) {
     } else {
       const a = sm(0, U("camera") + 0.2, u);
       aim = V(3.9, 0.6, -3.3).lerp(V(4.33, 0.56, -3.49), a);
-      phone.position.set(3.6, 1.0, -2.1);
+      phone.position.set(3.25, 1.35, -1.3); // behind the lens: lights the clock, never fills the frame
       // the glint on the clock
       clockLensMat.emissiveIntensity = 6 * sm(U("camera") - 0.15, U("camera"), u) * (0.75 + 0.25 * Math.sin(u * 18));
     }
