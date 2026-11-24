@@ -1,0 +1,8 @@
+s1|A dark road at night? Never ride faster than your lights can see.
+s2|You keep your daytime speed on an unlit country road.
+s3|Something appears in your beam, and you cannot stop in time.
+s4|Instead, ride at a speed where you can stop inside the lit road.
+s5|Use high beam when the road is empty, and follow the lights of cars ahead.
+s6|Watch the edges for eyes and shapes, and slow down early.
+s7|Stop inside your light. Slow down at night.
+s8|Download Apex. Three full rides a month are free.
