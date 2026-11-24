@@ -54,7 +54,7 @@ function words(lines, color, cy, t0, a = 1, maxPx = 150, flashK = 0) {
   x.restore();
 }
 // scan readout label: bracket corners, mono text
-function tag(txt, X, Y, color, a, px = 38) {
+function tag(txt, X, Y, color, a, px = 50) {
   if (a <= 0) return;
   x.save(); x.globalAlpha = Math.min(1, a * 1.5); x.font = MONO(px); x.textAlign = "center"; x.textBaseline = "middle";
   const w = x.measureText(txt).width + 50, h = px * 1.6, s = 0.7 + 0.3 * back(0, 1, a);
@@ -78,7 +78,7 @@ function mark(kind, X, Y, s, a, c) {
 }
 
 // ---------- the scan ----------
-const RL = 290, RR = 790, FX = 540, FY = 830;   // road edges, front wheel position on screen
+const RL = 290, RR = 790, FX = 540, FY = 830, BS = 1.7;   // road edges, front wheel position on screen, bike scale
 function scanBg(t, scroll) {
   x.fillStyle = "#020812"; x.fillRect(-200, -200, 1480, 2400);
   x.lineWidth = 1;
@@ -96,7 +96,7 @@ function scanBg(t, scroll) {
 // bike from above, translucent x-ray. yaw rotates the bike around its front wheel. rear/front: 0 rolling, 1 locked/braking
 function bike(yaw, c, o = {}) {
   const { rear = 0, front = 0, a = 1 } = o;
-  x.save(); x.globalAlpha = a; x.translate(FX, FY); x.rotate(-Math.PI / 2 + yaw); x.translate(-82, 0);
+  x.save(); x.globalAlpha = a; x.translate(FX, FY); x.scale(BS, BS); x.rotate(-Math.PI / 2 + yaw); x.translate(-82, 0);
   x.lineCap = "round"; x.lineJoin = "round";
   const wheel = (X, k, col) => { x.save(); glow(col, 24); x.fillStyle = mix("#0a2a3a", col, 0.35 + 0.4 * k); x.strokeStyle = col; x.lineWidth = 5; rr(X - 44, -15, 88, 30, 14); x.fill(); x.stroke(); x.restore(); };
   wheel(-92, rear, rear > 0.5 ? RED : GREEN);
@@ -109,11 +109,11 @@ function bike(yaw, c, o = {}) {
   x.beginPath(); x.moveTo(-22, -20); x.lineTo(30, -46); x.moveTo(-22, 20); x.lineTo(30, 46); x.stroke();            // arms
   x.restore(); x.restore();
 }
-function rearPos(yaw) { const ang = -Math.PI / 2 + yaw; return [FX - Math.cos(ang) * 174, FY - Math.sin(ang) * 174]; }
+function rearPos(yaw) { const ang = -Math.PI / 2 + yaw; return [FX - Math.cos(ang) * 174 * BS, FY - Math.sin(ang) * 174 * BS]; }
 function skid(yaw, len, color, a) {
   if (a <= 0 || len <= 2) return;
   const [rx, ry] = rearPos(yaw);
-  x.save(); x.globalAlpha = a; glow(color, 12); x.strokeStyle = color; x.lineWidth = 12; x.lineCap = "round";
+  x.save(); x.globalAlpha = a; glow(color, 12); x.strokeStyle = color; x.lineWidth = 18; x.lineCap = "round";
   x.beginPath(); x.moveTo(rx, ry); x.quadraticCurveTo(rx, ry + len * 0.5, FX, ry + len); x.stroke(); x.restore();
 }
 // inset wheel scan
@@ -128,7 +128,10 @@ function wheelScan(X, Y, spin, locked, a, label) {
   for (let i = 0; i < 5; i++) { const g = (i / 5) * Math.PI * 2; x.moveTo(Math.cos(g) * 18, Math.sin(g) * 18); x.lineTo(Math.cos(g) * 84, Math.sin(g) * 84); }
   x.stroke(); x.restore();
   if (locked) { x.fillStyle = col; x.beginPath(); x.arc(0, -50, 14, 0, Math.PI * 2); x.fill(); }
-  x.font = MONO(30); x.textAlign = "center"; x.fillStyle = col; x.fillText(label, 0, 160);
+  x.font = MONO(36); x.textAlign = "center"; x.fillStyle = col;
+  const lw = x.measureText(label).width, lx = Math.min(0, 930 - X - lw / 2);
+  if (label) { x.fillStyle = "rgba(0,10,24,0.88)"; x.fillRect(lx - lw / 2 - 12, 136, lw + 24, 50); x.fillStyle = col; }
+  x.fillText(label, lx, 172);
   x.restore();
 }
 // brake pressure gauge (s6)
