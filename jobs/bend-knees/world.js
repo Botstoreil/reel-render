@@ -210,7 +210,7 @@ const shot = (tx, ty, tz, halfH, side = 0, elev = 0.3, push = 0.08) => { const d
 const SH = {
   s1: shot(0.15, 0.78, 0, 2.2, 0.06, 0.16, 0.07),
   s2: shot(0.12, 0.52, 0, 1.6, -0.1, 0.16, 0.1),
-  s3: shot(0.05, 0.5, 0, 1.15, 0.18, 0.2, 0.14),
+  s3: shot(0.05, 0.64, 0, 1.3, 0.18, 0.2, 0.12),
   s4: shot(0.1, 0.48, 0, 1.45, 0.1, 0.18, 0.1),
   s5: shot(0.08, 0.5, 0, 1.3, -0.18, 0.14, 0.1),
   s6: shot(0.0, 0.5, 0, 1.15, -0.06, 0.16, 0.12),
@@ -265,7 +265,7 @@ function tag(txt, X, Y, color, a, px = 40) {
   if (a <= 0) return;
   x.save(); x.font = FONT(px);
   const w = x.measureText(txt).width + 48, h = px * 1.55;
-  X = cl(X, 60 + w / 2, 930 - w / 2); Y = cl(Y, 300, 1350);
+  X = cl(X, 60 + w / 2, 930 - w / 2); Y = cl(Y, 300, 1190);   // never under the captions (~1260-1320)
   const s = 0.75 + 0.25 * back(0, 1, a);
   x.globalAlpha = Math.min(1, a * 1.4); x.textAlign = "center"; x.textBaseline = "middle";
   x.translate(X, Y); x.scale(s, s);
@@ -302,7 +302,8 @@ function frame(t) {
   const { id, u, d } = sceneOf(t);
   const U = (w, n) => at(id, w, n);
   shoot(id, cl(u / Math.max(0.5, d)));
-  student.position.set(ST.x, 0, ST.z); student.rotation.y = 0;
+  // turned ~30 deg toward the camera so the hips read as hips, not as a dark ball (round 2)
+  student.position.set(ST.x, 0, ST.z); student.rotation.y = -0.55;
   clA.setPose(FOLD);
 
   if (id === "s1") {
@@ -352,10 +353,10 @@ function frame(t) {
     tag("TIGHT HAMSTRINGS", kx - 40, ky + 140, RED, sm(U("tight") - 0.1, U("hamstrings") + 0.1, u) * (1 - sm(U("reach") - 0.1, U("reach"), u)), 40);
     backLine(0.2, RED, sm(U("rounds") - 0.15, U("rounds") + 0.2, u));
     const [hx, hy] = scr(student.world("hd", 0.22));
-    tag("CAN'T REACH", hx + 40, hy + 120, RED, sm(U("reach") - 0.05, U("floor") + 0.1, u), 40);
+    tag("CAN'T REACH", CX, 1180, RED, sm(U("reach") - 0.05, U("floor") + 0.1, u), 40);
   }
   if (id === "s3") {
-    words(["PULL IN", "YOUR BACK"], RED, 400, 0.0, 1, 150, flash(u, U("back")) * 0.7);
+    words(["PULL IN", "YOUR BACK"], RED, 330, 0.0, 1, 150, flash(u, U("back")) * 0.7);
     backLine(0.2, RED, 1);
     const [bx, by] = backPeak(0.2);
     ring(bx, by, 80 * (1 + 0.08 * Math.sin(u * 14)), sm(U("lands") - 0.1, U("back") + 0.1, u), RED);
