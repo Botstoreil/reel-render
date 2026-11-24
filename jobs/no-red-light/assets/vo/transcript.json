@@ -1,0 +1,56 @@
+[
+  {
+    "text": "And",
+    "start": 0.05,
+    "end": 0.15,
+    "id": "w0"
+  },
+  {
+    "text": "this",
+    "start": 0.15,
+    "end": 0.29,
+    "id": "w1"
+  },
+  {
+    "text": "to",
+    "start": 0.35,
+    "end": 0.45,
+    "id": "w2"
+  },
+  {
+    "text": "the",
+    "start": 0.45,
+    "end": 0.6,
+    "id": "w3"
+  },
+  {
+    "text": "friend",
+    "start": 0.6,
+    "end": 0.89,
+    "id": "w4"
+  },
+  {
+    "text": "who",
+    "start": 0.9,
+    "end": 1.05,
+    "id": "w5"
+  },
+  {
+    "text": "travels",
+    "start": 1.05,
+    "end": 1.4,
+    "id": "w6"
+  },
+  {
+    "text": "the",
+    "start": 1.4,
+    "end": 1.55,
+    "id": "w7"
+  },
+  {
+    "text": "most.",
+    "start": 1.55,
+    "end": 1.8,
+    "id": "w8"
+  }
+]
