@@ -1,8 +1,8 @@
-s1|Teaching a class? Never touch a student without asking first.
-s2|A hands-on adjustment can feel very different to them than it looks to you.
-s3|And many students won't say no in front of the room.
-s4|Ask the whole class before you start, eyes closed, hands up for no touch.
-s5|Ask again in the moment: may I adjust your hips?
-s6|Offer a verbal cue first. Most fixes don't need a hand.
-s7|Ask first. Every time.
-s8|Save this for your next class. Download YogaFlow.
+s1|Teaching yoga? Ask before you touch a student.
+s2|A sudden hands-on adjustment can startle a student.
+s3|Some have injuries, pain or past trauma you cannot see.
+s4|Instead, ask the class at the start, and let them say no quietly.
+s5|Give a spoken cue first. Most students fix the pose by themselves.
+s6|If you do touch, tell them where, and keep it light.
+s7|Cue first. Touch only with a yes.
+s8|Send this to a yoga teacher you know.

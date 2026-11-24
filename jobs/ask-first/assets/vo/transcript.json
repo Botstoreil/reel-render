@@ -1,56 +1,50 @@
 [
   {
-    "text": "Save",
+    "text": "Send",
     "start": 0.05,
-    "end": 0.19,
+    "end": 0.17,
     "id": "w0"
   },
   {
     "text": "this",
-    "start": 0.2,
-    "end": 0.38,
+    "start": 0.17,
+    "end": 0.27,
     "id": "w1"
   },
   {
-    "text": "for",
-    "start": 0.46,
-    "end": 0.55,
+    "text": "to",
+    "start": 0.37,
+    "end": 0.42,
     "id": "w2"
   },
   {
-    "text": "your",
-    "start": 0.55,
-    "end": 0.72,
+    "text": "a",
+    "start": 0.42,
+    "end": 0.46,
     "id": "w3"
   },
   {
-    "text": "next",
-    "start": 0.77,
-    "end": 0.95,
+    "text": "yoga",
+    "start": 0.46,
+    "end": 0.62,
     "id": "w4"
   },
   {
-    "text": "class,",
-    "start": 0.95,
-    "end": 1.21,
+    "text": "teacher",
+    "start": 0.62,
+    "end": 0.93,
     "id": "w5"
   },
   {
-    "text": "Download",
-    "start": 1.33,
-    "end": 1.77,
+    "text": "you",
+    "start": 0.93,
+    "end": 1.06,
     "id": "w6"
   },
   {
-    "text": "Yoga",
-    "start": 1.78,
-    "end": 2.02,
+    "text": "know.",
+    "start": 1.06,
+    "end": 1.36,
     "id": "w7"
-  },
-  {
-    "text": "Flow.",
-    "start": 2.02,
-    "end": 2.28,
-    "id": "w8"
   }
 ]

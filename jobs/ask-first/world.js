@@ -1,4 +1,10 @@
-// ask-first: 2D Canvas reel (flat pictogram people + kinetic text). Time only from hf-seek.
+// ask-first (YogaFlow 34): REALISTIC RENDER look (like Apex 171K), same daylight studio as new-student.
+// A teacher and a student side-on: sudden hands-on adjustment (wrong) vs ask, cue first, light touch with a yes. No CTA: s8 is a share card.
+// Screen text is a 2D overlay canvas. Time only from hf-seek.
+import * as THREE from "three";
+import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+
 const { S, W, LEAD, BRAND = {} } = window.__EV;
 const IDS = Object.keys(S);
 const at = (id, word, n = 1) => {
@@ -7,262 +13,429 @@ const at = (id, word, n = 1) => {
   if (!hits[n - 1]) throw new Error(`no word ${id}/${word}#${n}`);
   return hits[n - 1].start;
 };
-const sm = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
-const cl = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
-const back = (a, b, x) => { const t = cl((x - a) / (b - a)); const c = 1.9; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); };
+const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const sm = (a, b, v) => { const t = cl((v - a) / (b - a)); return t * t * (3 - 2 * t); };
+const back = (a, b, v) => { const t = cl((v - a) / (b - a)); const c = 1.7; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); };
 const flash = (u, T) => Math.max(0, 1 - Math.abs(u - T) / 0.25);
 const lerp = (a, b, k) => a + (b - a) * k;
 const sceneOf = (t) => { let id = IDS[0]; for (const k of IDS) if (t >= S[k][0]) id = k; return { id, u: t - S[id][0] - LEAD, d: S[id][1] }; };
+const V = (a, b, c) => new THREE.Vector3(a, b, c);
 
-const RED = "#ff2a3a", GREEN = "#3dff8a", VIOLET = "#a596ff", ORANGE = "#ff6a1a", WHITE = "#ffffff", BG = "#080622";
-const CX = 510;
-const cv = document.getElementById("world");
-const x = cv.getContext("2d");
-const FONT = (px) => `900 ${px}px Inter, Arial, sans-serif`;
+// ---------- renderer ----------
+const canvas = document.getElementById("world");
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(1080, 1920, false);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xe9e2d6);
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+const FOV = 40;
+const camera = new THREE.PerspectiveCamera(FOV, 1080 / 1920, 0.05, 200);
 
-function rr(X, Y, w, h, r) { x.beginPath(); x.moveTo(X + r, Y); x.arcTo(X + w, Y, X + w, Y + h, r); x.arcTo(X + w, Y + h, X, Y + h, r); x.arcTo(X, Y + h, X, Y, r); x.arcTo(X, Y, X + w, Y, r); x.closePath(); }
-function glow(c, b) { x.shadowColor = c; x.shadowBlur = b; }
-function noGlow() { x.shadowBlur = 0; }
-function mix(a, b, k) {
-  const p = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
-  const A = p(a), B = p(b);
-  return `rgb(${A.map((v, i) => Math.round(lerp(v, B[i], k))).join(",")})`;
+const hemi = new THREE.HemisphereLight(0xfff8ee, 0x8a7258, 0.6); scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xfff0dc, 2.1);
+sun.position.set(-5, 8, 6); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { left: -8, right: 8, top: 8, bottom: -8, near: 1, far: 40 });
+sun.shadow.bias = -0.0004; sun.shadow.radius = 5; scene.add(sun);
+sun.target.position.set(0, 0, -1.5); scene.add(sun.target);
+
+// ---------- materials + textures ----------
+function canvasTex(w, h, draw, rep = [1, 1]) {
+  const c = document.createElement("canvas"); c.width = w; c.height = h; draw(c.getContext("2d"), w, h);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(...rep); t.anisotropy = 8; return t;
 }
+function rng(seed) { let a = seed >>> 0; return () => { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+const woodTex = canvasTex(1024, 1024, (g, w, h) => {
+  const r = rng(7); const rows = 10;
+  for (let i = 0; i < rows; i++) {
+    let x0 = -r() * 400;
+    while (x0 < w) {
+      const L = 300 + r() * 380, tone = 175 + r() * 30;
+      g.fillStyle = `rgb(${tone + 25},${tone - 10},${tone - 50})`; g.fillRect(x0, i * h / rows, L, h / rows);
+      for (let k = 0; k < 12; k++) { g.strokeStyle = `rgba(110,70,35,${0.04 + r() * 0.07})`; g.lineWidth = 1 + r() * 2; const y = i * h / rows + r() * h / rows; g.beginPath(); g.moveTo(x0, y); g.bezierCurveTo(x0 + L / 3, y + 4 - r() * 8, x0 + 2 * L / 3, y + 4 - r() * 8, x0 + L, y); g.stroke(); }
+      g.fillStyle = "rgba(60,35,15,0.4)"; g.fillRect(x0, i * h / rows, 2, h / rows);
+      x0 += L;
+    }
+    g.fillStyle = "rgba(60,35,15,0.35)"; g.fillRect(0, i * h / rows, w, 2);
+  }
+}, [3, 3]);
+const plasterTex = canvasTex(256, 256, (g, w, h) => {
+  g.fillStyle = "#f1ece3"; g.fillRect(0, 0, w, h);
+  const r = rng(5); for (let i = 0; i < 3000; i++) { g.fillStyle = `rgba(120,110,95,${r() * 0.05})`; g.fillRect(r() * w, r() * h, 3, 3); }
+}, [4, 2]);
+const matTex = (hex) => canvasTex(256, 256, (g, w, h) => {
+  g.fillStyle = hex; g.fillRect(0, 0, w, h);
+  const r = rng(11); for (let i = 0; i < 2500; i++) { g.fillStyle = `rgba(0,0,0,${r() * 0.06})`; g.fillRect(r() * w, r() * h, 2, 2); }
+});
+const std = (o) => new THREE.MeshStandardMaterial(o);
+const M = {
+  floor: std({ map: woodTex, roughness: 0.5, metalness: 0 }),
+  wall: std({ map: plasterTex, roughness: 0.92 }),
+  white: std({ color: 0xf6f6f4, roughness: 0.35 }),
+  glass: std({ color: 0xd8e8f2, roughness: 0.05, metalness: 0.1, emissive: 0xe8f2fa, emissiveIntensity: 0.75 }),
+  leaf: std({ color: 0x3f7a3a, roughness: 0.7 }),
+  pot: std({ color: 0xd9cbb4, roughness: 0.8 }),
+  oak: std({ color: 0xb08458, roughness: 0.6 }),
+  cork: std({ color: 0xb98d5e, roughness: 0.9 }),
+  bolster: std({ color: 0x5b6b8a, roughness: 0.95 }),
+};
 
+const geoCache = {};
+const rbg = (w, h, d, r) => { const k = [w, h, d, r].map((v) => v.toFixed(3)).join("|"); return geoCache[k] || (geoCache[k] = new RoundedBoxGeometry(w, h, d, 3, Math.min(r, w / 2.1, h / 2.1, d / 2.1))); };
+function rb(w, h, d, mat, r = 0.03) { const m = new THREE.Mesh(rbg(w, h, d, r), mat); m.castShadow = true; m.receiveShadow = true; return m; }
+function put(o, x, y, z, parent = scene) { o.position.set(x, y, z); parent.add(o); return o; }
+
+// ---------- studio ----------
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(16, 16), M.floor); floor.rotation.x = -Math.PI / 2; floor.position.set(0, 0, 2); floor.receiveShadow = true; scene.add(floor);
+put(rb(16, 4.0, 0.2, M.wall, 0.01), 0, 2.0, -4.6);                       // back wall
+put(rb(0.2, 4.0, 14, M.wall, 0.01), -4.2, 2.0, 1.0);                      // left wall
+put(rb(0.2, 4.0, 14, M.wall, 0.01), 4.4, 2.0, 1.0);                       // right wall
+// tall windows on the back wall
+for (const wx of [-2.3, 0.0, 2.3]) {
+  put(rb(1.7, 2.5, 0.06, M.glass, 0.01), wx, 1.85, -4.48);
+  [[wx, 3.12, 1.8, 0.08], [wx, 0.58, 1.8, 0.08], [wx, 1.85, 1.8, 0.05]].forEach(([x, y, w, h]) => put(rb(w, h, 0.1, M.white, 0.01), x, y, -4.44));
+  [wx - 0.88, wx + 0.88, wx].forEach((x) => put(rb(0.07, 2.6, 0.1, M.white, 0.01), x, 1.85, -4.44));
+}
+function plant(x, z, s = 1, seed = 1) {
+  const g = new THREE.Group();
+  put(new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.18, 0.46, 24), M.pot), 0, 0.23, 0, g).castShadow = true;
+  const r = rng(seed);
+  for (let i = 0; i < 11; i++) { const l = new THREE.Mesh(new THREE.SphereGeometry(0.2 + r() * 0.12, 16, 12), M.leaf); l.scale.set(1, 1.6, 0.45); l.rotation.set(r() - 0.5, r() * 6, r() - 0.5); put(l, (r() - 0.5) * 0.45, 0.7 + r() * 0.65, (r() - 0.5) * 0.45, g).castShadow = true; }
+  g.scale.setScalar(s); put(g, x, 0, z); return g;
+}
+plant(-3.6, -4.0, 1.1, 3); plant(3.7, -4.0, 1.0, 8); plant(-3.7, 0.5, 0.9, 13);
+// shelf with rolled mats, cork blocks and a bolster on the right wall
+const shelf = new THREE.Group();
+put(rb(0.45, 1.2, 2.0, M.oak, 0.02), 0, 0.6, 0, shelf);
+[0.4, 0.8].forEach((y) => put(rb(0.42, 0.03, 1.92, M.oak, 0.005), 0, y, 0, shelf));
+const rollCols = [0x7f6fd6, 0x5aa58f, 0xc98b6b, 0x4f6d9a];
+rollCols.forEach((c, i) => { const m = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.62, 20), std({ color: c, roughness: 0.85 })); m.rotation.x = Math.PI / 2; m.castShadow = true; put(m, 0, 1.28, -0.7 + i * 0.16, shelf); m.rotation.set(0, 0, 0); m.position.y = 1.51; });
+[0, 1, 2].forEach((i) => put(rb(0.22, 0.12, 0.3, M.cork, 0.02), 0, 0.88, 0.2 + i * 0.25, shelf));
+const bol = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.6, 24), M.bolster); bol.rotation.x = Math.PI / 2; bol.castShadow = true; put(bol, 0, 0.53, -0.4, shelf);
+put(shelf, 4.05, 0, -2.4);
+
+// ---------- people (capsule mannequins, side profile, face local +x, feet at the origin) ----------
+// pose joints [x forward, y up] in metres. Optional elR/hdR = the near (+z) arm on its own.
+const STAND = { head: [0.02, 1.6], sh: [0, 1.42], hip: [0, 0.95], kn: [0.02, 0.5], ft: [0, 0.07], toe: [0.19, 0.04], el: [0.03, 1.15], hd: [0.05, 0.88] };
+const UP = { ...STAND, el: [0.0, 1.7], hd: [0.02, 1.95] };
+const FOLD = { head: [0.22, 0.33], sh: [0.2, 0.5], hip: [-0.1, 0.88], kn: [0.08, 0.48], ft: [0, 0.07], toe: [0.19, 0.04], el: [0.24, 0.27], hd: [0.26, 0.06] };
+const FORCE = { head: [0.07, 0.33], sh: [0.12, 0.49], hip: [-0.12, 0.92], kn: [0.0, 0.5], ft: [0, 0.07], toe: [0.19, 0.04], el: [0.17, 0.28], hd: [0.05, 0.13] };
+const KNEEL = { head: [0.1, 1.15], sh: [0.08, 0.97], hip: [0.05, 0.5], kn: [0.32, 0.07], ft: [-0.12, 0.06], toe: [-0.3, 0.03], el: [0.1, 0.72], hd: [0.28, 0.56] };
+const CHILD = { head: [0.58, 0.16], sh: [0.42, 0.24], hip: [-0.04, 0.32], kn: [0.36, 0.07], ft: [-0.1, 0.06], toe: [-0.28, 0.03], el: [0.7, 0.13], hd: [0.95, 0.06] };
+const HALF = { head: [0.55, 0.88], sh: [0.38, 0.85], hip: [-0.06, 0.93], kn: [0.05, 0.5], ft: [0, 0.07], toe: [0.19, 0.04], el: [0.4, 0.62], hd: [0.42, 0.42] };
+const TALK = { ...STAND, elR: [0.16, 1.17], hdR: [0.4, 1.24] };
+// teacher leaning deeper to reach a student in the bent-knee fold (lower back ~0.8 m)
+const LEANB = { head: [0.42, 1.36], sh: [0.32, 1.22], hip: [-0.05, 0.95], kn: [0.02, 0.5], ft: [0, 0.07], toe: [0.19, 0.04], el: [0.45, 1.0], hd: [0.62, 0.82] };
+const HOVERB = { ...LEANB, el: [0.45, 1.1], hd: [0.62, 0.96] };
+// student folds (same as bend-knees 33)
+const ROUND = { head: [0.04, 0.42], sh: [0.15, 0.57], hip: [-0.1, 0.93], kn: [0.01, 0.5], ft: [0, 0.07], toe: [0.19, 0.04], el: [0.18, 0.36], hd: [0.12, 0.17] };
+const BENT = { head: [0.42, 0.52], sh: [0.28, 0.58], hip: [-0.18, 0.66], kn: [0.2, 0.45], ft: [0, 0.07], toe: [0.19, 0.04], el: [0.3, 0.32], hd: [0.33, 0.07] };
+// teacher behind the student, facing +x: arms out, leaning with both hands on the student's lower back, hands hovering
+const REACH = { ...STAND, el: [0.2, 1.2], hd: [0.42, 1.2] };
+const LEAN = { head: [0.33, 1.48], sh: [0.25, 1.32], hip: [-0.05, 0.95], kn: [0.02, 0.5], ft: [0, 0.07], toe: [0.19, 0.04], el: [0.42, 1.1], hd: [0.6, 0.94] };
+const HOVER = { ...LEAN, el: [0.42, 1.2], hd: [0.6, 1.1] };const KEYS = ["head", "sh", "hip", "kn", "ft", "toe", "el", "hd", "elR", "hdR"];
+function pose(a, b, k, arc = 0) {
+  const o = {};
+  for (const j of KEYS) {
+    const A = a[j] || (j === "elR" ? a.el : j === "hdR" ? a.hd : null), B = b[j] || (j === "elR" ? b.el : j === "hdR" ? b.hd : null);
+    if (!A || !B) continue;
+    const bump = (j === "el" || j === "hd" || j === "elR" || j === "hdR") ? arc * Math.sin(Math.PI * k) : 0;
+    o[j] = [lerp(A[0], B[0], k) + bump, lerp(A[1], B[1], k)];
+  }
+  return o;
+}
+const capCache = {};
+const capGeo = (r, L) => { const k = r.toFixed(3) + "|" + L.toFixed(2); return capCache[k] || (capCache[k] = new THREE.CapsuleGeometry(r, Math.max(0.01, L), 5, 14)); };
+const UPV = V(0, 1, 0), tmpD = V(0, 0, 0);
+function seg(mesh, A, B, r) {
+  tmpD.copy(B).sub(A); const L = Math.round(tmpD.length() * 100) / 100;
+  mesh.geometry = capGeo(r, L);
+  mesh.position.copy(A).addScaledVector(tmpD, 0.5);
+  mesh.quaternion.setFromUnitVectors(UPV, tmpD.normalize());
+}
+function person(o) {
+  const g = new THREE.Group();
+  const shirt = std({ color: o.shirt, roughness: 0.85 }), pants = std({ color: o.pants, roughness: 0.9 });
+  const skin = std({ color: o.skin, roughness: 0.6 }), hair = std({ color: o.hair, roughness: 0.75 });
+  const mk = (mat) => { const m = new THREE.Mesh(capGeo(0.05, 0.1), mat); m.castShadow = true; m.receiveShadow = true; g.add(m); return m; };
+  const P = {
+    torsoA: mk(shirt), torsoB: mk(shirt), shoulders: mk(shirt), pelvis: mk(pants), neck: mk(skin),
+    thighL: mk(pants), thighR: mk(pants), shinL: mk(pants), shinR: mk(pants), footL: mk(skin), footR: mk(skin),
+    uarmL: mk(shirt), uarmR: mk(shirt), farmL: mk(skin), farmR: mk(skin),
+  };
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.105, 24, 18), skin); head.castShadow = true; g.add(head);
+  const hairM = new THREE.Mesh(new THREE.SphereGeometry(0.112, 24, 18, 0, Math.PI * 2, 0, Math.PI * 0.55), hair); hairM.castShadow = true; g.add(hairM);
+  const bun = new THREE.Mesh(new THREE.SphereGeometry(0.055, 16, 12), hair); bun.castShadow = true; g.add(bun);
+  const hands = [0, 1].map(() => { const m = new THREE.Mesh(new THREE.SphereGeometry(0.045, 14, 10), skin); m.castShadow = true; g.add(m); return m; });
+  scene.add(g);
+  let cur = STAND;
+  const J = (p, j, z, dx = 0) => V(p[j][0] + dx, p[j][1], z);
+  g.setPose = (p, shake = 0) => {
+    cur = p;
+    const sx = shake;
+    const hipL = J(p, "hip", -0.1), hipR = J(p, "hip", 0.1);
+    const shL = J(p, "sh", -0.17, sx), shR = J(p, "sh", 0.17, sx), shC = J(p, "sh", 0, sx);
+    seg(P.torsoA, J(p, "hip", -0.07), J(p, "sh", -0.07, sx), 0.12);
+    seg(P.torsoB, J(p, "hip", 0.07), J(p, "sh", 0.07, sx), 0.12);
+    seg(P.shoulders, shL, shR, 0.075);
+    seg(P.pelvis, hipL, hipR, 0.115);
+    const hd = J(p, "head", 0, sx);
+    seg(P.neck, shC, shC.clone().lerp(hd, 0.6), 0.05);
+    head.position.copy(hd);
+    const n = hd.clone().sub(shC).normalize();
+    hairM.position.copy(hd).addScaledVector(n, 0.012); hairM.quaternion.setFromUnitVectors(UPV, n);
+    bun.position.copy(hd).addScaledVector(n, 0.1).add(V(-0.05 * n.y, 0.05 * n.x, 0));
+    seg(P.thighL, hipL, J(p, "kn", -0.1), 0.075); seg(P.thighR, hipR, J(p, "kn", 0.1), 0.075);
+    seg(P.shinL, J(p, "kn", -0.1), J(p, "ft", -0.1), 0.058); seg(P.shinR, J(p, "kn", 0.1), J(p, "ft", 0.1), 0.058);
+    seg(P.footL, J(p, "ft", -0.1), J(p, "toe", -0.1), 0.04); seg(P.footR, J(p, "ft", 0.1), J(p, "toe", 0.1), 0.04);
+    const elR = p.elR ? "elR" : "el", hdR = p.hdR ? "hdR" : "hd";
+    seg(P.uarmL, shL, J(p, "el", -0.22, sx), 0.05); seg(P.farmL, J(p, "el", -0.22, sx), J(p, "hd", -0.22), 0.042);
+    seg(P.uarmR, shR, J(p, elR, 0.22, sx), 0.05); seg(P.farmR, J(p, elR, 0.22, sx), J(p, hdR, 0.22), 0.042);
+    hands[0].position.copy(J(p, "hd", -0.22)); hands[1].position.copy(J(p, hdR, 0.22));
+  };
+  g.world = (j, z = 0) => { g.updateMatrixWorld(); return g.localToWorld(V(cur[j][0], cur[j][1], z)); };
+  g.setPose(STAND);
+  return g;
+}
+function mat(hex, x, z, dir = 1) { const m = put(rb(1.83, 0.008, 0.62, std({ map: matTex(hex), roughness: 0.95 }), 0.004), x + 0.6 * dir, 0.004, z); m.castShadow = false; return m; }
+
+// student = new student, front row. A/B = classmates behind. T = teacher at the front, facing the class (-x).
+const ST = { x: -0.5, z: -0.5 }, CA = { x: -0.9, z: -1.9 }, CB = { x: -0.15, z: -3.1 }, TE = { x: 1.25, z: -3.7 };
+mat("#5aa58f", ST.x, ST.z); mat("#7f6fd6", CA.x, CA.z); mat("#c98b6b", CB.x, CB.z); mat("#4f6d9a", TE.x, TE.z, -1);
+const student = person({ shirt: 0xe07a5f, pants: 0x2d3142, skin: 0xd9a37e, hair: 0x3b2418 }); student.position.set(ST.x, 0, ST.z);
+const clA = person({ shirt: 0x6b7fa8, pants: 0x3a3a3a, skin: 0xb07c58, hair: 0x1d1612 }); clA.position.set(CA.x, 0, CA.z);
+const clB = person({ shirt: 0x8a9a5b, pants: 0x2b2b33, skin: 0xe6bc9a, hair: 0x8a5a2b }); clB.position.set(CB.x, 0, CB.z);
+const teacher = person({ shirt: 0xf1efe9, pants: 0x3c4a5c, skin: 0xc6916b, hair: 0x2a1c14 }); teacher.position.set(TE.x, 0, TE.z); teacher.rotation.y = Math.PI;
+
+// ---------- camera shots: target, half-height of the view in metres, side offset ----------
+const TAN = Math.tan((FOV / 2) * Math.PI / 180);
+const shot = (tx, ty, tz, halfH, side = 0, elev = 0.3, push = 0.08) => { const d = halfH / TAN; return { to: V(tx, ty, tz), from: V(tx + side * d, ty + elev * d, tz + d), push }; };
+// one-on-one scenes: student on her mat at the origin (faces +x), teacher right behind her (-x), same depth.
+// student stays on her own mat (ST); classmates fold quietly in the background.
+const P1 = { sx: ST.x, sz: ST.z, tx: ST.x - 0.6, tz: ST.z };
+const one = (dx, ty, halfH, side, elev, push) => shot(ST.x + dx, ty, ST.z, halfH, side, elev, push);
+const SH = {
+  s1: one(-0.15, 0.7, 2.0, 0.06, 0.16, 0.08),
+  s2: one(-0.12, 0.68, 1.8, -0.08, 0.16, 0.12),
+  s3: one(0.05, 0.8, 1.5, 0.12, 0.12, 0.1),
+  s4: shot(0.15, 0.55, -2.0, 2.5, 0.05, 0.32, 0.07),       // the whole class, like new-student s1
+  s5: one(-0.35, 0.68, 1.85, 0.08, 0.16, 0.1),
+  s6: one(-0.12, 0.66, 1.6, -0.1, 0.16, 0.12),
+  s7: one(-0.25, 0.7, 2.0, 0.05, 0.16, 0.03),
+};
+SH.s8 = SH.s7;
+function shoot(id, k) {
+  const s = SH[id];
+  camera.position.lerpVectors(s.from, s.to, s.push * sm(0, 1, k));
+  camera.lookAt(s.to); camera.updateMatrixWorld();
+}
+const tv = V(0, 0, 0);
+const scr = (v) => { tv.copy(v).project(camera); return [(tv.x + 1) * 540, (1 - tv.y) * 960]; };
+
+// ---------- overlay ----------
+const ov = document.createElement("canvas");
+ov.width = 1080; ov.height = 1920;
+ov.style.cssText = "position:absolute;left:0;top:0;width:1080px;height:1920px;pointer-events:none;z-index:2";
+document.getElementById("stage").appendChild(ov);
+const x = ov.getContext("2d");
+const RED = "#ff3b3b", GREEN = "#2fd47a", ORANGE = "#ff8a1f", WHITE = "#ffffff", INK = "#0e1116", YELLOW = "#ffd23f", VIOLET = "#7c4dff";
+const CX = 500;
+const FONT = (px) => `900 ${px}px Inter, Arial, sans-serif`;
+function rr(X, Y, w, h, r) { x.beginPath(); x.moveTo(X + r, Y); x.arcTo(X + w, Y, X + w, Y + h, r); x.arcTo(X + w, Y + h, X, Y + h, r); x.arcTo(X, Y + h, X, Y, r); x.arcTo(X, Y, X + w, Y, r); x.closePath(); }
 let curU = 0;
-function words(lines, color, cy, t0, a = 1, maxPx = 150, flashK = 0) {
+function words(lines, color, cy, t0, a = 1, maxPx = 140, flashK = 0) {
   if (a <= 0) return;
-  x.save(); x.textAlign = "center"; x.textBaseline = "middle";
-  const sizes = lines.map((L) => { x.font = FONT(100); return Math.min(maxPx, (840 / x.measureText(L).width) * 100); });
-  const tot = sizes.reduce((s, p) => s + p * 1.05, 0);
+  x.save(); x.textAlign = "center"; x.textBaseline = "middle"; x.lineJoin = "round";
+  const sizes = lines.map((L) => { x.font = FONT(100); const n = L.split(" ").length - 1; return Math.min(maxPx, (800 / (x.measureText(L).width + n * x.measureText(" ").width * 0.6)) * 100); });
+  const tot = sizes.reduce((s, p) => s + p * 1.08, 0);
   let y = cy - tot / 2, wi = 0;
   lines.forEach((L, li) => {
     const px = sizes[li]; x.font = FONT(px);
-    const parts = L.split(" "), sp = x.measureText(" ").width;
+    const parts = L.split(" "), sp = x.measureText(" ").width * 1.6;
     const ws = parts.map((p) => x.measureText(p).width), full = ws.reduce((s, w) => s + w, 0) + sp * (parts.length - 1);
-    let X = CX - full / 2; const Y = y + px * 0.52;
+    let X = CX - full / 2; const Y = y + px * 0.54;
     parts.forEach((p, i) => {
-      const k = back(t0 + wi * 0.07, t0 + wi * 0.07 + 0.32, curU), o = sm(t0 + wi * 0.07, t0 + wi * 0.07 + 0.12, curU);
-      const s = 0.4 + 0.6 * k;
-      x.save(); x.translate(X + ws[i] / 2, Y + (1 - k) * 40); x.scale(s, s); x.globalAlpha = a * o;
-      glow(color, 30 + 40 * flashK); x.fillStyle = flashK > 0.05 ? mix(color, WHITE, flashK * 0.8) : color;
-      x.fillText(p, 0, 0);
+      const s0 = t0 + wi * 0.07, k = back(s0, s0 + 0.28, curU), o = sm(s0, s0 + 0.1, curU);
+      const sc = 1 + 0.12 * flashK;
+      x.save(); x.translate(X + ws[i] / 2, Y + (1 - k) * 40); x.scale(sc, sc); x.globalAlpha = a * o;
+      x.shadowColor = "rgba(0,0,0,0.45)"; x.shadowBlur = 24; x.shadowOffsetY = 6;
+      x.lineWidth = Math.max(10, px * 0.16); x.strokeStyle = INK; x.strokeText(p, 0, 0);
+      x.shadowColor = "transparent"; x.fillStyle = color; x.fillText(p, 0, 0);
       x.restore();
       X += ws[i] + sp; wi++;
     });
-    y += px * 1.05;
+    y += px * 1.08;
   });
   x.restore();
 }
-function tag(txt, X, Y, color, a, px = 44) {
+function tag(txt, X, Y, color, a, px = 40) {
   if (a <= 0) return;
-  x.save(); x.globalAlpha = a; x.font = FONT(px); x.textAlign = "center"; x.textBaseline = "middle";
-  const w = x.measureText(txt).width + 44, s = 0.6 + 0.4 * a;
-  X = Math.min(X, 930 - w / 2); X = Math.max(X, 60 + w / 2);
+  x.save(); x.font = FONT(px);
+  const w = x.measureText(txt).width + 48, h = px * 1.55;
+  X = cl(X, 60 + w / 2, 930 - w / 2); Y = cl(Y, 300, 1190);   // never under the captions (~1260-1320)
+  const s = 0.75 + 0.25 * back(0, 1, a);
+  x.globalAlpha = Math.min(1, a * 1.4); x.textAlign = "center"; x.textBaseline = "middle";
   x.translate(X, Y); x.scale(s, s);
-  glow(color, 24); x.fillStyle = "rgba(8,6,34,0.85)"; rr(-w / 2, -px * 0.75, w, px * 1.5, px * 0.75); x.fill();
-  x.lineWidth = 5; x.strokeStyle = color; x.stroke(); noGlow();
-  x.fillStyle = color; x.fillText(txt, 0, 3); x.restore();
+  x.shadowColor = "rgba(0,0,0,0.35)"; x.shadowBlur = 18; x.shadowOffsetY = 5;
+  x.fillStyle = color; rr(-w / 2, -h / 2, w, h, h / 2); x.fill();
+  x.shadowColor = "transparent"; x.fillStyle = WHITE; x.fillText(txt, 0, 3); x.restore();
 }
-// speech bubble with a tail pointing at (tx, ty)
-function bubble(txt, X, Y, color, a, tx, ty, px = 52) {
+function stamp(kind, X, Y, s, a, color) {
+  if (a <= 0 || s <= 0.01) return;
+  x.save(); x.globalAlpha = a; x.translate(X, Y); x.scale(s, s); x.lineCap = "round"; x.lineJoin = "round";
+  for (const [lw, c] of [[40, INK], [24, color]]) {
+    x.strokeStyle = c; x.lineWidth = lw; x.beginPath(); x.arc(0, 0, 80, 0, Math.PI * 2); x.stroke();
+    x.beginPath();
+    if (kind === "x") { x.moveTo(-40, -40); x.lineTo(40, 40); x.moveTo(40, -40); x.lineTo(-40, 40); } else { x.moveTo(-42, 4); x.lineTo(-12, 34); x.lineTo(44, -30); }
+    x.stroke();
+  }
+  x.restore();
+}
+function ring(X, Y, r, a, color) {
   if (a <= 0) return;
-  x.save(); x.globalAlpha = cl(a); x.font = FONT(px); x.textAlign = "center"; x.textBaseline = "middle";
-  const w = x.measureText(txt).width + 70, h = px * 1.8, s = back(0, 1, a);
-  X = Math.min(X, 930 - w / 2); X = Math.max(X, 60 + w / 2);
-  x.translate(X, Y); x.scale(s, s);
-  glow(color, 30); x.fillStyle = "#14113a"; x.strokeStyle = color; x.lineWidth = 7;
-  rr(-w / 2, -h / 2, w, h, 34); x.fill(); x.stroke();
-  x.beginPath(); x.moveTo(-24, h / 2 - 4); x.lineTo((tx - X) * 0.35, (ty - Y) * 0.35); x.lineTo(16, h / 2 - 4); x.fill(); x.stroke();
-  x.fillStyle = "#14113a"; x.fillRect(-26, h / 2 - 12, 44, 10); noGlow();
-  x.fillStyle = color; x.fillText(txt, 0, 3); x.restore();
+  x.save(); x.globalAlpha = a; x.lineWidth = 18; x.strokeStyle = INK; x.beginPath(); x.arc(X, Y, r, 0, Math.PI * 2); x.stroke();
+  x.lineWidth = 10; x.strokeStyle = color; x.stroke(); x.restore();
+}
+// slow breath: rings that grow out of the chest and fade (period in seconds)
+function breath(X, Y, u, a, color, period = 1.4) {
+  if (a <= 0) return;
+  x.save(); x.lineWidth = 9; x.strokeStyle = color;
+  for (let i = 0; i < 2; i++) { const f = ((u / period) + i * 0.5) % 1; x.globalAlpha = a * (1 - f) * 0.9; x.beginPath(); x.arc(X, Y, 40 + 150 * f, 0, Math.PI * 2); x.stroke(); }
+  x.restore();
 }
 
-// ---------- pictogram people: joints in px, y up = negative, origin on the floor ----------
-const P = {
-  dog: { head: [-125, -95], sh: [-80, -140], hip: [30, -235], kL: [92, -118], fL: [150, 0], kR: [104, -118], fR: [168, 0], eL: [-112, -72], hL: [-150, 0], eR: [-100, -72], hR: [-136, 0] },
-  stand: { head: [0, -410], sh: [0, -335], hip: [0, -190], kL: [-14, -98], fL: [-24, 0], kR: [14, -98], fR: [24, 0], eL: [-34, -260], hL: [-38, -185], eR: [34, -260], hR: [38, -185] },
-  sit: { head: [0, -285], sh: [0, -215], hip: [0, -70], kL: [-100, -38], fL: [30, -18], kR: [100, -38], fR: [-30, -18], eL: [-66, -130], hL: [-88, -50], eR: [66, -130], hR: [88, -50] },
-};
-function pose(a, b, k) { const o = {}; for (const j in a) o[j] = [lerp(a[j][0], b[j][0], k), lerp(a[j][1], b[j][1], k)]; return o; }
-function with_(p, ch) { return Object.assign({}, p, ch); }
-// draw a person; returns world positions of the joints (for pointing at them)
-function person(X, Y, p, s, color, o = {}) {
-  const W2 = (j) => [X + p[j][0] * s, Y + p[j][1] * s];
-  const a = o.a ?? 1;
-  if (a <= 0) return W2;
-  x.save(); x.globalAlpha = a; x.lineCap = "round"; x.lineJoin = "round";
-  const limb = (c, ...js) => { x.strokeStyle = c; x.beginPath(); js.forEach((j, i) => { const [px, py] = W2(j); i ? x.lineTo(px, py) : x.moveTo(px, py); }); x.stroke(); };
-  const far = mix(color, "#080622", 0.35);
-  glow(color, 22); x.lineWidth = 34 * s;
-  limb(far, "hip", "kR", "fR"); limb(far, "sh", "eR", "hR");
-  x.lineWidth = 44 * s; limb(color, "sh", "hip");
-  x.lineWidth = 34 * s; limb(color, "hip", "kL", "fL"); limb(color, "sh", "eL", "hL");
-  const [hx, hy] = W2("head");
-  x.fillStyle = color; x.beginPath(); x.arc(hx, hy, 40 * s, 0, Math.PI * 2); x.fill(); noGlow();
-  if (o.closed) { x.strokeStyle = "#080622"; x.lineWidth = 6 * s; x.beginPath(); x.arc(hx - 13 * s, hy - 2 * s, 9 * s, 0.2, Math.PI - 0.2); x.stroke(); x.beginPath(); x.arc(hx + 13 * s, hy - 2 * s, 9 * s, 0.2, Math.PI - 0.2); x.stroke(); }
-  x.restore();
-  return W2;
-}
-function mat(X, Y, w, a = 1, c = VIOLET) {
-  x.save(); x.globalAlpha = a; glow(c, 26); x.fillStyle = mix(c, "#080622", 0.55); rr(X - w / 2, Y, w, 22, 11); x.fill(); x.restore();
-}
-function room() {
-  const gr = x.createRadialGradient(CX, 820, 80, CX, 820, 1100);
-  gr.addColorStop(0, "#1a1650"); gr.addColorStop(1, BG);
-  x.fillStyle = gr; x.fillRect(0, 0, 1080, 1920);
-  // studio floor
-  x.save(); x.globalAlpha = 0.18; x.strokeStyle = VIOLET; x.lineWidth = 2;
-  for (let i = 0; i < 9; i++) { const y = 1110 + i * i * 9; x.beginPath(); x.moveTo(0, y); x.lineTo(1080, y); x.stroke(); }
-  for (let i = -8; i <= 8; i++) { x.beginPath(); x.moveTo(CX + i * 60, 1110); x.lineTo(CX + i * 220, 1920); x.stroke(); }
-  x.restore();
-}
-function ring(X, Y, r, c, a) { if (a <= 0) return; x.save(); x.globalAlpha = a; glow(c, 30); x.strokeStyle = c; x.lineWidth = 9; x.beginPath(); x.arc(X, Y, r, 0, Math.PI * 2); x.stroke(); x.restore(); }
-function burst(X, Y, c, a, u) {
-  if (a <= 0) return;
-  x.save(); x.globalAlpha = a; glow(c, 24); x.strokeStyle = c; x.lineWidth = 9; x.lineCap = "round";
-  for (let i = 0; i < 6; i++) { const an = -Math.PI / 2 + (i - 2.5) * 0.42, r0 = 60 + 6 * Math.sin(u * 20 + i), r1 = r0 + 40 * a; x.beginPath(); x.moveTo(X + Math.cos(an) * r0, Y + Math.sin(an) * r0); x.lineTo(X + Math.cos(an) * r1, Y + Math.sin(an) * r1); x.stroke(); }
-  x.restore();
-}
-function check(X, Y, s, a, c = GREEN) {
-  if (a <= 0) return;
-  x.save(); x.globalAlpha = a; x.translate(X, Y); x.scale(s, s); x.lineCap = "round"; glow(c, 30); x.strokeStyle = c; x.lineWidth = 20;
-  x.beginPath(); x.arc(0, 0, 70, 0, Math.PI * 2); x.stroke(); x.beginPath(); x.moveTo(-36, 4); x.lineTo(-10, 30); x.lineTo(38, -26); x.stroke(); x.restore();
-}
-// a standing teacher on the floor at (TX, Y), right hand on (tx, ty)
-function arm(tx, ty, a, c, TX, Y, s) {
-  if (a <= 0) return;
-  const rx = (tx - TX) / s, ry = (ty - Y) / s;
-  const p = with_(P.stand, { eR: [rx * 0.5, (-335 + ry) / 2 - 20], hR: [rx, ry] });
-  person(TX, Y, p, s, c, { a });
-}
-
+// ---------- one frame ----------
 function frame(t) {
   const { id, u, d } = sceneOf(t);
-  curU = u;
-  x.setTransform(1, 0, 0, 1, 0, 0);
-  x.clearRect(0, 0, 1080, 1920);
-  const cut = 1 - sm(-LEAD, 0.22 - LEAD, u);
-  const z = 1 + 0.035 * cl(u / Math.max(1, d)) + 0.05 * cut * cut;
-  room();
-  x.save(); x.translate(CX, 900); x.scale(z, z); x.translate(-CX, -900);
+  const U = (w, n) => at(id, w, n);
+  shoot(id, cl(u / Math.max(0.5, d)));
+  student.visible = clA.visible = clB.visible = teacher.visible = true;
+  // the pair is turned ~30 deg toward the camera so a folded student's hips do not read as a dark ball;
+  // the teacher stands dx metres behind her along her own facing line
+  const RY = -0.55;
+  const behind = (dx) => { teacher.position.set(P1.sx + dx * Math.cos(RY), 0, P1.sz - dx * Math.sin(RY)); teacher.rotation.y = RY; };
+  student.position.set(P1.sx, 0, P1.sz); student.rotation.y = RY;
+  behind(P1.tx - P1.sx);
+  clA.setPose(FOLD); clB.setPose(FOLD);
 
   if (id === "s1") {
-    mat(640, 1060, 420);
-    const st = person(640, 1060, P.dog, 1, VIOLET);
-    const walk = sm(0, at("s1", "touch") - 0.2, u), sw = Math.sin(u * 9) * (1 - walk) * 0.9;
-    const reach = sm(at("s1", "touch") - 0.35, at("s1", "touch"), u);
-    const [hx, hy] = st("hip");
-    const tp = with_(P.stand, { fL: [-24 + 40 * sw, 0], fR: [24 - 40 * sw, 0], kL: [-14 + 20 * sw, -98], kR: [14 - 20 * sw, -98] });
-    const TX = lerp(120, 330, walk);
-    const rp = with_(tp, { eR: [lerp(34, 120, reach), lerp(-260, -320, reach)], hR: [lerp(38, (hx - TX) / 1.0, reach), lerp(-185, hy - 1060, reach)] });
-    person(TX, 1060, rp, 1, RED);
-    ring(hx, hy, 70 + 10 * Math.sin(u * 10), RED, sm(at("s1", "touch") - 0.05, at("s1", "touch") + 0.15, u));
+    // student in a forward fold; the teacher behind her lifts both hands toward her on "touch"
+    student.setPose(FOLD);
+    teacher.setPose(pose(STAND, REACH, sm(U("before"), U("touch") + 0.15, u)));
   }
   if (id === "s2") {
-    const push = sm(at("s2", "adjustment") - 0.1, at("s2", "adjustment") + 0.3, u);
-    const sp = with_(P.dog, { hip: [30 + 22 * push, -235 + 30 * push] });
-    mat(600, 1080, 520);
-    const st = person(600, 1080, sp, 1.35, VIOLET);
-    const [hx, hy] = st("hip");
-    arm(hx - 10, hy - 20, 1, RED, 880, 1080, 1.0);
-    const [ex, ey] = st("head");
-    const f = sm(at("s2", "different") - 0.15, at("s2", "different") + 0.1, u);
-    burst(ex, ey, RED, f, u);
-    tag("FEELS WRONG", ex + 40, ey - 150, RED, f, 42);
-    tag("LOOKS FINE", 280, 560, VIOLET, sm(at("s2", "looks") - 0.15, at("s2", "looks") + 0.1, u), 42);
+    // hands drop on her back on "sudden"; on "startle" she jolts up and the hands come off
+    const kd = sm(U("sudden") - 0.05, U("sudden") + 0.18, u), ko = sm(U("startle") + 0.05, U("startle") + 0.4, u);
+    teacher.setPose(ko > 0 ? pose(LEAN, REACH, ko) : pose(REACH, LEAN, kd));
+    const kj = sm(U("startle") - 0.05, U("startle") + 0.12, u);
+    const jolt = u > U("startle") ? 0.02 * Math.sin((u - U("startle")) * 55) * Math.max(0, 1 - (u - U("startle")) / 0.6) : 0;
+    student.setPose(pose(FOLD, HALF, kj), jolt);
   }
   if (id === "s3") {
-    const xs = [200, 500, 790];
-    xs.forEach((X, i) => mat(X, 1060, 220, 1));
-    const ps = xs.map((X, i) => person(X, 1060, P.dog, 0.55, i === 1 ? VIOLET : mix(VIOLET, "#080622", 0.3)));
-    const [hx, hy] = ps[1]("hip");
-    arm(hx - 5, hy - 10, 1, RED, 620, 1060, 0.55);
-    const [ex, ey] = ps[1]("head");
-    const b = sm(at("s3", "won't") - 0.2, at("s3", "won't") + 0.1, u);
-    bubble("NO", ex + 20, ey - 200, RED, b, ex, ey - 40, 70);
-    if (b > 0.5) { // the "no" stays unsaid: struck out
-      const k = sm(at("s3", "say") - 0.05, at("s3", "no") + 0.1, u);
-      x.save(); glow(RED, 20); x.strokeStyle = RED; x.lineWidth = 12; x.lineCap = "round"; x.beginPath(); const bx = Math.max(Math.min(ex + 20, 930 - 90), 150); x.moveTo(bx - 70, ey - 160); x.lineTo(bx - 70 + 140 * k, ey - 240); x.stroke(); x.restore();
-    }
-    // the room watching: little eyes over the others
-    const w = sm(at("s3", "front") - 0.15, at("s3", "front") + 0.1, u);
-    [0, 2].forEach((i) => { const [qx, qy] = ps[i]("head"); tag("?", qx, qy - 110, RED, w * 0.9, 40); });
+    // close on the student alone, standing: what the teacher cannot see
+    teacher.visible = false;
+    student.setPose(STAND);
   }
   if (id === "s4") {
-    const xs = [230, 510, 790];
-    const closed = u > at("s4", "closed") - 0.1;
-    const up = sm(at("s4", "hands") - 0.1, at("s4", "up") + 0.1, u);
-    xs.forEach((X, i) => {
-      mat(X, 1080, 240, 1, GREEN);
-      const raise = i !== 1 ? up : 0;
-      const p = with_(P.sit, { eR: [lerp(66, 70, raise), lerp(-130, -320, raise)], hR: [lerp(88, 80, raise), lerp(-50, -420, raise)] });
-      const W2 = person(X, 1080, p, 0.8, i === 1 ? VIOLET : GREEN, { closed });
-      if (i !== 1) tag("NO TOUCH", X, 1080 - 430 * 0.8 - 70, GREEN, sm(at("s4", "no") - 0.1, at("s4", "touch") + 0.1, u), 36);
-    });
-    bubble("EYES CLOSED", CX, 560, GREEN, sm(at("s4", "eyes") - 0.2, at("s4", "eyes") + 0.1, u) * (1 - sm(at("s4", "no") - 0.25, at("s4", "no") - 0.1, u)), CX, 700, 46);
+    // the whole class at the start; the teacher at the front asks; one student quietly shakes her head
+    student.position.set(ST.x, 0, ST.z); student.rotation.y = 0;
+    teacher.position.set(TE.x, 0, TE.z); teacher.rotation.y = Math.PI;
+    [student, clA, clB].forEach((p) => p.setPose(STAND));
+    teacher.setPose(pose(STAND, TALK, 0.6 + 0.4 * Math.sin(u * 3)));
+    const s0 = U("say") - 0.05;
+    student.setPose(STAND, u > s0 && u < s0 + 0.9 ? 0.03 * Math.sin((u - s0) * 18) : 0);
   }
   if (id === "s5") {
-    mat(650, 1070, 400, 1);
-    const st = person(650, 1070, P.dog, 1, VIOLET);
-    person(250, 1070, P.stand, 1, GREEN);
-    bubble("MAY I ADJUST?", 380, 560, VIOLET, sm(at("s5", "may") - 0.15, at("s5", "may") + 0.15, u), 250, 650, 54);
-    const [hx, hy] = st("hip");
-    ring(hx, hy, 66 + 8 * Math.sin(u * 10), GREEN, sm(at("s5", "hips") - 0.1, at("s5", "hips") + 0.1, u));
-    const [ex, ey] = st("head");
-    check(ex + 30, ey - 120, back(at("s5", "hips") + 0.05, at("s5", "hips") + 0.3, u) * 0.7, sm(at("s5", "hips"), at("s5", "hips") + 0.1, u));
+    // the teacher stays back and gives a spoken cue; the student fixes the fold by herself
+    behind(-1.15);
+    teacher.setPose(pose(STAND, TALK, sm(U("spoken") - 0.2, U("cue"), u)));
+    student.setPose(pose(ROUND, BENT, sm(U("fix") - 0.1, U("pose") + 0.2, u)));
   }
   if (id === "s6") {
-    const lift = sm(at("s6", "fixes") - 0.2, at("s6", "fixes") + 0.35, u);
-    const sp = with_(P.dog, { hip: [30, -235 - 55 * lift], kL: [92, -125 - 10 * lift], kR: [104, -125 - 10 * lift] });
-    mat(650, 1070, 400, 1, GREEN);
-    const st = person(650, 1070, sp, 1, lift > 0.5 ? GREEN : VIOLET);
-    person(250, 1070, P.stand, 1, GREEN);
-    const v = sm(at("s6", "verbal") - 0.2, at("s6", "verbal") + 0.1, u);
-    bubble("LIFT YOUR HIPS", 360, 560, GREEN, v, 250, 650, 52);
-    // sound waves from the teacher
-    if (v > 0) { x.save(); x.globalAlpha = v; glow(GREEN, 20); x.strokeStyle = GREEN; x.lineWidth = 7; for (let i = 0; i < 3; i++) { const r = 30 + i * 26 + ((u * 60) % 26); x.beginPath(); x.arc(270, 660, r, -0.6, 0.6); x.stroke(); } x.restore(); }
-    const [hx, hy] = st("hip");
-    if (lift > 0.05) { x.save(); x.globalAlpha = lift; glow(GREEN, 26); x.strokeStyle = GREEN; x.lineWidth = 12; x.lineCap = "round"; x.beginPath(); x.moveTo(hx + 90, hy + 110); x.lineTo(hx + 90, hy - 10); x.moveTo(hx + 60, hy + 20); x.lineTo(hx + 90, hy - 10); x.lineTo(hx + 120, hy + 20); x.stroke(); x.restore(); }
-    tag("NO HAND NEEDED", 600, 1200, GREEN, sm(at("s6", "need") - 0.15, at("s6", "need") + 0.1, u), 42);
+    // hands hover first while she says where, then rest lightly on "light"
+    behind(-0.67);
+    student.setPose(BENT);
+    const kh = sm(U("touch") - 0.2, U("tell"), u), kl = sm(U("keep") - 0.05, U("light") + 0.15, u);
+    teacher.setPose(kl > 0 ? pose(HOVERB, LEANB, kl) : pose(STAND, HOVERB, kh));
   }
-  if (id === "s7") {
-    mat(CX, 1130, 260, 0.6, GREEN);
-    person(CX, 1130, P.sit, 0.5, GREEN, { closed: true, a: 0.7 });
+  if (id === "s7" || id === "s8") {
+    behind(-0.85);
+    student.setPose(BENT); teacher.setPose(STAND);
   }
-  x.restore();
+  renderer.render(scene, camera);
 
-  if (id === "s1") words(["NEVER TOUCH", "WITHOUT ASKING"], RED, 380, 0.0, 1, 140, Math.max(flash(u, 0.05), flash(u, at("s1", "never"))));
-  if (id === "s2") words(["FEELS DIFFERENT"], RED, 360, 0.0, 1, 130, flash(u, at("s2", "different")) * 0.6);
-  if (id === "s3") words(["THEY WON'T SAY NO"], RED, 360, 0.0, 1, 120);
-  if (id === "s4") {
-    const sw = at("s4", "hands") - 0.1;
-    words(["ASK THE CLASS"], GREEN, 360, 0.0, 1 - sm(sw - 0.1, sw, u), 130);
-    words(["HANDS UP"], GREEN, 360, sw, sm(sw - 0.05, sw, u), 150);
+  // ---------- text ----------
+  x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, 1080, 1920); curU = u;
+  if (id === "s1") {
+    words(["ASK BEFORE", "YOU TOUCH"], RED, 400, 0.0, 1, 160, flash(u, U("ask")) + flash(u, U("touch")) * 0.6);
+    const [hx, hy] = scr(teacher.world("hd", 0.22));
+    ring(hx, hy, 60, sm(U("touch") - 0.05, U("touch") + 0.2, u), RED);
+    tag("TEACHING YOGA?", CX, 1180, RED, 1 - sm(U("ask") - 0.05, U("ask") + 0.1, u), 46);
   }
-  if (id === "s5") words(["ASK AGAIN"], VIOLET, 360, 0.0, 1, 150);
-  if (id === "s6") words(["VERBAL CUE FIRST"], GREEN, 360, 0.0, 1, 130);
+  if (id === "s2") {
+    words(["SUDDEN", "HANDS-ON"], RED, 400, 0.0, 1, 160, flash(u, U("sudden")) * 0.7);
+    const [hx, hy] = scr(teacher.world("hd", 0.22));
+    ring(hx, hy, 70, sm(U("sudden") + 0.05, U("sudden") + 0.25, u) * (1 - sm(U("startle") + 0.1, U("startle") + 0.3, u)), RED);
+    const [sx2, sy2] = scr(student.world("head"));
+    tag("STARTLED", sx2 + 60, sy2 - 140, RED, sm(U("startle") - 0.05, U("startle") + 0.15, u), 46);
+    stamp("x", 800, 1120, back(U("student"), U("student") + 0.3, u) * 0.5, u > U("student") ? 1 : 0, RED);
+  }
+  if (id === "s3") {
+    words(["YOU CAN'T SEE IT"], RED, 320, 0.0, 1, 120, flash(u, U("see")) * 0.6);
+    const [kx, ky] = scr(student.world("kn", 0.1));
+    const [bx, by] = scr(student.world("hip").add(V(-0.16, 0.12, 0)));
+    const [hx, hy] = scr(student.world("head"));
+    ring(kx, ky, 58, sm(U("injuries") - 0.1, U("injuries") + 0.1, u), RED);
+    tag("INJURY", kx + 200, ky, RED, sm(U("injuries") - 0.1, U("injuries") + 0.15, u), 42);
+    ring(bx, by, 64, sm(U("pain") - 0.1, U("pain") + 0.1, u), RED);
+    tag("PAIN", bx - 170, by, RED, sm(U("pain") - 0.1, U("pain") + 0.15, u), 42);
+    ring(hx, hy, 72, sm(U("trauma") - 0.1, U("trauma") + 0.1, u), RED);
+    tag("PAST TRAUMA", hx + 210, hy, RED, sm(U("past") - 0.1, U("trauma") + 0.15, u), 42);
+  }
+  if (id === "s4") {
+    words(["ASK THE CLASS"], GREEN, 380, 0.0, 1, 130, flash(u, U("ask")) * 0.6);
+    tag("AT THE START", CX, 1180, GREEN, sm(U("at") - 0.1, U("start") + 0.1, u), 44);
+    const [hx, hy] = scr(student.world("head"));
+    tag("IT'S OK TO SAY NO", hx + 80, hy - 130, GREEN, sm(U("say") - 0.1, U("no") + 0.1, u), 40);
+  }
+  if (id === "s5") {
+    words(["SPOKEN CUE", "FIRST"], GREEN, 400, 0.0, 1, 150, flash(u, U("cue")) * 0.6);
+    const [tx2, ty2] = scr(teacher.world("head"));
+    tag("BEND YOUR KNEES", tx2 + 140, ty2 - 120, VIOLET, sm(U("spoken") - 0.05, U("cue") + 0.1, u), 40);
+    const [kx, ky] = scr(student.world("kn", 0.1));
+    ring(kx, ky, 60, sm(U("fix") - 0.05, U("pose") + 0.1, u), GREEN);
+    stamp("v", 800, 1120, back(U("themselves"), U("themselves") + 0.3, u) * 0.5, u > U("themselves") ? 1 : 0, GREEN);
+  }
+  if (id === "s6") {
+    words(["TELL THEM", "WHERE"], GREEN, 400, 0.0, 1, 160, flash(u, U("where")) * 0.6);
+    const [tx2, ty2] = scr(teacher.world("head"));
+    tag("HANDS ON YOUR BACK, OK?", tx2 + 160, ty2 - 120, VIOLET, sm(U("tell") - 0.05, U("where") + 0.1, u), 36);
+    const [hx, hy] = scr(teacher.world("hd", 0.22));
+    ring(hx, hy, 56, sm(U("light") - 0.1, U("light") + 0.15, u), GREEN);
+    tag("KEEP IT LIGHT", CX, 1180, GREEN, sm(U("keep") - 0.1, U("light") + 0.1, u), 46);
+  }
   if (id === "s7") {
-    x.save(); x.fillStyle = "rgba(8,6,34,0.55)"; x.fillRect(0, 0, 1080, 1920); x.restore();
-    words(["ASK FIRST."], ORANGE, 690, 0.0, 1, 160, flash(u, 0.05));
-    words(["EVERY TIME."], ORANGE, 880, at("s7", "every") - 0.05, 1, 160, flash(u, at("s7", "time")));
+    x.save(); x.fillStyle = "rgba(10,14,22,0.5)"; x.fillRect(0, 0, 1080, 1920); x.restore();
+    words(["CUE FIRST"], ORANGE, 580, 0.0, 1, 170, flash(u, 0.05));
+    words(["TOUCH ONLY", "WITH A YES"], WHITE, 820, U("touch") - 0.05, 1, 130, flash(u, U("yes")) * 0.6);
   }
   if (id === "s8") {
-    x.save(); x.fillStyle = "rgba(8,6,34,0.7)"; x.fillRect(0, 0, 1080, 1920); x.restore();
-    const [c1 = "DOWNLOAD", c2 = "YOGAFLOW"] = BRAND.cta || [];
-    const k = back(0.0, 0.35, u);
-    x.save(); x.translate(CX, 560); x.scale(k, k);
-    glow(VIOLET, 40); x.strokeStyle = VIOLET; x.lineWidth = 12; x.beginPath(); x.arc(0, 0, 120, 0, Math.PI * 2); x.stroke();
-    x.strokeStyle = GREEN; glow(GREEN, 30); x.lineWidth = 10; x.beginPath(); x.arc(0, 0, 155, u * 2, u * 2 + 1.4); x.stroke();
-    x.restore();
-    person(CX, 560 + 95 * k, P.sit, 0.62 * k, VIOLET, { closed: true });
-    words([c1], WHITE, 800, 0.15, 1, 130);
-    words([c2], VIOLET, 950, 0.3, 1, 150);
-    if (BRAND.sub) tag(BRAND.sub, CX, 1110, GREEN, sm(0.5, 0.75, u), 50);
+    // no CTA in this reel: a share card, the brand only as a small line
+    x.save(); x.fillStyle = "rgba(10,14,22,0.75)"; x.fillRect(0, 0, 1080, 1920); x.restore();
+    words(["SEND THIS TO"], WHITE, 640, 0.0, 1, 130);
+    words(["A YOGA", "TEACHER"], YELLOW, 860, 0.2, 1, 150);
+    const c2 = (BRAND.cta || [])[1] || "YOGAFLOW";
+    x.save(); x.globalAlpha = sm(0.6, 0.9, u); x.font = FONT(44); x.textAlign = "center"; x.fillStyle = "rgba(255,255,255,0.75)"; x.fillText(c2, CX, 1110); x.restore();
   }
 }
 
 window.__hf = window.__hf || {};
 window.__hf.buildReady = window.__hf.buildReady || {};
-window.__hf.buildReady["ask-first-2d"] = Promise.resolve().then(() => frame(window.__hfThreeTime || 0));
+window.__hf.buildReady["ask-first-real"] = Promise.resolve().then(() => frame(window.__hfThreeTime || 0));
 window.addEventListener("hf-seek", (e) => frame(e.detail.time));
