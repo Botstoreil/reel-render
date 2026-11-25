@@ -64,11 +64,11 @@ function pose(k, hk, t) {
   HIP.set(0, lerp(0.13, 0.13 + BH, k), 0.02);
   hips.position.copy(HIP);
   // spine: slumped leans back with the top falling back (rounded), tall = straight up
-  D.set(0, 1, lerp(0.42, 0.02, k)).normalize();
+  D.set(0, 1, lerp(-0.5, 0.0, k)).normalize();
   spine.quaternion.setFromUnitVectors(UP, D);
   N.set(0, -D.z, D.y);
   // head: chin drops forward in the slump, level when tall
-  P.head.rotation.set(lerp(-0.75, -0.08, k) + br * 2, 0, 0);
+  P.head.rotation.set(lerp(-0.3, -0.04, k) + br * 2, 0, 0);
   P.g.updateMatrixWorld(true);
   // legs: thighs out and forward; knees high when the hips are tight and low, lower when the hips sit high
   const kneeY = lerp(0.4, 0.17, k) + br;
@@ -89,7 +89,9 @@ function pose(k, hk, t) {
   for (const A of arms) {
     A.sh.getWorldPosition(A.root);
     const Lg = legs[A.s < 0 ? 0 : 1];
-    tg.lerpVectors(Lg.root, Lg.mid, lerp(0.95, 0.6, hk)); tg.y += 0.1;
+    // slumped: hands hang on the shins; tall: on the knees; s6: on the middle of the thighs
+    tg.lerpVectors(Lg.mid, Lg.end, 0.45 * (1 - k)); tg.y += 0.08;
+    if (hk > 0) { d.lerpVectors(Lg.root, Lg.mid, 0.6); d.y += 0.09; tg.lerp(d, hk); }
     pole.set(A.s * 0.8, -0.2, 0.6);
     ik3(A.root, tg, UPPER, FORE, pole, A.mid);
     A.end.copy(tg);
@@ -132,18 +134,18 @@ endCard([["LIFT THE HIPS", 1], ["THE BACK FOLLOWS", 1]]);
 const st = (a, b = a) => [[0, a], [3, b]];
 const SH = [
   // s1: front three-quarter, the slump reads
-  { at: 0, K: [[0, [1.9, 0.9, -1.9, 0, 0.45, -0.05, 44]], [2.8, [1.7, 0.85, -1.7, 0, 0.45, -0.05, 44]]] },
-  // s2: low on the knees, then the side profile for the rounded back
-  { at: T.s2, K: st([1.3, 0.55, -1.6, 0, 0.32, -0.2, 44], [1.2, 0.55, -1.5, 0, 0.32, -0.2, 44]) },
-  { at: T.lower - 0.15, K: st([2.2, 0.65, 0.25, 0, 0.45, 0.05, 44], [2.05, 0.65, 0.25, 0, 0.45, 0.05, 44]) },
-  // s3: close side on the back and chest
-  { at: T.s3, K: st([1.75, 0.75, 0.35, 0, 0.5, 0.05, 42], [1.65, 0.75, 0.3, 0, 0.5, 0.05, 42]) },
+  { at: 0, K: [[0, [2.2, 0.95, -2.2, 0, 0.72, -0.05, 44]], [2.8, [2.0, 0.92, -2.0, 0, 0.72, -0.05, 44]]] },
+  // s2: on the knees, then the side profile for the rounded back
+  { at: T.s2, K: st([1.6, 0.75, -1.9, 0, 0.6, -0.2, 44], [1.5, 0.75, -1.8, 0, 0.6, -0.2, 44]) },
+  { at: T.lower - 0.15, K: st([2.5, 0.8, 0.3, 0, 0.72, 0.05, 44], [2.35, 0.8, 0.3, 0, 0.72, 0.05, 44]) },
+  // s3: side on the back and chest
+  { at: T.s3, K: st([2.2, 0.85, 0.4, 0, 0.75, 0.05, 44], [2.1, 0.85, 0.35, 0, 0.75, 0.05, 44]) },
   // s4: wide three-quarter while the blanket comes in
-  { at: T.s4, K: st([2.2, 0.85, -1.4, 0, 0.4, 0.0, 46], [2.05, 0.82, -1.3, 0, 0.4, 0.0, 46]) },
+  { at: T.s4, K: st([2.5, 0.95, -1.6, 0, 0.7, 0.0, 46], [2.35, 0.92, -1.5, 0, 0.7, 0.0, 46]) },
   // s5: side profile: hips above the knees, spine tall
-  { at: T.s5, K: st([2.3, 0.6, -0.25, 0, 0.45, -0.05, 44], [2.15, 0.62, -0.25, 0, 0.48, -0.05, 44]) },
+  { at: T.s5, K: st([2.6, 0.75, -0.25, 0, 0.75, -0.05, 44], [2.45, 0.77, -0.25, 0, 0.78, -0.05, 44]) },
   // s6: front three-quarter, hands on thighs and the slow breath
-  { at: T.s6, K: st([1.6, 0.95, -1.8, 0, 0.55, -0.05, 44], [1.5, 0.92, -1.7, 0, 0.55, -0.05, 44]) },
+  { at: T.s6, K: st([1.9, 1.0, -2.1, 0, 0.8, -0.05, 44], [1.8, 0.98, -2.0, 0, 0.8, -0.05, 44]) },
   { at: T.s7, calm: 1, K: [[0, [2.4, 1.5, -2.2, 0, 0.6, 0, 48]], [5, [2.7, 1.6, -2.4, 0, 0.6, 0, 48]]] },
 ];
 
@@ -181,12 +183,12 @@ run("sit-high", (t) => {
   hipDot.position.copy(HIP); hipDot.material.opacity = s5;
   hipDot.scale.setScalar(1 + 0.6 * flash(t, T.hips5));
   legs.forEach((L, i) => slope[i].set(L.root, L.mid, s5 * (0.85 + 0.4 * flash(t, T.knees5))));
-  const sp = sm(T.spine - 0.1, T.spine + 0.1, t) * (1 - sm(T.s7 - 0.1, T.s7 + 0.2, t));
+  const sp = sm(T.spine - 0.1, T.spine + 0.1, t) * (1 - sm(T.s6 + 0.1, T.s6 + 0.4, t));
   A0.copy(HIP).addScaledVector(N, 0.2); A1.copy(HIP).addScaledVector(D, TORSO + 0.05).addScaledVector(N, 0.2);
   spineLine.set(A0, A1, sp * (0.85 + 0.4 * flash(t, T.tall)));
   // s6: slow calm breath ring
   calmRing.position.copy(chest); calmRing.quaternion.setFromUnitVectors(V3(0, 0, 1), D);
-  calmRing.material.opacity = sm(T.breathe - 0.15, T.breathe + 0.1, t) * (1 - sm(T.s7 - 0.1, T.s7 + 0.2, t)) * 0.9;
+  calmRing.material.opacity = sm(T.breathe - 0.15, T.breathe + 0.1, t) * (1 - sm(T.s7 - 0.1, T.s7 + 0.2, t)) * 0.7;
   calmRing.scale.setScalar(1.15 + 0.12 * Math.sin(t * 2.4));
 
   const { punch } = shoot(SH, t);
