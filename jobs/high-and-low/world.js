@@ -119,7 +119,7 @@ const hp = V3(0, 0, 0);
 // flashlight path: eye level left->right (s2) | detector, ceiling corners (s4) | socket, charger, floor (s5) | eye level (s6)
 const EYE_L = V3(-2.2, 1.55, -2.93), EYE_R = V3(2.2, 1.55, -2.93);
 const CORN_L = V3(-1.5, 3.02, -2.93), CORN_R = V3(1.5, 3.02, -2.93), HIGH0 = V3(-0.6, 2.85, -2.93);
-const FLOOR = V3(0.25, 0.02, -0.7);
+const FLOOR = V3(-1.55, 0.05, -1.9);
 const TK = [
   [T.scan - 0.1, EYE_L], [T.ahead + 0.2, EYE_R], [T.stop + 0.3, EYE_R],
   [T.s4 + 0.05, HIGH0], [T.det, LENS], [T.det + 0.35, LENS], [T.corners, CORN_L], [T.ceiling + 0.1, CORN_R],
@@ -172,15 +172,15 @@ const SH = [
   // "corners of the ceiling": back up, wall top
   { at: T.corners - 0.1, K: st([0.6, 1.6, 2.3, 0, 2.6, -2.9, 60], [0.5, 1.65, 2.6, 0, 2.65, -2.9, 60]) },
   // s5 "go low ... sockets": down at the socket
-  { at: T.s5, K: st([-0.3, 0.8, 0.0, 1.4, 0.4, -2.9, 48], [-0.2, 0.75, -0.3, 1.5, 0.38, -2.9, 46]) },
+  { at: T.s5, K: st([2.6, 0.75, -1.2, 1.6, 0.2, -2.9, 40], [2.55, 0.7, -1.45, 1.65, 0.2, -2.9, 40]) },
   // "chargers": the wall charger
   { at: T.chargers - 0.1, K: st([-0.6, 1.1, -0.7, -1.3, 0.75, -2.88, 44], [-0.65, 1.05, -0.9, -1.3, 0.75, -2.88, 44]) },
   // "anything near the floor": the floor in front of the bed, beam pooled there
-  { at: T.anything - 0.1, K: st([-1.0, 1.8, 0.9, 0.25, 0.0, -0.7, 46], [-0.95, 1.75, 0.75, 0.25, 0.0, -0.7, 46]) },
+  { at: T.anything - 0.1, K: st([-2.4, 1.3, 0.2, -1.4, 0.1, -2.0, 48], [-2.35, 1.25, 0.0, -1.4, 0.1, -2.0, 48]) },
   // s6: behind the guest, eye-level band, lights go out
   { at: T.s6, K: st([1.3, 1.8, 3.0, 0, 1.55, -2.9, 56], [1.2, 1.75, 2.6, 0, 1.55, -2.9, 56]) },
   // s7-s8: calm wide, all three bands
-  { at: T.s7, calm: 1, K: [[0, [0.3, 2.4, 4.2, 0, 0.6, -2.0, 50]], [5, [0.3, 2.5, 4.8, 0, 0.6, -2.0, 50]]] },
+  { at: T.s7 - 0.15, calm: 1, K: [[0, [0.3, 2.4, 4.2, 0, 0.6, -2.0, 50]], [5, [0.3, 2.5, 4.8, 0, 0.6, -2.0, 50]]] },
 ];
 
 run("high-and-low", (t) => {
