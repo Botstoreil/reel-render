@@ -1,0 +1,8 @@
+s1|Turned a corner? Never leave your indicator blinking.
+s2|You ride on, still signalling left, long after the turn.
+s3|A driver thinks you are turning, and pulls out in front of you.
+s4|Instead, check your switch after every turn.
+s5|Cancel the indicator as soon as the turn is done.
+s6|Make it a habit, like checking your mirrors.
+s7|Turn done? Indicator off.
+s8|Download Apex. Three full rides a month are free.

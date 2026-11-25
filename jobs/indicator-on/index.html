@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <script type="importmap">
+      { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.181.2/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.181.2/examples/jsm/"
+      } }
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #080622; }
+      #world { position: absolute; inset: 0; width: 1080px; height: 1920px; display: block; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="19.485" data-width="1080" data-height="1920">
+      <div id="stage" class="clip" data-start="0" data-duration="19.485" data-track-index="1" style="position:absolute;inset:0"><canvas id="world" width="1080" height="1920" data-layout-allow-overflow></canvas></div>
+      <div id="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="19.485" data-track-index="2" data-track-kind="captions" data-width="1080" data-height="1920" style="z-index: 10"></div>
+      <audio id="vo-s1" class="clip" src="assets/vo/s1.wav" data-start="0.050" data-duration="2.3253333333333335" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s2" class="clip" src="assets/vo/s2.wav" data-start="2.545" data-duration="2.538666666666667" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s3" class="clip" src="assets/vo/s3.wav" data-start="5.254" data-duration="2.624" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s4" class="clip" src="assets/vo/s4.wav" data-start="8.048" data-duration="1.92" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s5" class="clip" src="assets/vo/s5.wav" data-start="10.138" data-duration="2.24" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s6" class="clip" src="assets/vo/s6.wav" data-start="12.548" data-duration="1.728" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s7" class="clip" src="assets/vo/s7.wav" data-start="14.446" data-duration="1.28" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s8" class="clip" src="assets/vo/s8.wav" data-start="15.896" data-duration="2.3893333333333335" data-track-index="3" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__EV = {"S":{"s1":[0,2.495],"s2":[2.495,2.709],"s3":[5.204,2.794],"s4":[7.998,2.09],"s5":[10.088,2.41],"s6":[12.498,1.898],"s7":[14.396,1.45],"s8":[15.846,3.639]},"W":{"s1":{"dur":2.3253333333333335,"words":[{"text":"Turned","start":0,"end":0.153},{"text":"a","start":0.153,"end":0.205},{"text":"corner?","start":0.205,"end":0.563},{"text":"Never","start":0.563,"end":0.819},{"text":"leave","start":0.819,"end":1.074},{"text":"your","start":1.074,"end":1.279},{"text":"indicator","start":1.279,"end":1.74},{"text":"blinking.","start":1.74,"end":2.2}]},"s2":{"dur":2.538666666666667,"words":[{"text":"You","start":0,"end":0.159},{"text":"ride","start":0.159,"end":0.371},{"text":"on,","start":0.371,"end":0.53},{"text":"still","start":0.53,"end":0.795},{"text":"signalling","start":0.795,"end":1.272},{"text":"left,","start":1.272,"end":1.537},{"text":"long","start":1.537,"end":1.749},{"text":"after","start":1.749,"end":2.014},{"text":"the","start":2.014,"end":2.173},{"text":"turn.","start":2.173,"end":2.439}]},"s3":{"dur":2.624,"words":[{"text":"A","start":0,"end":0.048},{"text":"driver","start":0.048,"end":0.338},{"text":"thinks","start":0.338,"end":0.629},{"text":"you","start":0.629,"end":0.774},{"text":"are","start":0.774,"end":0.919},{"text":"turning,","start":0.919,"end":1.258},{"text":"and","start":1.258,"end":1.403},{"text":"pulls","start":1.403,"end":1.645},{"text":"out","start":1.645,"end":1.79},{"text":"in","start":1.79,"end":1.887},{"text":"front","start":1.887,"end":2.129},{"text":"of","start":2.129,"end":2.226},{"text":"you.","start":2.226,"end":2.42}]},"s4":{"dur":1.92,"words":[{"text":"Instead,","start":0,"end":0.333},{"text":"check","start":0.333,"end":0.571},{"text":"your","start":0.571,"end":0.761},{"text":"switch","start":0.761,"end":1.046},{"text":"after","start":1.046,"end":1.284},{"text":"every","start":1.284,"end":1.522},{"text":"turn.","start":1.522,"end":1.76}]},"s5":{"dur":2.24,"words":[{"text":"Cancel","start":0,"end":0.321},{"text":"the","start":0.321,"end":0.481},{"text":"indicator","start":0.481,"end":0.963},{"text":"as","start":0.963,"end":1.07},{"text":"soon","start":1.07,"end":1.284},{"text":"as","start":1.284,"end":1.391},{"text":"the","start":1.391,"end":1.552},{"text":"turn","start":1.552,"end":1.765},{"text":"is","start":1.765,"end":1.872},{"text":"done.","start":1.872,"end":2.14}]},"s6":{"dur":1.728,"words":[{"text":"Make","start":0,"end":0.181},{"text":"it","start":0.181,"end":0.271},{"text":"a","start":0.271,"end":0.317},{"text":"habit,","start":0.317,"end":0.543},{"text":"like","start":0.543,"end":0.724},{"text":"checking","start":0.724,"end":1.085},{"text":"your","start":1.085,"end":1.267},{"text":"mirrors.","start":1.267,"end":1.628}]},"s7":{"dur":1.28,"words":[{"text":"Turn","start":0,"end":0.221},{"text":"done?","start":0.221,"end":0.442},{"text":"Indicator","start":0.442,"end":0.939},{"text":"off.","start":0.939,"end":1.16}]},"s8":{"dur":2.3893333333333335,"words":[{"text":"Download","start":0,"end":0.429},{"text":"Apex.","start":0.429,"end":0.698},{"text":"Three","start":0.698,"end":0.966},{"text":"full","start":0.966,"end":1.18},{"text":"rides","start":1.18,"end":1.449},{"text":"a","start":1.449,"end":1.502},{"text":"month","start":1.502,"end":1.771},{"text":"are","start":1.771,"end":1.932},{"text":"free.","start":1.932,"end":2.2}]}},"LEAD":0.05,"BRAND":{"cta":["DOWNLOAD","APEX"],"sub":"LINK IN BIO"}};
+      const tl = gsap.timeline({ paused: true });
+      tl.set({}, {}, 19.485);
+      window.__timelines["main"] = tl;
+    </script>
+    <script type="module" src="world.js"></script>
+  </body>
+</html>
