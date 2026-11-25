@@ -1,0 +1,8 @@
+s1|Rain on the road? Never brake hard on the painted lines.
+s2|You stop at the crossing, right on the white stripes.
+s3|The paint is slick when wet, and the front tyre slides.
+s4|Instead, do your braking before the lines, on bare road.
+s5|Cross paint and metal covers upright, with the bike straight.
+s6|Stop with your tyres between the stripes, not on them.
+s7|Wet paint is slippery. Brake on bare road.
+s8|Download Apex. Three full rides a month are free.
