@@ -207,7 +207,8 @@ function frame(t) {
   const bp = along(s);
 
   // map window (follows the bike, bike sits low in the window so the road ahead shows)
-  const MZ = 1.3 + (id === "s3" ? 0.1 * sm(at("s3", "pulls") - 0.3, at("s3", "pulls") + 0.3, u) : 0);
+  // s3 eases out to 1.0 so the bike and the car pulling out ahead are both in the window
+  const MZ = 1.3 - (id === "s3" ? 0.3 * sm(0, at("s3", "pulls"), u) : 0);
   const cam = [bp.X + (id === "s1" ? -60 * (1 - sm(0, d, u)) : 0), bp.Y - 100];
   x.save(); rr(SX0, SY0, SW, MAPH, 30); x.clip();
   x.translate(SX0 + SW / 2, SY0 + MAPH / 2 + 40); x.scale(MZ, MZ); x.translate(-cam[0], -cam[1]);
