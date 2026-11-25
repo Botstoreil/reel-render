@@ -1,0 +1,8 @@
+s1|Coming into a bend? Never pull the clutch in and coast through.
+s2|You hold the clutch in all the way round the corner.
+s3|The bike feels loose, and there is no drive to steady it.
+s4|Instead, slow down and pick your gear before the bend.
+s5|Let the clutch out, and keep a little throttle on through the turn.
+s6|Roll on gently as you see the exit.
+s7|Gear in before the bend. Drive through it.
+s8|Download Apex. Three full rides a month are free.
