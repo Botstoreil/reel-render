@@ -95,7 +95,7 @@ function board() {
 }
 
 // bend path (travel up, then a left-hand bend, then left)
-const P0 = [700, 1300], L1 = 370, RC = 320, CC = [380, 930], ARC = (Math.PI / 2) * RC, L3 = 360, TOT = L1 + ARC + L3;
+const P0 = [640, 1130], L1 = 200, RC = 280, CC = [360, 930], ARC = (Math.PI / 2) * RC, L3 = 200, TOT = L1 + ARC + L3, RW = 80;
 function along(s, off = 0) {
   let p, h;
   if (s < L1) { p = [P0[0], P0[1] - s]; h = -Math.PI / 2; }
@@ -106,14 +106,14 @@ function along(s, off = 0) {
 }
 function trace(off, s0 = 0, s1 = TOT) { x.beginPath(); for (let s = s0; s <= s1; s += 12) { const q = along(s, off); s === s0 ? x.moveTo(q.X, q.Y) : x.lineTo(q.X, q.Y); } }
 function road() {
-  chalk(() => trace(-90), WHITE, 9, 11);
-  chalk(() => trace(90), WHITE, 9, 12);
+  chalk(() => trace(-RW), WHITE, 8, 11);
+  chalk(() => trace(RW), WHITE, 8, 12);
   x.save(); x.setLineDash([34, 30]); chalk(() => trace(0), rgba(WHITE, 0.7), 5, 13); x.restore();
 }
 function bike(s, c, o = {}) {
   const { off = 0, wob = 0 } = o;
   const q = along(s, off);
-  x.save(); x.translate(q.X, q.Y); x.rotate(q.h + Math.PI / 2 + wob);
+  x.save(); x.translate(q.X, q.Y); x.rotate(q.h + Math.PI / 2 + wob); x.scale(1.15, 1.15);
   x.fillStyle = rgba(INK, 0.6); rr(-26, -96, 52, 196, 22); x.fill();
   chalk(() => rr(-11, -100, 22, 44, 10), c, 7, 21);
   chalk(() => rr(-11, 54, 22, 44, 10), c, 7, 22);
@@ -126,7 +126,7 @@ function bike(s, c, o = {}) {
 // clutch lever pictogram: pull 0 = open (lever out), 1 = pulled in
 function lever(X, Y, pull, c, a) {
   if (a <= 0) return;
-  x.save(); x.globalAlpha = a; x.translate(X, Y);
+  x.save(); x.globalAlpha = a; x.translate(X, Y); x.scale(1.3, 1.3);
   chalk(() => { x.beginPath(); x.moveTo(-90, 0); x.lineTo(90, 0); }, WHITE, 10, 31);             // bar
   chalk(() => rr(-20, -18, 110, 36, 16), WHITE, 8, 32);                                          // grip
   x.save(); x.translate(-30, -26); x.rotate(lerp(-0.55, -0.06, pull));
@@ -158,32 +158,33 @@ function frame(t) {
   const z = 1 + 0.04 * cl(u / Math.max(1, d)) + 0.05 * Math.pow(1 - sm(-LEAD, 0.22 - LEAD, u), 2);
   board();
   x.save(); x.translate(540, 950); x.scale(z, z); x.translate(-540, -950);
+  x.save(); x.translate(520, 1000); x.scale(1.35, 1.35); x.translate(-480, -900);
   road();
   const L = [];
 
   if (id === "s1") {
     const Cl = at("s1", "clutch"), Co = at("s1", "coast");
-    const s = lerp(0, 300, sm(0, d, u));
+    const s = lerp(0, 170, sm(0, d, u));
     bike(s, RED);
     L.push(() => lever(800, 640, sm(Cl - 0.1, Cl + 0.2, u), RED, sm(Cl - 0.3, Cl, u)));
-    L.push(() => tag("CLUTCH IN", 790, 760, RED, sm(Cl - 0.05, Cl + 0.2, u)));
+    L.push(() => tag("CLUTCH IN", 800, 780, RED, sm(Cl - 0.05, Cl + 0.2, u)));
     L.push(() => tag("COASTING", 300, 1150, RED, sm(Co - 0.1, Co + 0.2, u)));
   }
   if (id === "s2") {
     const Ho = at("s2", "hold"), Ro = at("s2", "round");
-    const s = lerp(300, 640, sm(0, d, u));
+    const s = lerp(170, 420, sm(0, d, u));
     const q = bike(s, RED, { off: 20 * sm(Ro, d, u) });
     L.push(() => lever(800, 640, 1, RED, 1));
-    L.push(() => tag("HELD IN", 790, 760, RED, sm(Ho - 0.1, Ho + 0.2, u)));
+    L.push(() => tag("HELD IN", 800, 780, RED, sm(Ho - 0.1, Ho + 0.2, u)));
     L.push(() => tag("ALL THE WAY ROUND", 420, 1170, RED, sm(Ro - 0.2, Ro + 0.1, u)));
     void q;
   }
   if (id === "s3") {
     const Lo = at("s3", "loose"), Dr = at("s3", "drive"), St = at("s3", "steady");
-    const s = lerp(640, 960, sm(0, d, u));
+    const s = lerp(420, 680, sm(0, d, u));
     const wide = sm(0, d, u);
     const wob = 0.16 * Math.sin(u * 14) * sm(Lo - 0.2, Lo + 0.2, u);
-    const q = bike(s, RED, { off: lerp(20, 120, wide), wob });
+    const q = bike(s, RED, { off: lerp(20, 100, wide), wob });
     wobbleMarks(q, sm(Lo - 0.2, Lo + 0.1, u), t);
     L.push(() => lever(800, 640, 1, RED, 1));
     L.push(() => tag("LOOSE", 560, 1000, RED, sm(Lo - 0.1, Lo + 0.2, u)));
@@ -192,50 +193,51 @@ function frame(t) {
   }
   if (id === "s4") {
     const Sl = at("s4", "slow"), Ge = at("s4", "gear"), Be = at("s4", "before");
-    const s = lerp(0, 330, 1 - Math.pow(1 - sm(0, d, u), 2));
+    const s = lerp(0, 180, 1 - Math.pow(1 - sm(0, d, u), 2));
     // green racing line ahead
     x.save(); x.setLineDash([10, 22]); chalk(() => trace(-10, s + 110, TOT), GREEN, 7, 70, sm(0, 0.3, u)); x.restore();
     bike(s, VIOLET);
     L.push(() => tag("SLOW DOWN", 300, 1150, GREEN, sm(Sl - 0.1, Sl + 0.2, u)));
-    L.push(() => gearBox(860, 900, u > Ge + 0.1 ? 2 : 3, GREEN, sm(Ge - 0.3, Ge, u), flash(u, Ge + 0.12)));
-    L.push(() => tag("GEAR IN", 840, 1060, GREEN, sm(Ge - 0.05, Ge + 0.2, u)));
+    L.push(() => gearBox(200, 1000, u > Ge + 0.1 ? 2 : 3, GREEN, sm(Ge - 0.3, Ge, u), flash(u, Ge + 0.12)));
+    L.push(() => tag("GEAR IN", 220, 870, GREEN, sm(Ge - 0.05, Ge + 0.2, u)));
     L.push(() => tag("BEFORE THE BEND", 500, 640, VIOLET, sm(Be - 0.1, Be + 0.2, u)));
   }
   if (id === "s5") {
     const Ou = at("s5", "out"), Th = at("s5", "throttle"), Tu = at("s5", "turn");
-    const s = lerp(330, 760, sm(0, d, u));
+    const s = lerp(180, 520, sm(0, d, u));
     x.save(); x.setLineDash([10, 22]); chalk(() => trace(-10, s + 110, TOT), GREEN, 7, 70); x.restore();
     const q = bike(s, VIOLET, { off: -10 });
     L.push(() => lever(800, 640, 1 - sm(Ou - 0.3, Ou + 0.1, u), GREEN, 1));
-    L.push(() => tag("CLUTCH OUT", 790, 760, GREEN, sm(Ou - 0.1, Ou + 0.2, u)));
+    L.push(() => tag("CLUTCH OUT", 800, 780, GREEN, sm(Ou - 0.1, Ou + 0.2, u)));
     L.push(() => tag("A LITTLE GAS", 330, 1150, VIOLET, sm(Th - 0.1, Th + 0.2, u)));
-    L.push(() => gearBox(860, 900, 2, GREEN, 1, 0));
+    L.push(() => gearBox(200, 1000, 2, GREEN, 1, 0));
     // steady drive arrows behind the bike
     if (u > Th) chalk(() => { const b = along(Math.max(0, s - 120), -10); x.beginPath(); x.moveTo(b.X, b.Y); x.lineTo(q.X - Math.cos(q.h) * 60, q.Y - Math.sin(q.h) * 60); }, GREEN, 10, 80, sm(Th, Th + 0.3, u));
     void Tu;
   }
   if (id === "s6") {
     const Ro = at("s6", "roll"), Ex = at("s6", "exit");
-    const s = lerp(760, TOT - 60, Math.pow(sm(0, d + 0.2, u), 1.6));
+    const s = lerp(520, TOT - 40, Math.pow(sm(0, d + 0.2, u), 1.6));
     x.save(); x.setLineDash([10, 22]); chalk(() => trace(-10, s + 110, TOT), GREEN, 7, 70); x.restore();
     const q = bike(s, VIOLET, { off: -10 });
     // speed lines (rolling on)
     for (let i = 0; i < 3; i++) chalk(() => { const b = along(Math.max(0, s - 110 - i * 30), -10 + (i - 1) * 30); const e = along(Math.max(0, s - 220 - i * 40), -10 + (i - 1) * 30); x.beginPath(); x.moveTo(b.X, b.Y); x.lineTo(e.X, e.Y); }, GREEN, 6, 90 + i, sm(Ro, Ro + 0.3, u));
     L.push(() => tag("ROLL ON", 330, 1150, GREEN, sm(Ro - 0.1, Ro + 0.2, u)));
     L.push(() => tag("EXIT", 180, 620, GREEN, sm(Ex - 0.15, Ex + 0.1, u)));
-    L.push(() => mark("v", 820, 1100, back(Ex + 0.1, Ex + 0.4, u) * 0.55, u > Ex ? 1 : 0, GREEN));
+    L.push(() => mark("v", 860, 1180, back(Ex + 0.1, Ex + 0.4, u) * 0.55, u > Ex ? 1 : 0, GREEN));
     void q;
   }
-  if (id === "s7") { bike(TOT - 60, VIOLET, { off: -10 }); }
+  if (id === "s7") { bike(TOT - 40, VIOLET, { off: -10 }); }
+  x.restore();
   L.forEach((f) => f());
   x.restore();
 
-  if (id === "s1") words(["NEVER COAST", "THROUGH A BEND"], RED, 390, 0.0, 1, 150, Math.max(flash(u, 0.05), flash(u, at("s1", "never")), flash(u, at("s1", "coast"))));
-  if (id === "s2") words(["CLUTCH HELD", "ALL THE WAY"], RED, 390, 0.0, 1, 160, flash(u, at("s2", "clutch")) * 0.6);
-  if (id === "s3") words(["NO DRIVE,", "NO GRIP"], RED, 390, 0.0, 1, 170, flash(u, at("s3", "drive")) * 0.6);
-  if (id === "s4") words(["GEAR IN", "BEFORE THE BEND"], GREEN, 390, 0.0, 1, 150, flash(u, at("s4", "gear")) * 0.6);
-  if (id === "s5") words(["CLUTCH OUT,", "A LITTLE GAS"], GREEN, 390, 0.0, 1, 150, flash(u, at("s5", "throttle")) * 0.6);
-  if (id === "s6") words(["ROLL ON", "AT THE EXIT"], GREEN, 390, 0.0, 1, 160, flash(u, at("s6", "exit")) * 0.6);
+  if (id === "s1") words(["NEVER COAST", "THROUGH A BEND"], RED, 370, 0.0, 1, 150, Math.max(flash(u, 0.05), flash(u, at("s1", "never")), flash(u, at("s1", "coast"))));
+  if (id === "s2") words(["CLUTCH HELD", "ALL THE WAY"], RED, 370, 0.0, 1, 160, flash(u, at("s2", "clutch")) * 0.6);
+  if (id === "s3") words(["NO DRIVE,", "NO GRIP"], RED, 370, 0.0, 1, 170, flash(u, at("s3", "drive")) * 0.6);
+  if (id === "s4") words(["GEAR IN", "BEFORE THE BEND"], GREEN, 370, 0.0, 1, 150, flash(u, at("s4", "gear")) * 0.6);
+  if (id === "s5") words(["CLUTCH OUT,", "A LITTLE GAS"], GREEN, 370, 0.0, 1, 150, flash(u, at("s5", "throttle")) * 0.6);
+  if (id === "s6") words(["ROLL ON", "AT THE EXIT"], GREEN, 370, 0.0, 1, 160, flash(u, at("s6", "exit")) * 0.6);
   if (id === "s7") {
     x.save(); x.fillStyle = "rgba(8,24,15,0.70)"; x.fillRect(0, 0, 1080, 1920); x.restore();
     words(["GEAR IN", "BEFORE THE BEND."], ORANGE, 590, 0.0, 1, 150, flash(u, 0.05));
