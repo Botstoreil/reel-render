@@ -147,14 +147,15 @@ function dim(x1, x2, y, c, a, label) {
   const ah = Math.min(18, (x2 - x1) / 3);
   x.beginPath(); x.moveTo(x1, y); x.lineTo(x1 + ah, y - 10); x.lineTo(x1 + ah, y + 10); x.closePath(); x.fill();
   x.beginPath(); x.moveTo(x2, y); x.lineTo(x2 - ah, y - 10); x.lineTo(x2 - ah, y + 10); x.closePath(); x.fill();
-  if (label) { x.font = MONO(34); x.textAlign = "center"; x.textBaseline = "bottom"; x.fillText(label, cl((x1 + x2) / 2, 120, 900), y - 14); }
+  if (label) { x.font = MONO(48); x.textAlign = "center"; x.textBaseline = "bottom"; x.fillText(label, cl((x1 + x2) / 2, 120, 900), y - 14); }
   x.restore();
 }
 function speedLines(X, a) { if (a <= 0) return; x.save(); x.globalAlpha = a; x.strokeStyle = LINE; x.lineWidth = 4; x.lineCap = "round"; for (let i = 0; i < 4; i++) { const y = GY - 40 - i * 34; x.beginPath(); x.moveTo(X - 30 - i * 14, y); x.lineTo(X - 110 - i * 14, y); x.stroke(); } x.restore(); }
 
 // lay out rear car | gapR | bike | gapF | front car, fitted to the safe width
 function layout(gapR, gapF) {
-  const tot = 250 + gapR + BL + gapF + 250, s = Math.min(1, 860 / tot), x0 = 540 - (tot * s) / 2 - 30;
+  // frame the gaps and the bike, with ~90 px of each car showing (the cars may run off the edges)
+  const span = gapR + BL + gapF + 180, s = cl(820 / span, 0.95, 1.55), x0 = 510 - (span * s) / 2 - (250 - 90) * s;
   return { s, x0, R: 0, B: 250 + gapR, F: 250 + gapR + BL + gapF };
 }
 function sideScene(t, id, u, o) {
