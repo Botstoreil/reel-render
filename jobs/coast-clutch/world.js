@@ -181,15 +181,15 @@ function frame(t) {
   }
   if (id === "s3") {
     const Lo = at("s3", "loose"), Dr = at("s3", "drive"), St = at("s3", "steady");
-    const s = lerp(420, 680, sm(0, d, u));
+    const s = lerp(420, 590, sm(0, d, u));
     const wide = sm(0, d, u);
     const wob = 0.16 * Math.sin(u * 14) * sm(Lo - 0.2, Lo + 0.2, u);
-    const q = bike(s, RED, { off: lerp(20, 100, wide), wob });
+    const q = bike(s, RED, { off: lerp(20, 70, wide), wob });
     wobbleMarks(q, sm(Lo - 0.2, Lo + 0.1, u), t);
     L.push(() => lever(800, 640, 1, RED, 1));
     L.push(() => tag("LOOSE", 560, 1000, RED, sm(Lo - 0.1, Lo + 0.2, u)));
     L.push(() => tag("NO DRIVE", 300, 1120, RED, sm(Dr - 0.1, Dr + 0.2, u)));
-    L.push(() => mark("x", 160, 610, back(St, St + 0.3, u) * 0.55, u > St - 0.05 ? 1 : 0, RED));
+    L.push(() => mark("x", 860, 900, back(St, St + 0.3, u) * 0.55, u > St - 0.05 ? 1 : 0, RED));
   }
   if (id === "s4") {
     const Sl = at("s4", "slow"), Ge = at("s4", "gear"), Be = at("s4", "before");
@@ -227,7 +227,7 @@ function frame(t) {
     L.push(() => mark("v", 860, 1180, back(Ex + 0.1, Ex + 0.4, u) * 0.55, u > Ex ? 1 : 0, GREEN));
     void q;
   }
-  if (id === "s7") { bike(TOT - 40, VIOLET, { off: -10 }); }
+  if (id === "s7") { bike(TOT - 120, VIOLET, { off: -10 }); }
   x.restore();
   L.forEach((f) => f());
   x.restore();
