@@ -1,0 +1,56 @@
+[
+  {
+    "text": "Download",
+    "start": 0.04,
+    "end": 0.53,
+    "id": "w0"
+  },
+  {
+    "text": "Apex.",
+    "start": 0.53,
+    "end": 0.96,
+    "id": "w1"
+  },
+  {
+    "text": "Three",
+    "start": 1.05,
+    "end": 1.18,
+    "id": "w2"
+  },
+  {
+    "text": "full",
+    "start": 1.18,
+    "end": 1.32,
+    "id": "w3"
+  },
+  {
+    "text": "rides",
+    "start": 1.32,
+    "end": 1.5,
+    "id": "w4"
+  },
+  {
+    "text": "a",
+    "start": 1.5,
+    "end": 1.53,
+    "id": "w5"
+  },
+  {
+    "text": "month",
+    "start": 1.53,
+    "end": 1.69,
+    "id": "w6"
+  },
+  {
+    "text": "are",
+    "start": 1.74,
+    "end": 1.82,
+    "id": "w7"
+  },
+  {
+    "text": "free.",
+    "start": 1.82,
+    "end": 2.17,
+    "id": "w8"
+  }
+]
