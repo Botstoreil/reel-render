@@ -207,8 +207,8 @@ function frame(t) {
   const bp = along(s);
 
   // map window (follows the bike, bike sits low in the window so the road ahead shows)
-  const MZ = id === "s3" ? 1.0 + 0.12 * sm(at("s3", "pulls") - 0.3, at("s3", "pulls") + 0.3, u) : 1.0;
-  const cam = [bp.X + (id === "s1" ? -60 * (1 - sm(0, d, u)) : 0), bp.Y - 150];
+  const MZ = 1.3 + (id === "s3" ? 0.1 * sm(at("s3", "pulls") - 0.3, at("s3", "pulls") + 0.3, u) : 0);
+  const cam = [bp.X + (id === "s1" ? -60 * (1 - sm(0, d, u)) : 0), bp.Y - 100];
   x.save(); rr(SX0, SY0, SW, MAPH, 30); x.clip();
   x.translate(SX0 + SW / 2, SY0 + MAPH / 2 + 40); x.scale(MZ, MZ); x.translate(-cam[0], -cam[1]);
   map(cam, t);
@@ -243,7 +243,7 @@ function frame(t) {
   if (id === "s3") {
     const Th = at("s3", "thinks"), Pu = at("s3", "pulls"), Yo = at("s3", "you", 2);
     const cs = toS(carAt(car));
-    L.push(() => tag("THINKS YOU TURN", cs[0] + 120, cs[1] - 120, RED, sm(Th - 0.1, Th + 0.2, u) * (1 - sm(Pu + 0.1, Pu + 0.3, u))));
+    L.push(() => tag("THINKS YOU TURN", cs[0] + 120, cs[1] - 120, RED, sm(Th - 0.1, Th + 0.2, u) * (1 - sm(Pu - 0.15, Pu - 0.02, u))));
     L.push(() => tag("PULLS OUT", cs[0] + 200, cs[1] - 120, RED, sm(Pu - 0.05, Pu + 0.2, u)));
     L.push(() => stamp("x", 780, 960, back(Yo - 0.1, Yo + 0.2, u) * 0.6, RED));
   }
