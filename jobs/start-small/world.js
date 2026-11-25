@@ -54,7 +54,7 @@ function pose(k, dp, sink, HT, t) {
   const br = 0.008 * Math.sin(t * 1.6);
   HIP.set(0, lerp(0.99, lerp(0.86, 0.82, dp), k) + br, lerp(0.05, 0.12, k));
   hips.position.set(0, HIP.y, HIP.z);
-  const ry = lerp(-0.22, -0.5, dp), rz = lerp(-0.97, -0.86, dp);
+  const ry = lerp(-0.22, -0.72, dp), rz = lerp(-0.97, -0.69, dp);
   D.set(0, lerp(-0.8 - 0.08 * sink, ry, k), lerp(-0.6 + 0.14 * sink, rz, k)).normalize();
   SHO.copy(HIP).addScaledVector(D, TORSO);
   spine.quaternion.setFromUnitVectors(UP, D);
@@ -116,7 +116,7 @@ const SH = [
   // s5: medium side while the body lowers
   { at: T.s5, K: st([2.8, 0.9, -0.2, 0, 0.55, -0.2, 46], [2.6, 0.85, -0.2, 0, 0.5, -0.2, 46]) },
   // s6: the back of the thigh, calm green
-  { at: T.s6, K: st([2.3, 0.65, 0.4, 0, 0.6, 0.0, 44], [2.15, 0.63, 0.36, 0, 0.6, 0.0, 44]) },
+  { at: T.s6, K: st([2.2, 0.6, 1.0, 0, 0.5, 0.0, 46], [2.05, 0.6, 0.95, 0, 0.5, 0.0, 46]) },
   { at: T.s7, calm: 1, K: [[0, [3.6, 1.7, 0.1, 0, 1.0, -0.15, 48]], [5, [4.0, 1.85, 0.1, 0, 1.05, -0.15, 48]]] },
 ];
 
@@ -137,7 +137,7 @@ run("start-small", (t) => {
   pose(k, dp, sink, HT, t);
 
   // back of the thigh point (legs bend forward to -z, so the back of the legs is +z)
-  HAM.lerpVectors(HIP, KNEE, 0.5); HAM.z += 0.08; HAM.add(OFF);
+  HAM.lerpVectors(HIP, KNEE, 0.55); HAM.z += 0.1; HAM.add(OFF);
 
   // wrong: red line down the back of the legs + red dot (s2), red floor ring and a hard red pulse (s3)
   const lg = sm(T.muscles - 0.1, T.muscles + 0.15, t) * (1 - sm(T.s4 - 0.1, T.s4 + 0.2, t));
@@ -158,10 +158,11 @@ run("start-small", (t) => {
   spineLine.set(A0, A1, ok * (0.85 + 0.4 * flash(t, T.breath)));
   const stOn = 1 - sm(T.s6 - 0.1, T.s6 + 0.2, t);
   const stT = [T.s5 + 0.35, T.breath + 0.15, T.lower];
+  // depth steps: a violet dot left at each level the shoulder passes (a trail going down)
   steps.forEach((s, i) => {
-    s.position.set(OFF.x, 0.95 - 0.12 * i, SHO.z - 0.25);
-    s.material.opacity = sm(stT[i] - 0.1, stT[i] + 0.1, t) * stOn;
-    s.scale.setScalar(1.6 * (1 + 0.6 * flash(t, stT[i])));
+    if (t < stT[i]) s.position.copy(SHO).add(OFF);
+    s.material.opacity = sm(stT[i] - 0.1, stT[i] + 0.1, t) * stOn * 0.9;
+    s.scale.setScalar(1.3 * (1 + 0.6 * flash(t, stT[i])));
   });
   okRing.position.copy(HAM); okRing.lookAt(HAM.x + 1, HAM.y, HAM.z);
   okRing.material.opacity = sm(T.stop - 0.1, T.stop + 0.2, t) * (1 - sm(T.s7 - 0.1, T.s7 + 0.2, t)) * (0.75 + 0.25 * Math.sin(t * 3));
