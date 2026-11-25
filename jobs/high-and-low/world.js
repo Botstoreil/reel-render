@@ -169,20 +169,18 @@ const SH = [
   { at: T.low - 0.1, K: st([1.55, 0.62, -1.85, 1.85, 0.3, -2.9, 40], [1.6, 0.58, -2.0, 1.85, 0.3, -2.9, 38]) },
   // s4: low angle behind the guest, looking up the wall, beam on the green top band
   { at: T.s4, K: st([0.6, 1.5, 2.4, 0, 2.55, -2.9, 60], [0.55, 1.45, 2.1, 0, 2.6, -2.9, 60]) },
-  // "detector": the glint
-  { at: T.det - 0.05, K: st([-0.15, 2.4, -1.3, 0.05, 2.65, -2.9, 38], [-0.1, 2.45, -1.6, 0.06, 2.65, -2.9, 36]) },
   // "corners of the ceiling": back up, wall top
   { at: T.corners - 0.1, K: st([0.6, 1.6, 2.3, 0, 2.6, -2.9, 60], [0.5, 1.65, 2.6, 0, 2.65, -2.9, 60]) },
   // s5 "go low ... sockets": down at the socket
-  { at: T.s5, K: st([1.4, 0.95, -0.8, 1.8, 0.35, -2.9, 44], [1.45, 0.85, -1.1, 1.8, 0.33, -2.9, 42]) },
+  { at: T.s5, K: st([-0.3, 0.8, 0.0, 1.4, 0.4, -2.9, 48], [-0.2, 0.75, -0.3, 1.5, 0.38, -2.9, 46]) },
   // "chargers": the wall charger
   { at: T.chargers - 0.1, K: st([-0.6, 1.1, -0.7, -1.3, 0.75, -2.88, 44], [-0.65, 1.05, -0.9, -1.3, 0.75, -2.88, 44]) },
   // "anything near the floor": the floor in front of the bed, beam pooled there
-  { at: T.anything - 0.1, K: st([-1.2, 1.1, 1.3, 0.3, 0.15, -0.9, 52], [-1.1, 1.0, 1.1, 0.3, 0.15, -0.9, 52]) },
+  { at: T.anything - 0.1, K: st([-1.0, 1.8, 0.9, 0.25, 0.0, -0.7, 46], [-0.95, 1.75, 0.75, 0.25, 0.0, -0.7, 46]) },
   // s6: behind the guest, eye-level band, lights go out
   { at: T.s6, K: st([1.3, 1.8, 3.0, 0, 1.55, -2.9, 56], [1.2, 1.75, 2.6, 0, 1.55, -2.9, 56]) },
   // s7-s8: calm wide, all three bands
-  { at: T.s7, calm: 1, K: [[0, [0.3, 2.0, 4.6, 0, 1.6, -2.0, 54]], [5, [0.3, 2.2, 5.3, 0, 1.6, -2.0, 54]]] },
+  { at: T.s7, calm: 1, K: [[0, [0.3, 2.4, 4.2, 0, 0.6, -2.0, 50]], [5, [0.3, 2.5, 4.8, 0, 0.6, -2.0, 50]]] },
 ];
 
 run("high-and-low", (t) => {
@@ -219,10 +217,10 @@ run("high-and-low", (t) => {
   const tg = target(t);
   beamCone.set(hp, tg, 0.22, 0.13 * on);
   spotDisk.visible = on > 0.01; spotDisk.position.copy(tg).add(V3(0, 0, 0.02)); spotDisk.lookAt(hp); spotDisk.material.opacity = 0.28 * on;
-  spot.intensity = 4 * on; spot.position.copy(hp); spot.target.position.copy(tg); spot.target.updateMatrixWorld();
+  spot.intensity = (t > T.s4 && t < T.s6 ? 2.2 : 4) * on; spot.position.copy(hp); spot.target.position.copy(tg); spot.target.updateMatrixWorld();
 
   // glints: each lens throws the flashlight back; both stay lit on the end card
-  const endG = 0.55 * sm(T.s7, T.s7 + 0.4, t);
+  const endG = 0;
   for (const [gq, L, w0] of [[glD, LENS, T.det], [glS, SLENS, T.sockets]]) {
     const prox = Math.exp(-tg.distanceToSquared(L) / 0.02) * on;
     const a = Math.max(prox * (0.75 + 0.6 * flash(t, w0 + 0.1)), endG);
