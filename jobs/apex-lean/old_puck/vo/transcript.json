@@ -1,0 +1,68 @@
+[
+  {
+    "text": "Get",
+    "start": 0.04,
+    "end": 0.18,
+    "id": "w0"
+  },
+  {
+    "text": "Apex",
+    "start": 0.18,
+    "end": 0.38,
+    "id": "w1"
+  },
+  {
+    "text": "with",
+    "start": 0.43,
+    "end": 0.64,
+    "id": "w2"
+  },
+  {
+    "text": "Code",
+    "start": 0.68,
+    "end": 0.9,
+    "id": "w3"
+  },
+  {
+    "text": "Welcome",
+    "start": 0.9,
+    "end": 1.32,
+    "id": "w4"
+  },
+  {
+    "text": "Bikers,",
+    "start": 1.32,
+    "end": 1.83,
+    "id": "w5"
+  },
+  {
+    "text": "two",
+    "start": 1.83,
+    "end": 2,
+    "id": "w6"
+  },
+  {
+    "text": "weeks",
+    "start": 2,
+    "end": 2.29,
+    "id": "w7"
+  },
+  {
+    "text": "of",
+    "start": 2.29,
+    "end": 2.4,
+    "id": "w8"
+  },
+  {
+    "text": "pro",
+    "start": 2.4,
+    "end": 2.57,
+    "id": "w9"
+  },
+  {
+    "text": "free.",
+    "start": 2.57,
+    "end": 2.97,
+    "id": "w10"
+  }
+]

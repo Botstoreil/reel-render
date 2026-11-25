@@ -1,1 +1,2 @@
-{"type":"words","model":"small.en","words":[{"text":"so","start":0,"end":0.105},{"text":"you're","start":0.105,"end":0.421},{"text":"leaning","start":0.421,"end":0.789},{"text":"right","start":0.789,"end":1.053},{"text":"every","start":1.053,"end":1.316},{"text":"corner","start":1.316,"end":1.632},{"text":"better.","start":1.632,"end":2}],"through":2}
+{"type":"words","model":"small.en","words":[{"text":"Know","start":0,"end":0.268},{"text":"you're","start":0.268,"end":0.67},{"text":"lean,","start":0.67,"end":1.005},{"text":"ride","start":1.005,"end":1.274},{"text":"every","start":1.274,"end":1.609},{"text":"corner","start":1.609,"end":2.011},{"text":"better.","start":2.011,"end":2.48}],"through":2.48}
+{"type":"words","model":"small.en","words":[],"through":2.541125}
