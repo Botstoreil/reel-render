@@ -122,7 +122,7 @@ function helmet(c, o = {}) {
   const { k = 0, snug = 0, sway = 0, fingers = 0, strapC = c } = o;
   // shell
   x.beginPath(); x.ellipse(-5, -18, 122, 116, 0, Math.PI * 0.6, Math.PI * 1.9);
-  x.lineTo(62, -34); x.lineTo(24, 36); x.lineTo(-8, 78); x.closePath(); ink(c, 9);
+  x.lineTo(30, -46); x.lineTo(2, 40); x.lineTo(-8, 78); x.closePath(); ink(c, 9);
   x.beginPath(); x.ellipse(-5, -18, 96, 90, 0, Math.PI * 1.08, Math.PI * 1.62); x.strokeStyle = WHITE; x.lineWidth = 10; x.lineCap = "round"; x.stroke();   // shine
   x.beginPath(); x.moveTo(84, -76); x.lineTo(156, -60); x.lineTo(104, -40); x.closePath(); ink(c, 7);                                                // peak
   x.beginPath(); x.arc(-8, 70, 9, 0, Math.PI * 2); ink("#cccccc", 5);                                                                                // rivet
@@ -130,6 +130,7 @@ function helmet(c, o = {}) {
   if (fingers > 0) {
     const fx = lerp(260, 18, fingers);
     for (const fy of [102, 128]) { rr(fx, fy, 210, 24, 12); ink(SKIN, 6); }
+    rr(fx + 190, 86, 120, 84, 32); ink(SKIN, 6);
   }
   // strap: anchor A (rivet) -> buckle Q -> chin C
   const A = [-8, 70], C = [70, 98];
@@ -192,7 +193,7 @@ function frame(t) {
 
   if (id === "s1") {
     const Lv = at("s1", "leave"), Op = at("s1", "open");
-    panel("#ff8f9a", "#e3374d", t);
+    panel("#e85a6c", "#b8243a", t);
     const r = rider(RED, { bob, k: 0, sway: Math.sin(t * 4) * 8 });
     L.push(() => burst(sx(r.Q[0]) + 10, sy(r.Q[1]) + bob, 110, sm(Op - 0.15, Op + 0.1, u)));
     L.push(() => tag("OPEN", sx(r.Q[0]) + 10, sy(r.Q[1]) + bob, RED, sm(Op - 0.1, Op + 0.2, u), 54));
@@ -200,7 +201,7 @@ function frame(t) {
   }
   if (id === "s2") {
     const Bu = at("s2", "buckle"), Lo = at("s2", "loose");
-    panel("#ffb3a0", "#ef5a4a", t, 300, 900);
+    panel("#ee7a68", "#c23a2e", t, 300, 900);
     speedLines(t, sm(0, 0.3, u));
     const sway = Math.sin(t * 17) * 26 * sm(0, 0.4, u);
     const r = rider(RED, { bob: Math.sin(t * 9) * 8, k: 0, sway });
@@ -210,13 +211,13 @@ function frame(t) {
   }
   if (id === "s3") {
     const Fa = at("s3", "fall"), Of = at("s3", "off"), Ro = at("s3", "road");
-    panel("#ff7a7a", "#c81d33", t, 540, 1200);
+    panel("#d9475a", "#9e1a2c", t, 540, 1200);
     const fall = sm(Fa - 0.1, Ro + 0.15, u);
     const off = sm(Of - 0.25, Of + 0.5, u);
     // ground slab rises into view
     x.save(); x.beginPath(); x.rect(36, lerp(1500, 1230, fall), 1008, 700); ink("#3a3a46", 10);
     x.strokeStyle = WHITE; x.lineWidth = 14; x.setLineDash([90, 70]); x.beginPath(); x.moveTo(36, lerp(1560, 1290, fall)); x.lineTo(1044, lerp(1560, 1290, fall)); x.stroke(); x.restore();
-    rider(RED, { k: 0, sway: Math.sin(t * 12) * 18, hd: { dx: 40 * fall, dy: 110 * fall, rot: 0.45 * fall }, hm: { dx: -150 * off, dy: -170 * off + 40 * off * off, rot: -0.9 * off } });
+    rider(RED, { k: 0, sway: Math.sin(t * 12) * 18, hd: { dx: 40 * fall, dy: 110 * fall, rot: 0.45 * fall }, hm: { dx: -150 * off, dy: -130 * off + 30 * off * off, rot: -0.9 * off } });
     L.push(() => burst(330, 640, 150, sm(Of - 0.05, Of + 0.15, u) * (1 - sm(Of + 0.6, Of + 0.9, u))));
     L.push(() => tag("HELMET OFF", 330, 640, RED, sm(Of - 0.05, Of + 0.2, u), 50));
     L.push(() => burst(640, 1250, 140, sm(Ro - 0.15, Ro + 0.05, u), "#ffffff"));
@@ -224,37 +225,37 @@ function frame(t) {
   }
   if (id === "s4") {
     const Cl = at("s4", "close"), St = at("s4", "strap"), Ev = at("s4", "every"), Mi = at("s4", "one");
-    panel("#b8f5cf", "#3fc983", t);
+    panel("#5fc98c", "#23874f", t);
     const k = sm(Cl - 0.1, St + 0.1, u);
     const r = rider(VIOLET, { bob: bob * 0.5, k, sway: (1 - k) * Math.sin(t * 4) * 8, strapC: GREEN });
     L.push(() => burst(sx(r.Q[0]), sy(r.Q[1]), 120, sm(St - 0.05, St + 0.1, u) * (1 - sm(St + 0.5, St + 0.8, u))));
     L.push(() => tag("CLICK", sx(r.Q[0]), sy(r.Q[1]), GREEN, sm(St - 0.05, St + 0.15, u) * (1 - sm(St + 0.5, St + 0.8, u)), 56));
     L.push(() => tag("EVERY TIME", 330, 610, GREEN, sm(Ev - 0.1, Ev + 0.2, u)));
     L.push(() => clock(790, 1180, sm(Mi - 0.2, Mi + 0.2, u), u));
-    L.push(() => tag("EVEN 1 MINUTE", 430, 1320, VIOLET, sm(Mi - 0.1, Mi + 0.2, u)));
+    L.push(() => tag("EVEN 1 MINUTE", 330, 1165, VIOLET, sm(Mi - 0.1, Mi + 0.2, u)));
   }
   if (id === "s5") {
     const Pu = at("s5", "pull"), Sn = at("s5", "snug"), Tw = at("s5", "two"), Fi = at("s5", "fingers");
-    panel("#c9f7dc", "#38c47b", t, 700, 1000);
+    panel("#62cf93", "#25905a", t, 700, 1000);
     const snug = sm(Pu, Sn + 0.2, u), fin = sm(Tw - 0.1, Fi + 0.4, u);
     const r = rider(VIOLET, { k: 1, snug, fingers: fin, strapC: GREEN });
     L.push(() => tag("PULL SNUG", 320, 610, GREEN, sm(Pu - 0.1, Pu + 0.2, u)));
-    L.push(() => tag("TWO FINGERS", 640, 1320, VIOLET, sm(Tw - 0.1, Tw + 0.2, u)));
-    L.push(() => mark("v", 820, 1150, back(Fi + 0.3, Fi + 0.6, u) * 0.5, u > Fi + 0.25 ? 1 : 0, GREEN));
+    L.push(() => tag("TWO FINGERS", 300, 1165, VIOLET, sm(Tw - 0.1, Tw + 0.2, u)));
+    L.push(() => mark("v", 850, 1240, back(Fi + 0.3, Fi + 0.6, u) * 0.5, u > Fi + 0.25 ? 1 : 0, GREEN));
   }
   if (id === "s6") {
     const Ro = at("s6", "roll"), No = at("s6", "not"), Mo = at("s6", "move");
-    panel("#d4ccff", "#7f63f0", t, 300, 800);
+    panel("#9384e8", "#5b40cf", t, 300, 800);
     const push = sm(Ro - 0.15, Ro + 0.2, u) * (1 - sm(No, No + 0.3, u));
     const wob = 0.06 * Math.sin((u - Ro) * 18) * push;
     rider(VIOLET, { k: 1, snug: 1, strapC: GREEN, hm: { dx: 0, dy: 0, rot: wob } });
     hand(sx(-115) + 14 * push, sy(-95) + 10 * push, 0.5, sm(Ro - 0.3, Ro, u) * (1 - sm(Mo + 0.1, Mo + 0.4, u)));
     L.push(() => arrowArc(HX - 10, HY - 30, 300, Math.PI * 1.15, Math.PI * 1.15 + 0.9 * sm(Ro - 0.1, Ro + 0.4, u), sm(Ro - 0.2, Ro, u) * (1 - sm(No, No + 0.2, u)), WHITE));
     L.push(() => tag("TRY TO ROLL IT", 360, 600, VIOLET, sm(at("s6", "try") - 0.1, at("s6", "try") + 0.2, u)));
-    L.push(() => tag("IT STAYS", 360, 1320, GREEN, sm(No - 0.1, No + 0.2, u)));
-    L.push(() => mark("v", 800, 1160, back(Mo, Mo + 0.3, u) * 0.55, u > Mo - 0.05 ? 1 : 0, GREEN));
+    L.push(() => tag("IT STAYS", 300, 1165, GREEN, sm(No - 0.1, No + 0.2, u)));
+    L.push(() => mark("v", 830, 1180, back(Mo, Mo + 0.3, u) * 0.55, u > Mo - 0.05 ? 1 : 0, GREEN));
   }
-  if (id === "s7" || id === "s8") { panel("#d4ccff", "#7f63f0", t, 300, 800); rider(VIOLET, { bob: bob * 0.4, k: 1, snug: 1, strapC: GREEN }); }
+  if (id === "s7" || id === "s8") { panel("#9384e8", "#5b40cf", t, 300, 800); if (id === "s7") rider(VIOLET, { bob: bob * 0.4, k: 1, snug: 1, strapC: GREEN }); }
   L.forEach((f) => f());
   x.restore();
 
