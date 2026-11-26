@@ -1,1 +1,2 @@
-{"type":"words","model":"small.en","words":[{"text":"Start","start":0,"end":0.296},{"text":"small,","start":0.296,"end":0.652},{"text":"go","start":0.652,"end":0.77},{"text":"deeper","start":0.77,"end":1.125},{"text":"slowly.","start":1.125,"end":1.54}],"through":1.54}
+{"type":"words","model":"small.en","words":[{"text":"Start","start":0,"end":0.323},{"text":"small,","start":0.323,"end":0.711},{"text":"go","start":0.711,"end":0.84},{"text":"deeper","start":0.84,"end":1.228},{"text":"slowly.","start":1.228,"end":1.68}],"through":1.68}
+{"type":"words","model":"small.en","words":[],"through":1.7944375}
