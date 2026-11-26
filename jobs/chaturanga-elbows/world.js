@@ -184,14 +184,14 @@ function topP(X, Y, k, s, color, o = {}) {
   const P = (dx, dy) => [X + dx * s, Y + dy * s];
   const J = {
     head: P(0, -92), shL: P(-86, 0), shR: P(86, 0),
-    hL: P(-112, 96), hR: P(112, 96),
-    eL: P(lerp(-104, -236, k), lerp(176, 70, k) + jit), eR: P(lerp(104, 236, k), lerp(176, 70, k) - jit),
+    hL: P(-122, 96), hR: P(122, 96),
+    eL: P(lerp(-132, -236, k), lerp(180, 70, k) + jit), eR: P(lerp(132, 236, k), lerp(180, 70, k) - jit),
     hip: P(0, 290), fL: P(-34, 560), fR: P(34, 560),
   };
   J.shL[1] += jit * 0.6; J.shR[1] -= jit * 0.6;
   if (o.mat !== false) {
     x.save(); x.globalAlpha = a * 0.6; x.strokeStyle = o.matC || VIOLET; x.lineWidth = 7;
-    rr(X - 290 * s, Y - 170 * s, 580 * s, 790 * s, 18 * s); x.stroke(); x.restore();
+    rr(X - 290 * s, Y - 160 * s, 580 * s, 750 * s, 18 * s); x.stroke(); x.restore();
   }
   x.save(); x.globalAlpha = a; x.lineCap = "round"; x.lineJoin = "round";
   const seg = (c, w, ...ps) => { x.strokeStyle = c; x.lineWidth = w; x.beginPath(); ps.forEach((p, i) => (i ? x.lineTo(p[0], p[1]) : x.moveTo(p[0], p[1]))); x.stroke(); };
@@ -244,7 +244,7 @@ function drawInk(t) {
   x.save(); x.translate(CX, 900); x.scale(z, z); x.translate(-CX, -900);
 
   const FY = 1170, PX = 520, SC = 1.05;   // side view
-  const TX = CX, TY = 640, TS = 1.0;      // top view
+  const TX = CX, TY = 700, TS = 0.92;     // top view (r2: lower, so the title underline clears the head)
   const shk = (k) => k * 5 * Math.sin(u * 47) + k * 3 * Math.sin(u * 71);
   if (id === "s1") {
     // side view: plank lowers; at "never" cut to the top view and the elbows flare out
@@ -329,7 +329,7 @@ function drawInk(t) {
     ring(ex, ey, 42, VIOLET, on("s6", "elbows", u), 8);
   }
   if (id === "s7") {
-    topP(CX, 1000, 0, 0.42, GREEN, { a: 0.8, matC: GREEN });
+    topP(CX, 930, 0, 0.5, GREEN, { a: 0.85, matC: GREEN }); // r2: larger, clear of the caption pill
   }
   x.restore();
 
