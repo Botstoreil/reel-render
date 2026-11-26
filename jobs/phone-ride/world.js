@@ -338,13 +338,14 @@ function frame(t) {
     P = { mode: "chat", typed: 1, tap: look > 0.5 ? Math.floor(u * 9) % 26 : -1, thumb: look > 0.5 ? Math.floor(u * 9) % 26 : -1, edge: RED };
     // the car ahead brakes while we are blind, so it closes in
     brake = sm(No, No + 0.3, u);
-    carZ = lerp(3.2, 1.25, sm(No, St + 0.2, u));
-    const hit = St + 0.15;
+    // stops at z 1.95: big and above the caption row (1240-1350), left of the mounted phone
+    carZ = lerp(3.2, 1.95, sm(No, St, u));
+    const hit = St;
     shake = u > hit && u < hit + 0.5 ? (1 - (u - hit) / 0.5) : 0;
     carRing = sm(Ca, Ca + 0.2, u);
     L.push(() => tag("2 SECONDS BLIND", CX, TY, RED, sm(Tw - 0.05, Tw + 0.2, u) * (1 - sm(Ca - 0.25, Ca - 0.05, u))));
     L.push(() => tag("CAR STOPPED!", CX, TY, RED, sm(Ca - 0.05, Ca + 0.2, u)));
-    L.push(() => stamp("x", 800, 820, back(hit, hit + 0.3, u) * 0.75, RED));
+    L.push(() => stamp("x", 230, 860, back(hit, hit + 0.25, u) * 0.8, RED));
     // a 2-second timer ring beside the phone while blind
     L.push(() => {
       const a = sm(Tw - 0.05, Tw + 0.15, u) * look;
