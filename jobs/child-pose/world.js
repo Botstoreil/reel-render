@@ -154,7 +154,8 @@ Q.push = { head: [-378, -160], sh: [-270, -205], hip: [12, -182], k: K, a: A, e:
 // hips resting on the blanket on the heels; the head still hovers
 Q.blank = { head: [-380, -165], sh: [-265, -178], hip: [25, -150], k: K, a: A, e: [-440, -92], h: [-560, -16] };
 // forehead on the block, arms back alongside the legs
-Q.rest = { head: [-388, -124], sh: [-268, -165], hip: [25, -150], k: K, a: A, e: [-110, -86], h: [60, -50] };
+// r2: arms stay forward and soften down to the floor (moving them back along the body tangled with the legs)
+Q.rest = { head: [-388, -124], sh: [-268, -165], hip: [25, -150], k: K, a: A, e: [-430, -40], h: [-570, -16] };
 function childP(X, Y, p, s, color, o = {}) {
   const jit = o.shake || 0;
   const fixed = { k: 1, a: 1 };
@@ -348,10 +349,9 @@ function drawInk(t) {
     const head = pose(Q.blank, Q.rest, Dn);
     const p = { ...head, e: Q.blank.e, h: Q.blank.h };
     const pp = pose(p, { ...head, e: Q.rest.e, h: Q.rest.h }, Ar);
-    const lift = 70 * Math.sin(Math.PI * Ar);
-    pp.e = [pp.e[0], pp.e[1] - lift]; pp.h = [pp.h[0], pp.h[1] - lift * 0.6];
     const J = childP(PX, FY, pp, SC, GREEN);
-    const [hx, hy] = J("head");
+    const [hx, hy] = J("head"), [ex, ey] = J("e");
+    ring(ex, ey, 52, GREEN, on("s6", "relax", u, 0.05, 0.3), 8);
     tag("BLOCK", bkx, FY + 95, GREEN, on("s6", "block", u, 0.05, 0.2), 44);
     ring(hx, hy, 66, GREEN, on("s6", "forehead", u, 0.05, 0.3), 9);
     tag("FOREHEAD", 300, 760, GREEN, on("s6", "forehead", u, 0.05, 0.2), 42);
@@ -359,7 +359,7 @@ function drawInk(t) {
     check(800, 620, 0.5, sm(at("s6", "relax"), at("s6", "relax") + 0.3, u));
   }
   if (id === "s7") {
-    const s = 0.5, X = CX + 70, Y = 1190;
+    const s = 0.75, X = CX + 120, Y = 1180;   // r2: was 0.5, too small to read behind the card
     blanket(X + 20 * s, Y - 44 * s, s, GREEN, 0.85);
     block(X - 388 * s, Y, s, GREEN, 0.85);
     childP(X, Y, Q.rest, s, GREEN, { a: 0.85 });
