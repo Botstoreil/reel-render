@@ -1,2 +1,2 @@
-{"type":"words","model":"small.en","words":[{"text":"Download","start":0,"end":0.457},{"text":"Yoga","start":0.457,"end":0.686},{"text":"Flow.","start":0.686,"end":0.971},{"text":"The","start":0.971,"end":1.143},{"text":"link","start":1.143,"end":1.371},{"text":"is","start":1.371,"end":1.486},{"text":"in","start":1.486,"end":1.6},{"text":"our","start":1.6,"end":1.771},{"text":"bio.","start":1.771,"end":2}],"through":2}
-{"type":"words","model":"small.en","words":[],"through":2.221125}
+{"type":"words","model":"small.en","words":[{"text":"Download","start":0,"end":0.659},{"text":"Yoga","start":0.659,"end":0.988},{"text":"Flow.","start":0.988,"end":1.4}],"through":1.4}
+{"type":"words","model":"small.en","words":[{"text":"The","start":1.4,"end":1.617},{"text":"link","start":1.617,"end":1.906},{"text":"is","start":1.906,"end":2.05},{"text":"in","start":2.05,"end":2.194},{"text":"our","start":2.194,"end":2.411},{"text":"bio.","start":2.411,"end":2.7}],"through":2.7}

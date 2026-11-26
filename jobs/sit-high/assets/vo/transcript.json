@@ -1,56 +1,56 @@
 [
   {
     "text": "Download",
-    "start": 0.04,
-    "end": 0.42,
+    "start": 0.02,
+    "end": 0.67,
     "id": "w0"
   },
   {
     "text": "Yoga",
-    "start": 0.42,
-    "end": 0.57,
+    "start": 0.68,
+    "end": 1.03,
     "id": "w1"
   },
   {
     "text": "Flow.",
-    "start": 0.69,
-    "end": 0.91,
+    "start": 1.05,
+    "end": 1.4,
     "id": "w2"
   },
   {
     "text": "The",
-    "start": 1.06,
-    "end": 1.17,
+    "start": 1.43,
+    "end": 1.59,
     "id": "w3"
   },
   {
     "text": "link",
-    "start": 1.17,
-    "end": 1.4,
+    "start": 1.59,
+    "end": 1.79,
     "id": "w4"
   },
   {
     "text": "is",
-    "start": 1.4,
-    "end": 1.51,
+    "start": 1.83,
+    "end": 1.97,
     "id": "w5"
   },
   {
     "text": "in",
-    "start": 1.51,
-    "end": 1.61,
+    "start": 1.97,
+    "end": 2.07,
     "id": "w6"
   },
   {
     "text": "our",
-    "start": 1.61,
-    "end": 1.78,
+    "start": 2.18,
+    "end": 2.29,
     "id": "w7"
   },
   {
     "text": "bio.",
-    "start": 1.78,
-    "end": 2,
+    "start": 2.29,
+    "end": 2.48,
     "id": "w8"
   }
 ]
