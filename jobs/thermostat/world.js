@@ -135,8 +135,8 @@ const SH = [
   { at: T.s4, K: st([1.6, 1.8, 1.8, -1.4, 1.2, -1.9, 52], [1.45, 1.8, 1.55, -1.4, 1.2, -1.9, 52]) },
   // s5: behind and right of the guest, beam onto the thermostat
   { at: T.s5, K: st([0.4, 1.8, -0.5, -1.9, 1.4, -2.9, 50], [0.25, 1.8, -0.7, -1.9, 1.4, -2.9, 50]) },
-  // "slowly": close on the thermostat, the spot slides across the front
-  { at: T.slowly - 0.1, K: CLOSE },
+  // "slowly": close on the thermostat FROM ITS LEFT (r3: the CLOSE camera sat behind the guest, whose body filled the frame)
+  { at: T.slowly - 0.1, K: st([-2.75, 1.55, -1.95, -2.08, 1.4, -2.92, 40], [-2.65, 1.52, -2.1, -2.08, 1.4, -2.92, 40]) },
   // s6 "touch": side view of the guest, phone up
   { at: T.touch - 0.1, K: st([0.6, 1.7, -0.3, -1.7, 1.5, -2.3, 54], [0.5, 1.72, -0.5, -1.7, 1.5, -2.3, 54]) },
   // s7-s8: calm wide
