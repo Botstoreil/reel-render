@@ -49,7 +49,7 @@ for (let i = 0; i < 2; i++) th.add(box(0.03, 0.05, 0.004, -0.03 + i * 0.045, 0.0
 th.add(box(0.012, 0.012, 0.004, 0.05, 0.105, 0.031, mDig, false)); // degree dot
 const dial = new THREE.Mesh(new THREE.TorusGeometry(0.06, 0.012, 12, 40), mat(0xb8b0ff, 0.3)); dial.position.set(0, -0.04, 0.03); th.add(dial);
 const thRing = box(0.31, 0.37, 0.004, 0, 0, -0.02, glow(VIOLET, 0.0), false); th.add(thRing);
-const LENS = DET.clone().add(V3(0.085, -0.115, 0.03));
+const LENS = DET.clone().add(V3(0.07, -0.11, 0.03));
 { const hole = new THREE.Mesh(new THREE.CircleGeometry(0.014, 20), new THREE.MeshBasicMaterial({ color: 0x000000 })); hole.position.copy(LENS).add(V3(0, 0, -0.001)); scene.add(hole); }
 const lensMat = new THREE.MeshBasicMaterial({ color: 0x050410, toneMapped: false });
 { const l = new THREE.Mesh(new THREE.SphereGeometry(0.009, 16, 12), lensMat); l.position.copy(LENS); scene.add(l); }
@@ -113,7 +113,7 @@ cap("s4", "off", "LIGHTS OFF", GREEN, { boom: 0.3 });
 cap("s4", "stand", "STAND IN FRONT", GREEN);
 cap("s5", "flashlight", "FLASHLIGHT ON IT", VIOLET, { boom: 0.3 });
 cap("s5", "slowly", "SLOWLY, FROM THE SIDE", GREEN);
-cap("s6", "glint", "A GLINT IN A HOLE?", WHITE, { boom: 0.4 });
+cap("s6", "glint", "A GLINT IN A HOLE?", RED, { boom: 0.4 });
 cap("s6", "touch", "DON'T TOUCH IT", GREEN);
 cap("s6", "photo", "TAKE A PHOTO", GREEN);
 cap("s6", "report", "REPORT IT", GREEN);
@@ -121,12 +121,12 @@ endCard([["CHECK THE THERMOSTAT", 1], ["EVERY STAY", 1]]);
 
 // ---------- shots: [camX, camY, camZ, lookX, lookY, lookZ, fov] ----------
 const st = (a, b = a) => [[0, a], [3, b]];
-const CLOSE = st([-1.85, 1.42, -1.85, -2.08, 1.45, -2.92, 36], [-1.88, 1.43, -2.05, -2.08, 1.45, -2.92, 34]);
+const CLOSE = st([-1.75, 1.42, -1.3, -2.08, 1.42, -2.92, 40], [-1.8, 1.42, -1.5, -2.08, 1.42, -2.92, 40]);
 const SH = [
   // hook: guest walks in, camera pushes toward the thermostat
   { at: 0, K: [[0, [0.2, 2.1, 4.6, -1.0, 1.4, -2.2, 52]], [2.2, [-0.3, 2.0, 3.6, -1.2, 1.4, -2.4, 52]]] },
   // s2: the back wall: thermostat and the bed
-  { at: T.s2, K: st([-0.7, 1.7, 1.6, -1.2, 1.3, -2.6, 52], [-0.8, 1.65, 1.3, -1.3, 1.3, -2.6, 52]) },
+  { at: T.s2, K: st([-2.3, 1.7, 1.4, -1.5, 1.3, -2.6, 50], [-2.25, 1.68, 1.1, -1.5, 1.3, -2.6, 50]) },
   // s3 "small box": close on the thermostat, the lens in the hole
   { at: T.small - 0.1, K: CLOSE },
   // "sees the whole room": wide from the right front, the red cone fills the room
@@ -176,9 +176,9 @@ run("thermostat", (t) => {
   // flashlight
   ph.updateWorldMatrix(true, false); ph.getWorldPosition(hp);
   const tg = target(t);
-  beamCone.set(hp, tg, 0.12, 0.13 * on);
-  spotDisk.visible = on > 0.01; spotDisk.position.copy(tg).add(V3(0, 0, 0.03)); spotDisk.lookAt(hp); spotDisk.material.opacity = (t > T.s6 - 0.2 ? 0.08 : 0.28) * on;
-  spot.intensity = (t > T.s6 - 0.2 ? 0.8 : 2.5) * on;
+  beamCone.set(hp, tg, 0.1, 0.07 * on);
+  spotDisk.visible = on > 0.01; spotDisk.position.copy(tg).add(V3(0, 0, 0.03)); spotDisk.lookAt(hp); spotDisk.material.opacity = (t > T.s6 - 0.2 ? 0.05 : 0.14) * on;
+  spot.intensity = (t > T.s6 - 0.2 ? 0.4 : 1.0) * on;
   spot.position.copy(hp); spot.target.position.copy(tg); spot.target.updateMatrixWorld();
 
   // s6: glint in the hole, cross over the guest at "touch", check at "report"
