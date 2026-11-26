@@ -230,6 +230,9 @@ function tri(X, Y, p, s, col, o = {}) {
     seg(col.armT || col.arm || body, 22 * s, sh(J.shT), sh(J.et), sh(J.ht));
   }
   x.globalAlpha = a;
+  // r2: neck from the middle of the shoulder line to the edge of the head (the head floated free in r1)
+  { const dx = J.head[0] - J.sc[0], dy = J.head[1] - J.sc[1], L = Math.hypot(dx, dy) || 1;
+    seg(body, 16 * s, J.sc, [J.head[0] - dx / L * 44 * s, J.head[1] - dy / L * 44 * s]); }
   x.strokeStyle = body; x.lineWidth = 14 * s; x.beginPath(); x.arc(J.head[0], J.head[1], 44 * s, 0, Math.PI * 2); x.stroke();
   x.globalAlpha = a * 0.5; x.beginPath(); x.arc(J.head[0] - 4 * s, J.head[1] - 3 * s, 42 * s, Math.PI * 0.9, Math.PI * 2.2); x.stroke();
   x.restore();
@@ -276,7 +279,7 @@ function drawInk(t) {
     floorLine(110, 980, FY, 1);
     const p = tp(tp(TP.up, TP.reach, Fo), TP.force, Fc);
     const J = tri(PX, FY, p, SC, { body: VIOLET, sideB: Fc > 0.5 ? RED : VIOLET, arm: Fc > 0.5 ? RED : VIOLET }, { shake: shk(on("s1", "floor", u, 0.05, 0.3) * 0.5) });
-    tag("TRIANGLE POSE", 760, 640, VIOLET, on("s1", "triangle", u, 0.0, 0.2), 42);
+    tag("TRIANGLE POSE", 260, 565, VIOLET, on("s1", "triangle", u, 0.0, 0.2), 42);
     arrow(J.hb[0] + 40, J.hb[1] - 230, J.hb[0] + 10, J.hb[1] - 40, RED, on("s1", "down", u, 0.05, 0.4), 13);
     ring(J.hb[0], J.hb[1], 48, RED, on("s1", "floor", u, 0.05, 0.3), 9);
     tag("FLOOR", J.hb[0] + 30, FY - 160 - 120, RED, on("s1", "floor", u, 0.05, 0.2), 42);
