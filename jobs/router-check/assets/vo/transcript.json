@@ -1,0 +1,56 @@
+[
+  {
+    "text": "Download",
+    "start": 0.04,
+    "end": 0.45,
+    "id": "w0"
+  },
+  {
+    "text": "Hidden",
+    "start": 0.53,
+    "end": 0.94,
+    "id": "w1"
+  },
+  {
+    "text": "Cam.",
+    "start": 0.94,
+    "end": 1.65,
+    "id": "w2"
+  },
+  {
+    "text": "The",
+    "start": 1.65,
+    "end": 1.77,
+    "id": "w3"
+  },
+  {
+    "text": "link",
+    "start": 1.91,
+    "end": 2.04,
+    "id": "w4"
+  },
+  {
+    "text": "is",
+    "start": 2.04,
+    "end": 2.15,
+    "id": "w5"
+  },
+  {
+    "text": "in",
+    "start": 2.15,
+    "end": 2.26,
+    "id": "w6"
+  },
+  {
+    "text": "our",
+    "start": 2.26,
+    "end": 2.43,
+    "id": "w7"
+  },
+  {
+    "text": "bio.",
+    "start": 2.43,
+    "end": 2.71,
+    "id": "w8"
+  }
+]
