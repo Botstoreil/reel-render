@@ -143,13 +143,15 @@ const SH = [
   // hook: guest walks in with the suitcase
   { at: 0, K: [[0, [0.6, 2.2, 4.6, 0, 1.3, -1.6, 52]], [2.5, [0.3, 2.1, 3.9, -0.3, 1.25, -1.6, 52]]] },
   // s2: sits on the bed, suitcase dropped, bubble
-  { at: T.s2, K: st([1.6, 1.6, 1.6, -0.5, 0.95, -0.9, 48], [1.45, 1.6, 1.3, -0.5, 0.95, -0.9, 48]) },
+  // round 2: further back + lower look so the bubble sits mid-frame, under the top caption
+  { at: T.s2, K: st([1.9, 1.5, 2.6, -0.5, 1.25, -0.9, 50], [1.75, 1.5, 2.3, -0.5, 1.25, -0.9, 50]) },
   // s3: wide three-quarter, the detector sees the bed
   { at: T.s3, K: st([2.8, 2.5, 1.6, 0, 1.7, -1.9, 54], [2.6, 2.6, 1.3, 0, 1.8, -1.9, 54]) },
   // "camera": close on the lens
   { at: T.camera - 0.1, K: st([0.35, 2.45, -1.7, 0.05, 2.65, -2.9, 36], [0.3, 2.48, -1.9, 0.06, 2.65, -2.9, 34]) },
   // s4: guest stands, clock + closed suitcase
-  { at: T.s4, K: st([0.9, 1.6, 2.4, -0.6, 1.0, -0.4, 50], [0.8, 1.6, 2.1, -0.6, 1.0, -0.4, 50]) },
+  // round 2: from the left-front, so the guest (standing at 0.2, 0.4) never walks into the lens
+  { at: T.s4, K: st([-2.4, 1.8, 2.4, -0.4, 1.1, -0.2, 52], [-2.25, 1.8, 2.15, -0.4, 1.1, -0.2, 52]) },
   // s5 "faces the bed": over the bed
   { at: T.faces - 0.1, K: st([1.8, 2.6, 0.9, 0, 0.6, -1.8, 50], [1.6, 2.7, 0.7, 0, 0.6, -1.8, 50]) },
   // "shower": the glass shower
@@ -184,7 +186,7 @@ run("one-night", (t) => {
   if (dropK >= 1) { suit.position.copy(SUIT_AT); suit.rotation.y = 0.3; }
 
   // s2 bubble, s3 camera
-  say(bub, P, sm(T.think - 0.1, T.think + 0.2, t) * (1 - sm(T.s3 - 0.1, T.s3 + 0.2, t)), 0.5);
+  say(bub, P, sm(T.think - 0.1, T.think + 0.2, t) * (1 - sm(T.s3 - 0.1, T.s3 + 0.2, t)), 0.45, 0.7);
   const cd = sm(T.s3 - 0.05, T.all + 0.1, t) * (1 - sm(T.s4 - 0.1, T.s4 + 0.3, t));
   coneD.set(LENS, BEDC, 0.95, 0.22 * cd);
   bedRed.set(cd);
@@ -204,12 +206,12 @@ run("one-night", (t) => {
   ph.updateWorldMatrix(true, false); ph.getWorldPosition(hp);
   const tg = target(t);
   beamCone.set(hp, tg, 0.22, 0.13 * on);
-  spotDisk.visible = on > 0.01; spotDisk.position.copy(tg).add(V3(0, 0, 0.02)); spotDisk.lookAt(hp); spotDisk.material.opacity = 0.28 * on;
-  spot.intensity = 3 * on; spot.position.copy(hp); spot.target.position.copy(tg); spot.target.updateMatrixWorld();
+  spotDisk.visible = on > 0.01; spotDisk.position.copy(tg).add(V3(0, 0, 0.02)); spotDisk.lookAt(hp); spotDisk.material.opacity = (t > T.s6 - 0.2 ? 0.08 : 0.28) * on;
+  spot.intensity = (t > T.s6 - 0.2 ? 0.8 : 3) * on; // round 2: the close lens shot blew out to white spot.position.copy(hp); spot.target.position.copy(tg); spot.target.updateMatrixWorld();
 
   // s6 glint on the lens, then a green check over the guest at "new room"
   const prox = Math.exp(-tg.distanceToSquared(LENS) / 0.02) * on;
-  const a = prox * (0.75 + 0.6 * flash(t, T.glint + 0.1));
+  const a = 0.4 * prox * (0.75 + 0.6 * flash(t, T.glint + 0.1));
   glD.visible = a > 0.02; glD.scale.setScalar(Math.max(0.01, a * (1 + 0.15 * Math.sin(t * 17)))); glD.rotation.z = 0.3 * Math.sin(t * 1.3);
   pop(icCheck, top, sm(T.room - 0.1, T.room + 0.25, t) * (1 - sm(T.s7 - 0.1, T.s7 + 0.2, t)));
 
