@@ -151,12 +151,14 @@ Q.mid = { head: [-30, -630], sh: [-18, -535], hip: [0, -232], kL: [-222, -232], 
 Q.low = { head: [-30, -598], sh: [-18, -503], hip: [0, -200], kL: [-230, -210], fL: [-250, 0], kR: [15, 0], fR: [300, -6], eL: [-82, -368], hL: [-195, -262], eR: [-62, -376], hR: [-178, -268] };
 // rushing out: hips up, back knee lifted off the floor
 Q.out = { head: [-40, -660], sh: [-28, -565], hip: [10, -275], kL: [-205, -262], fL: [-245, 0], kR: [70, -112], fR: [300, -6], eL: [-60, -430], hL: [-150, -330], eR: [-40, -436], hR: [-132, -336] };
-const PAD = 26;
+const PAD = 64; // knee centre height on the folded mat (two 24px layers + the limb half width)
 const onPad = (p, h, dx = 0) => ({ ...p, kR: [p.kR[0] + dx, p.kR[1] - h], fR: [p.fR[0] + dx, p.fR[1]] });
 function lungeP(X, Y, p, s, color, o = {}) {
   const jit = o.shake || 0;
   const fixed = { fL: 1, fR: 1 };
-  const W2 = (j) => [X + p[j][0] * s, Y + p[j][1] * s + (fixed[j] ? 0 : (j === "kR" ? jit * 0.3 : jit))];
+  // r2: slow breathing on the upper body so no shot is frozen while the voice talks
+  const br = { head: 1, sh: 1, eL: 0.8, eR: 0.8, hL: 0.4, hR: 0.4, hip: 0.5 };
+  const W2 = (j) => [X + p[j][0] * s, Y + p[j][1] * s + (fixed[j] ? 0 : (j === "kR" ? jit * 0.3 : jit)) + (br[j] || 0) * 6 * s * Math.sin(curU * 2.6)];
   const a = o.a ?? 1;
   if (a <= 0) return W2;
   x.save(); x.globalAlpha = a; x.lineCap = "round"; x.lineJoin = "round";
@@ -198,17 +200,17 @@ function floorBoards(X0, X1, Y, a = 1) {
 }
 // yoga mat seen from the side; the back end (from the hinge) folds over on top, k = 0 flat, 1 folded
 function matSide(X, Y, s, k, c, a = 1) {
-  x.save(); x.globalAlpha = a; x.strokeStyle = c; x.lineWidth = 12 * s; x.lineCap = "round";
-  const L = X - 430 * s, H = X + 150 * s, E = 260 * s;
-  x.beginPath(); x.moveTo(L, Y - 6 * s); x.lineTo(H, Y - 6 * s); x.stroke();
+  // r2: a thick band (was a 12px line that did not read as a mat), fold clearly two layers
+  x.save(); x.globalAlpha = a; x.strokeStyle = c; x.lineWidth = 24 * s; x.lineCap = "round";
+  const L = X - 430 * s, H = X + 150 * s, E = 260 * s, Y0 = Y - 12 * s;
+  x.beginPath(); x.moveTo(L, Y0); x.lineTo(H, Y0); x.stroke();
   const th = Math.PI * cl(k);
-  x.beginPath(); x.moveTo(H, Y - 6 * s);
-  for (let i = 1; i <= 12; i++) {
-    const d = (E * i) / 12;
-    x.lineTo(H + d * Math.cos(th), Y - 6 * s - d * Math.sin(th) - 14 * s * cl(k));
-  }
-  x.stroke();
-  if (k > 0.9) { x.lineWidth = 7 * s; x.beginPath(); x.arc(H, Y - 13 * s, 8 * s, -Math.PI / 2, Math.PI / 2); x.stroke(); }
+  const flap = () => { x.beginPath(); x.moveTo(H, Y0); for (let i = 1; i <= 16; i++) { const d = (E * i) / 16; x.lineTo(H + d * Math.cos(th), Y0 - d * Math.sin(th) - 26 * s * cl(k)); } x.stroke(); };
+  flap();
+  x.strokeStyle = "#24432f"; x.lineWidth = 5 * s; x.globalAlpha = a * 0.6;
+  x.beginPath(); x.moveTo(L + 10 * s, Y0); x.lineTo(H, Y0); x.stroke(); flap();
+  x.globalAlpha = a; x.strokeStyle = c;
+  if (k > 0.9) { x.lineWidth = 10 * s; x.beginPath(); x.arc(H + 6 * s, Y0 - 13 * s, 14 * s, -Math.PI / 2, Math.PI / 2); x.stroke(); }
   x.restore();
 }
 function blanket(X, Y, s, c, a = 1) {
@@ -290,8 +292,8 @@ function drawInk(t) {
     tag("PRESSES", 300, 760, RED, on("s3", "presses", u, 0.05, 0.2) * (1 - Ru), 44);
     tag("ACHES", 800, 780, RED, on("s3", "aches", u, 0.05, 0.2) * (1 - Ru), 46);
     arrow(kx + 40, ky - 150, kx + 40, ky - 320, RED, Ru, 12);
-    tag("OUT OF THE POSE", 760, 660, RED, on("s3", "out", u, 0.05, 0.2), 42);
-    cross(800, 880, 50, on("s3", "pose", u, 0.05, 0.4));
+    tag("OUT OF THE POSE", 790, 770, RED, on("s3", "out", u, 0.05, 0.2), 42);
+    cross(820, 900, 46, on("s3", "pose", u, 0.05, 0.4));
   }
   if (id === "s4") {
     // the back end of the mat folds over under the back knee
@@ -301,9 +303,8 @@ function drawInk(t) {
     const Dn = on("s4", "back", u, 0.05, 0.35);
     floorBoards(140, 960, FY, 1);
     matSide(PX, FY, SC, Fo, GREEN, Mi);
-    const base = onPad(Q.low, lerp(70 * Lf, PAD * 0.9, Dn));
-    const p = Dn > 0 ? onPad(Q.low, lerp(70, PAD * 0.9, Dn)) : onPad(Q.low, 70 * Lf);
-    const J = lungeP(PX, FY, Dn > 0 ? p : base, SC, Dn > 0.5 ? GREEN : VIOLET, { cap: Dn > 0.5 ? GREEN : null });
+    const p = Dn > 0 ? onPad(Q.low, lerp(110, PAD, Dn)) : onPad(Q.low, 110 * Lf);
+    const J = lungeP(PX, FY, p, SC, Dn > 0.5 ? GREEN : VIOLET, { cap: Dn > 0.5 ? GREEN : null });
     const [kx, ky] = J("kR");
     tag("MAT", 860, FY + 95, GREEN, Mi, 42);
     arrow(PX + 400, FY - 170, PX + 200, FY - 120, GREEN, on("s4", "fold", u, 0.0, 0.3), 12);
@@ -332,21 +333,21 @@ function drawInk(t) {
     const Ab = on("s6", "above", u, 0.05, 0.3);
     floorBoards(140, 960, FY, 1);
     matSide(PX, FY, SC, 1, GREEN, 1);
-    const p = onPad(Q.low, PAD * 0.9, 85 * Bh);
+    const p = onPad(Q.low, PAD, 85 * Bh);
     const J = lungeP(PX, FY, p, SC, GREEN);
     const [hx, hy] = J("hip"), [kx, ky] = J("kR");
     line2([hx, hy], [hx, FY - 10], VIOLET, on("s6", "hip", u, 0.1, 0.35), 10);
     tag("HIP", hx - 110, hy - 40, VIOLET, on("s6", "hip", u, 0.05, 0.2), 40);
     arrow(kx - 60, FY + 70, kx + 40, FY + 70, GREEN, on("s6", "behind", u, 0.0, 0.4), 12);
-    tag("BEHIND THE HIP", 770, 830, GREEN, on("s6", "behind", u, 0.05, 0.2), 40);
+    tag("BEHIND THE HIP", 770, 700, GREEN, on("s6", "behind", u, 0.05, 0.2), 40);
     const tx = lerp(kx, hx, 0.2), ty = lerp(ky, hy, 0.2);
     ring(tx, ty, 44, GREEN, Ab, 9);
-    tag("JUST ABOVE KNEECAP", 300, 690, GREEN, Ab, 36);
-    check(830, 860, 0.5, sm(at("s6", "kneecap"), at("s6", "kneecap") + 0.3, u));
+    tag("JUST ABOVE KNEECAP", 760, 830, GREEN, Ab, 32);
+    check(290, 760, 0.5, sm(at("s6", "kneecap"), at("s6", "kneecap") + 0.3, u));
   }
   if (id === "s7") {
     matSide(CX + 20, 1190, 0.45, 1, GREEN, 0.85);
-    lungeP(CX + 20, 1190, onPad(Q.low, PAD * 0.9, 85), 0.45, GREEN, { a: 0.85 });
+    lungeP(CX + 20, 1190, onPad(Q.low, PAD, 85), 0.45, GREEN, { a: 0.85 });
   }
   x.restore();
 
