@@ -1,0 +1,8 @@
+s1|Tyres look fine? Never guess the pressure by eye.
+s2|You kick the tyre, it feels hard, and you ride off.
+s3|It is low. The bike turns slowly, and the tyre wears and heats up.
+s4|Instead, check both tyres with a gauge once a week.
+s5|Check them cold, before you ride, against the numbers in your manual.
+s6|Add air until the gauge reads right, and refit the caps.
+s7|Don't guess. Use a gauge, every week.
+s8|Download Apex. Three full rides a month are free.

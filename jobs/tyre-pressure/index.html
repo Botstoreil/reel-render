@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <script type="importmap">
+      { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.181.2/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.181.2/examples/jsm/"
+      } }
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #080622; }
+      #world { position: absolute; inset: 0; width: 1080px; height: 1920px; display: block; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="26.568" data-width="1080" data-height="1920">
+      <div id="stage" class="clip" data-start="0" data-duration="26.568" data-track-index="1" style="position:absolute;inset:0"><canvas id="world" width="1080" height="1920" data-layout-allow-overflow></canvas></div>
+      <div id="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="26.568" data-track-index="2" data-track-kind="captions" data-width="1080" data-height="1920" style="z-index: 10"></div>
+      <audio id="vo-s1" class="clip" src="assets/vo/s1.wav" data-start="0.050" data-duration="2.8373333333333335" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s2" class="clip" src="assets/vo/s2.wav" data-start="3.057" data-duration="2.688" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s3" class="clip" src="assets/vo/s3.wav" data-start="5.915" data-duration="3.8826666666666667" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s4" class="clip" src="assets/vo/s4.wav" data-start="9.968" data-duration="2.7306666666666666" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s5" class="clip" src="assets/vo/s5.wav" data-start="12.869" data-duration="3.7333333333333334" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s6" class="clip" src="assets/vo/s6.wav" data-start="16.772" data-duration="3.1573333333333333" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s7" class="clip" src="assets/vo/s7.wav" data-start="20.099" data-duration="2.112" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s8" class="clip" src="assets/vo/s8.wav" data-start="22.381" data-duration="2.986666666666667" data-track-index="3" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__EV = {"S":{"s1":[0,3.007],"s2":[3.007,2.858],"s3":[5.865,4.053],"s4":[9.918,2.901],"s5":[12.819,3.903],"s6":[16.722,3.327],"s7":[20.049,2.282],"s8":[22.331,4.237]},"W":{"s1":{"dur":2.8373333333333335,"words":[{"text":"Tyres","start":0,"end":0.324},{"text":"look","start":0.324,"end":0.584},{"text":"fine?","start":0.584,"end":0.908},{"text":"Never","start":0.908,"end":1.233},{"text":"guess","start":1.233,"end":1.557},{"text":"the","start":1.557,"end":1.752},{"text":"pressure","start":1.752,"end":2.271},{"text":"by","start":2.271,"end":2.4},{"text":"eye.","start":2.4,"end":2.66}]},"s2":{"dur":2.688,"words":[{"text":"You","start":0,"end":0.194},{"text":"kick","start":0.194,"end":0.453},{"text":"the","start":0.453,"end":0.647},{"text":"tyre,","start":0.647,"end":0.971},{"text":"it","start":0.971,"end":1.1},{"text":"feels","start":1.1,"end":1.423},{"text":"hard,","start":1.423,"end":1.682},{"text":"and","start":1.682,"end":1.876},{"text":"you","start":1.876,"end":2.07},{"text":"ride","start":2.07,"end":2.329},{"text":"off.","start":2.329,"end":2.588}]},"s3":{"dur":3.8826666666666667,"words":[{"text":"It","start":0,"end":0.145},{"text":"is","start":0.145,"end":0.291},{"text":"low.","start":0.291,"end":0.582},{"text":"The","start":0.582,"end":0.8},{"text":"bike","start":0.8,"end":1.091},{"text":"turns","start":1.091,"end":1.455},{"text":"slowly,","start":1.455,"end":1.891},{"text":"and","start":1.891,"end":2.109},{"text":"the","start":2.109,"end":2.327},{"text":"tyre","start":2.327,"end":2.619},{"text":"wears","start":2.619,"end":2.982},{"text":"and","start":2.982,"end":3.2},{"text":"heats","start":3.2,"end":3.565},{"text":"up.","start":3.565,"end":3.783}]},"s4":{"dur":2.7306666666666666,"words":[{"text":"Instead,","start":0,"end":0.501},{"text":"check","start":0.501,"end":0.814},{"text":"both","start":0.814,"end":1.064},{"text":"tyres","start":1.064,"end":1.378},{"text":"with","start":1.378,"end":1.629},{"text":"a","start":1.629,"end":1.691},{"text":"gauge","start":1.691,"end":2.004},{"text":"once","start":2.004,"end":2.255},{"text":"a","start":2.255,"end":2.317},{"text":"week.","start":2.317,"end":2.631}]},"s5":{"dur":3.7333333333333334,"words":[{"text":"Check","start":0,"end":0.324},{"text":"them","start":0.324,"end":0.584},{"text":"cold,","start":0.584,"end":0.844},{"text":"before","start":0.844,"end":1.233},{"text":"you","start":1.233,"end":1.427},{"text":"ride,","start":1.427,"end":1.687},{"text":"against","start":1.687,"end":2.141},{"text":"the","start":2.141,"end":2.335},{"text":"numbers","start":2.335,"end":2.789},{"text":"in","start":2.789,"end":2.919},{"text":"your","start":2.919,"end":3.179},{"text":"manual.","start":3.179,"end":3.633}]},"s6":{"dur":3.1573333333333333,"words":[{"text":"Add","start":0,"end":0.204},{"text":"air","start":0.204,"end":0.408},{"text":"until","start":0.408,"end":0.747},{"text":"the","start":0.747,"end":0.951},{"text":"gauge","start":0.951,"end":1.291},{"text":"reads","start":1.291,"end":1.631},{"text":"right,","start":1.631,"end":1.97},{"text":"and","start":1.97,"end":2.174},{"text":"refit","start":2.174,"end":2.514},{"text":"the","start":2.514,"end":2.718},{"text":"caps.","start":2.718,"end":3.057}]},"s7":{"dur":2.112,"words":[{"text":"Don't","start":0,"end":0.336},{"text":"guess.","start":0.336,"end":0.738},{"text":"Use","start":0.738,"end":0.939},{"text":"a","start":0.939,"end":1.006},{"text":"gauge,","start":1.006,"end":1.342},{"text":"every","start":1.342,"end":1.676},{"text":"week.","start":1.676,"end":2.012}]},"s8":{"dur":2.986666666666667,"words":[{"text":"Download","start":0,"end":0.563},{"text":"Apex.","start":0.563,"end":0.916},{"text":"Three","start":0.916,"end":1.267},{"text":"full","start":1.267,"end":1.549},{"text":"rides","start":1.549,"end":1.901},{"text":"a","start":1.901,"end":1.971},{"text":"month","start":1.971,"end":2.323},{"text":"are","start":2.323,"end":2.534},{"text":"free.","start":2.534,"end":2.887}]}},"LEAD":0.05,"BRAND":{"cta":["DOWNLOAD","APEX"],"sub":"LINK IN BIO"}};
+      const tl = gsap.timeline({ paused: true });
+      tl.set({}, {}, 26.568);
+      window.__timelines["main"] = tl;
+    </script>
+    <script type="module" src="world.js"></script>
+  </body>
+</html>
