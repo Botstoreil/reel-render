@@ -77,6 +77,7 @@ function pose(k, dp, sink, HT, t) {
 const OFF = V3(0.32, 0, 0);
 const HAM = V3(0, 0, 0), A0 = V3(0, 0, 0), A1 = V3(0, 0, 0), HT = V3(0, 0, 0);
 const legLine = beam(RED, 2.2, 0.03);
+const okLeg = beam(GREEN, 2.0, 0.03);
 const ringOf = (hex, r) => { const m = new THREE.MeshBasicMaterial({ color: new THREE.Color(hex).multiplyScalar(2.4), toneMapped: false, transparent: true, opacity: 0 }); const o = new THREE.Mesh(new THREE.TorusGeometry(r, 0.012, 8, 40), m); scene.add(o); return o; };
 const floorRing = ringOf(RED, 0.14), okRing = ringOf(GREEN, 0.1);
 const hamMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(RED).multiplyScalar(2.0), toneMapped: false, transparent: true, opacity: 0 });
@@ -116,7 +117,7 @@ const SH = [
   // s5: medium side while the body lowers
   { at: T.s5, K: st([2.8, 0.9, -0.2, 0, 0.55, -0.2, 46], [2.6, 0.85, -0.2, 0, 0.5, -0.2, 46]) },
   // s6: the back of the thigh, calm green
-  { at: T.s6, K: st([2.5, 0.4, 0.15, 0, 0.4, 0.0, 42], [2.35, 0.4, 0.12, 0, 0.4, 0.0, 42]) },
+  { at: T.s6, K: st([2.5, 0.6, 0.5, 0, 0.5, -0.05, 44], [2.35, 0.6, 0.45, 0, 0.5, -0.05, 44]) },
   { at: T.s7, calm: 1, K: [[0, [3.6, 1.7, 0.1, 0, 1.0, -0.15, 48]], [5, [4.0, 1.85, 0.1, 0, 1.05, -0.15, 48]]] },
 ];
 
@@ -166,11 +167,12 @@ run("start-small", (t) => {
   });
   // fix (Ofir 25.11): the ring read as on the back. Put it low on the thigh (near the knee, below the torso
   // slab), draw it on top, and film s6 from the pure side so it sits on the leg.
-  okRing.position.lerpVectors(HIP, KNEE, 0.78); okRing.position.z += 0.06; okRing.position.add(OFF);
-  okRing.material.depthTest = false; okRing.renderOrder = 22;
-  okRing.lookAt(okRing.position.x + 1, okRing.position.y, okRing.position.z);
-  okRing.material.opacity = sm(T.stop - 0.1, T.stop + 0.2, t) * (1 - sm(T.s7 - 0.1, T.s7 + 0.2, t)) * (0.75 + 0.25 * Math.sin(t * 3));
-  okRing.scale.setScalar(0.85 * (1 + 0.3 * flash(t, T.stretch)));
+  // The torso slab hides the thigh from every side angle, so a ring always read as on the back.
+  // s6 now mirrors the red s2-s3 leg line: the same line down the back of the legs, calm green, soft glow.
+  okRing.material.opacity = 0;
+  const okOn = sm(T.stop - 0.1, T.stop + 0.2, t) * (1 - sm(T.s7 - 0.1, T.s7 + 0.2, t));
+  A0.copy(HIP).add(OFF); A0.z += 0.08; A1.copy(FOOT).add(OFF); A1.z += 0.06; A1.y += 0.08;
+  okLeg.set(A0, A1, okOn * (0.75 + 0.15 * Math.sin(t * 3) + 0.3 * flash(t, T.stretch)));
 
   const { punch } = shoot(SH, t);
   unclip();
