@@ -312,8 +312,8 @@ function drawInk(t) {
     line2([hx - 20, hy - 70], [kx + 20, ky - 70], VIOLET, sm(at("s6", "line") - 0.1, at("s6", "line") + 0.4, u), 14);
   }
   if (id === "s7") {
-    mat(CX, 1220, 400, 0.7, GREEN);
-    plankP(CX - 30, 1220, Q.plank, 0.55, GREEN, { a: 0.8 });
+    mat(CX, 1175, 520, 0.7, GREEN); // r2: lifted off the caption pill and made larger
+    plankP(CX - 40, 1175, Q.plank, 0.7, GREEN, { a: 0.8 });
   }
   x.restore();
 
