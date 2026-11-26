@@ -1,0 +1,8 @@
+s1|Sun going down? Never ride into the night with a dark visor.
+s2|The light fades, and you keep riding behind the tinted visor.
+s3|The dark road gets darker, and you miss the pothole ahead.
+s4|Instead, carry a clear visor, or a helmet with a drop down sun shade.
+s5|Before sunset, pull over and switch to clear.
+s6|Now the road, the edges and the potholes are easy to see.
+s7|Dark visor by day. Clear at night.
+s8|Download Apex. Three full rides a month are free.
