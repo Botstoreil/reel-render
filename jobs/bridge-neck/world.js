@@ -197,7 +197,7 @@ function body(X, Y, p, s, color, o = {}) {
   x.globalAlpha = a * tn; x.fillStyle = color;
   x.beginPath(); x.arc(hx - 15 * s, hy - 8 * s, 7 * s, 0, Math.PI * 2); x.fill();
   x.beginPath(); x.arc(hx + 15 * s, hy - 8 * s, 7 * s, 0, Math.PI * 2); x.fill();
-  x.lineWidth = 8 * s; x.beginPath(); x.arc(hx, hy + 8 * s, 14 * s, 0.3, Math.PI - 0.3); x.stroke();
+  x.lineWidth = 8 * s; x.beginPath(); if (o.frown) x.arc(hx, hy + 24 * s, 14 * s, Math.PI + 0.4, -0.4); else x.arc(hx, hy + 8 * s, 14 * s, 0.3, Math.PI - 0.3); x.stroke();
   x.restore();
   return W2;
 }
@@ -248,7 +248,7 @@ function drawInk(t) {
     // in bridge, then the head turns to look around (red)
     const Tn = on("s1", "turn", u, 0.05, 0.3);
     mat(PX, FY, 800, 1);
-    const J = body(PX, FY, Q.up, SC, Tn > 0.5 ? RED : VIOLET, { turn: Tn });
+    const J = body(PX, FY, Q.up, SC, Tn > 0.5 ? RED : VIOLET, { turn: Tn, frown: true });
     const [hx, hy] = J("head");
     tag("BRIDGE POSE", 640, 820, VIOLET, on("s1", "bridge", u) * (1 - Tn), 46);
     arcArrow(hx, hy, 90, -2.6, -0.4, RED, on("s1", "turn", u, 0.05, 0.4), 11);
@@ -264,17 +264,17 @@ function drawInk(t) {
     arrow(sx + 130, sy - 300, sx + 130, sy - 110, RED, Wt, 12);
     tag("WEIGHT ON SHOULDERS", 650, 740, RED, on("s2", "shoulders", u), 40);
     ring(nx, ny, 58, RED, on("s2", "neck", u, 0.05, 0.4), 9);
-    tag("NECK BENT", 300, 1300, RED, on("s2", "bent", u), 44);
+    tag("NECK BENT", 300, 1385, RED, on("s2", "bent", u), 44);
   }
   if (id === "s3") {
     // the head turns under that load: neck zigzag, cross
     const Tn = on("s3", "turn", u, 0.05, 0.3);
     mat(PX, FY, 800, 1);
-    const J = body(PX, FY, Q.up, SC, Tn > 0.5 ? RED : VIOLET, { turn: Tn });
+    const J = body(PX, FY, Q.up, SC, Tn > 0.5 ? RED : VIOLET, { turn: Tn, frown: true });
     const [hx, hy] = J("head"), [nx, ny] = neckOf(J), [sx, sy] = J("sh");
     arcArrow(hx, hy, 90, -2.6, -0.4, RED, Tn, 11);
     zig(nx - 50, ny - 10, nx + 50, ny - 10, on("s3", "twist", u, 0.05, 0.3));
-    tag("TWIST", 300, 1300, RED, on("s3", "twist", u), 46);
+    tag("TWIST", 300, 1385, RED, on("s3", "twist", u), 46);
     arrow(sx + 80, sy - 320, sx + 80, sy - 100, RED, on("s3", "load", u, 0.05, 0.3), 16);
     tag("UNDER LOAD", 640, 760, RED, on("s3", "load", u), 44);
     cross(800, 950, 40, sm(at("s3", "load"), at("s3", "load") + 0.4, u));
@@ -287,7 +287,7 @@ function drawInk(t) {
     const Ey = on("s4", "eyes", u, 0.05, 0.4);
     x.save(); x.setLineDash([18, 16]); arrow(hx + 4, hy - 80, hx + 4, hy - 420, GREEN, Ey, 10); x.restore();
     tag("EYES UP", 420, 680, GREEN, on("s4", "ceiling", u), 46);
-    tag("HEAD STILL", 640, 1300, VIOLET, on("s4", "instead", u), 42);
+    tag("HEAD STILL", 640, 1385, VIOLET, on("s4", "instead", u), 42);
     check(800, 900, 0.55, sm(at("s4", "ceiling"), at("s4", "ceiling") + 0.3, u));
   }
   if (id === "s5") {
@@ -298,8 +298,8 @@ function drawInk(t) {
     const [fx, fy] = J("fL"), [ax, ay] = J("hL"), [px, py] = J("hip");
     const Pr = on("s5", "press", u, 0.05, 0.3);
     press(fx, fy, Pr); press(ax, ay, on("s5", "arms", u, 0.05, 0.3));
-    tag("FEET DOWN", 760, 1300, GREEN, on("s5", "feet", u), 42);
-    tag("ARMS DOWN", 330, 1300, GREEN, on("s5", "arms", u), 42);
+    tag("FEET DOWN", 760, 1385, GREEN, on("s5", "feet", u), 42);
+    tag("ARMS DOWN", 330, 1385, GREEN, on("s5", "arms", u), 42);
     arrow(px, py - 60, px, py - 230, VIOLET, Lf, 14);
     tag("LIFT HIPS", 790, 760, GREEN, on("s5", "hips", u), 44);
   }
@@ -313,12 +313,12 @@ function drawInk(t) {
     arrow(px, py - 230 * (1 - Lw) - 200, px, py - 60, VIOLET, Lw, 14);
     tag("1. HIPS DOWN", 790, 760, GREEN, on("s6", "lower", u), 42);
     arcArrow(hx, hy, 90, -2.6, -0.4, GREEN, Tn, 11);
-    tag("2. THEN TURN", 330, 1300, GREEN, on("s6", "then", u), 42);
+    tag("2. THEN TURN", 330, 1385, GREEN, on("s6", "then", u), 42);
     check(820, 950, 0.55, sm(at("s6", "turn"), at("s6", "turn") + 0.3, u));
   }
   if (id === "s7") {
-    mat(CX, 1235, 560, 0.7, GREEN);
-    body(CX + 20, 1235, Q.up, 0.62, GREEN, { a: 0.8 });
+    mat(CX, 1260, 560, 0.7, GREEN);
+    body(CX + 20, 1260, Q.up, 0.62, GREEN, { a: 0.8 });
   }
   x.restore();
 
@@ -329,9 +329,9 @@ function drawInk(t) {
   if (id === "s5") words(["PRESS DOWN,", "LIFT HIPS"], GREEN, 340, 0.0, 1, 150, flash(u, at("s5", "lift")) * 0.6);
   if (id === "s6") words(["COME DOWN,", "THEN TURN"], GREEN, 340, 0.0, 1, 150, flash(u, at("s6", "turn")) * 0.6);
   if (id === "s7") {
-    words(["HEAD STILL IN BRIDGE"], ORANGE, 640, 0.0, 1, 150, flash(u, 0.05));
-    words(["COME DOWN, THEN LOOK"], ORANGE, 840, at("s7", "come") - 0.05, 1, 150, flash(u, at("s7", "come")));
-    underline(950, 700, sm(at("s7", "come"), at("s7", "come") + 0.4, u), ORANGE);
+    words(["HEAD STILL", "IN BRIDGE"], ORANGE, 560, 0.0, 1, 150, flash(u, 0.05));
+    words(["COME DOWN,", "THEN LOOK"], ORANGE, 880, at("s7", "come") - 0.05, 1, 150, flash(u, at("s7", "come")));
+    underline(1040, 700, sm(at("s7", "come"), at("s7", "come") + 0.4, u), ORANGE);
   }
   if (id === "s8") {
     const [c1 = "DOWNLOAD", c2 = "YOGAFLOW"] = BRAND.cta || [];
