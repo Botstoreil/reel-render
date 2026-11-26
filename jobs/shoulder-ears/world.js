@@ -81,9 +81,10 @@ const wristMat = rm(RED, 2.0);
 const wrist = new THREE.Mesh(new THREE.SphereGeometry(0.07, 16, 12), wristMat); wrist.renderOrder = 22; scene.add(wrist);
 const fingerMat = rm(VIOLET, 2.0);
 const fingers = Array.from({ length: 5 }, () => { const m = new THREE.Mesh(new THREE.SphereGeometry(0.022, 12, 10), fingerMat); m.renderOrder = 22; scene.add(m); return m; });
-const pushLine = beam(GREEN, 2.0, 0.03), pushHeadA = beam(GREEN, 2.0, 0.03), pushHeadB = beam(GREEN, 2.0, 0.03);
-const backLine = beam(GREEN, 2.0, 0.03), backHeadA = beam(GREEN, 2.0, 0.03), backHeadB = beam(GREEN, 2.0, 0.03);
-const neckLine = beam(GREEN, 2.0, 0.026), spineLine = beam(GREEN, 2.0, 0.026);
+// (round 2: 2.0 -> 1.3, round 1 bloomed the whole frame green)
+const pushLine = beam(GREEN, 1.3, 0.03), pushHeadA = beam(GREEN, 1.3, 0.03), pushHeadB = beam(GREEN, 1.3, 0.03);
+const backLine = beam(GREEN, 1.3, 0.03), backHeadA = beam(GREEN, 1.3, 0.03), backHeadB = beam(GREEN, 1.3, 0.03);
+const neckLine = beam(GREEN, 1.4, 0.026), spineLine = beam(GREEN, 1.4, 0.026);
 for (const b of [pushLine, pushHeadA, pushHeadB, backLine, backHeadA, backHeadB, neckLine, spineLine, clampA, clampB]) { b.material.depthTest = false; b.renderOrder = 20; }
 const A0 = V3(0, 0, 0), A1 = V3(0, 0, 0), A2 = V3(0, 0, 0), dir = V3(0, 0, 0), nrm = V3(0, 0, 0);
 // arrow from a to b (in the y-z plane, on the camera side)
@@ -111,19 +112,21 @@ const st = (a, b = a) => [[0, a], [3, b]];
 const SH = [
   { at: 0, K: [[0, [4.5, 1.1, -0.2, 0, 0.35, -0.2, 46]], [2.0, [4.2, 1.05, -0.2, 0, 0.35, -0.2, 46]]] },
   // "shoulders": closer on the shoulders and head
-  { at: T.shoulders1 - 0.15, K: st([2.6, 0.75, -0.55, 0, 0.45, -0.35, 42], [2.45, 0.72, -0.55, 0, 0.45, -0.35, 42]) },
+  // (round 2: pulled back and aimed higher so the torso stays under the title; round 1 put the back over the title)
+  { at: T.shoulders1 - 0.15, K: st([3.0, 1.0, -0.5, 0, 0.66, -0.35, 42], [2.85, 0.98, -0.5, 0, 0.66, -0.35, 42]) },
   // s2: from the hands side, low, looking at the squeezed neck
   { at: T.s2, K: st([2.0, 0.55, -1.7, 0, 0.4, -0.35, 44], [1.85, 0.52, -1.6, 0, 0.4, -0.35, 44]) },
-  { at: T.squeezed - 0.15, K: st([2.5, 0.7, -0.6, 0, 0.42, -0.35, 40], [2.35, 0.68, -0.6, 0, 0.42, -0.35, 40]) },
+  { at: T.squeezed - 0.15, K: st([2.9, 0.95, -0.55, 0, 0.64, -0.35, 40], [2.75, 0.93, -0.55, 0, 0.64, -0.35, 40]) },
   // s3: the hands and wrists
-  { at: T.s3, K: st([2.0, 0.45, -0.9, 0, 0.12, -0.6, 38], [1.85, 0.42, -0.9, 0, 0.12, -0.6, 38]) },
+  // (round 2: hands low in frame, the torso clear of the caption; round 1 hid the W of WRISTS behind the back)
+  { at: T.s3, K: st([2.5, 0.85, -0.75, 0, 0.58, -0.45, 38], [2.35, 0.83, -0.75, 0, 0.58, -0.45, 38]) },
   // s4: hands close, then side view of the arms for the push arrow
-  { at: T.s4, K: st([1.9, 0.5, -0.95, 0, 0.12, -0.6, 38], [1.8, 0.48, -0.95, 0, 0.12, -0.6, 38]) },
+  { at: T.s4, K: st([2.4, 0.85, -0.8, 0, 0.58, -0.5, 38], [2.3, 0.83, -0.8, 0, 0.58, -0.5, 38]) },
   { at: T.press - 0.15, K: st([3.2, 0.95, -0.25, 0, 0.4, -0.25, 44], [3.0, 0.92, -0.25, 0, 0.4, -0.25, 44]) },
   // s5: wide side, shoulders slide back toward the hips
   { at: T.s5, K: st([3.4, 1.05, 0.0, 0, 0.42, -0.14, 46], [3.15, 1.0, 0.0, 0, 0.42, -0.14, 46]) },
   // s6: the neck and head close, then wide
-  { at: T.s6, K: st([2.6, 0.75, -0.55, 0, 0.45, -0.35, 42], [2.45, 0.72, -0.55, 0, 0.45, -0.35, 42]) },
+  { at: T.s6, K: st([3.0, 1.0, -0.5, 0, 0.66, -0.35, 42], [2.85, 0.98, -0.5, 0, 0.66, -0.35, 42]) },
   { at: T.head - 0.15, K: st([3.3, 1.0, 0.0, 0, 0.4, -0.14, 46], [3.15, 1.0, 0.0, 0, 0.4, -0.14, 46]) },
   // s7-s8: calm wide, person low in frame under the end card
   { at: T.s7, calm: 1, K: [[0, [3.6, 1.6, 0.2, 0, 0.9, -0.05, 48]], [5, [4.0, 1.75, 0.2, 0, 0.95, -0.05, 48]]] },
