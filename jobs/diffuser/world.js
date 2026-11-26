@@ -63,7 +63,7 @@ const MIST = [0, 1, 2, 3].map((i) => { const m = new THREE.Mesh(new THREE.Sphere
 // highlight frame (violet) hugging the front of the diffuser in s4-s6 (in front of it, hidden until it lights)
 const thRing = new THREE.Group(); th.add(thRing);
 const mRing = glow(VIOLET, 0.0);
-const RW = 2 * R0 + 0.06, RH = DH + R0 * 0.82 + 0.06, RY = 0.03;
+const RW = 2 * R0 + 0.06, RH = 0.25, RY = 0.055; // r2: bottom edge sat inside the chest
 for (const [w, h, x, y] of [[RW, 0.012, 0, RY + RH / 2], [RW, 0.012, 0, RY - RH / 2], [0.012, RH, RW / 2, RY], [0.012, RH, -RW / 2, RY]])
   thRing.add(box(w, h, 0.004, x, y, 0.02, mRing, false));
 thRing.material = mRing;
@@ -168,8 +168,8 @@ const SH = [
 run("diffuser", (t) => {
   // router status lights blink the whole reel (each its own rhythm); the lens never blinks
   LEDS.forEach((m, i) => m.color.set(0x6ad0ff).multiplyScalar(0.55 + 0.45 * Math.sin(t * 2.2)));
-  MIST.forEach((m, i) => { const f = (t * 0.35 + i / 4) % 1; m.position.set(0.02 * Math.sin(t + i), DH / 2 + R0 * 0.7 + f * 0.35, -R0); m.scale.setScalar(0.6 + f * 1.6); });
-  mMist.opacity = 0.1;
+  MIST.forEach((m, i) => { const f = (t * 0.35 + i / 4) % 1; m.position.set(0.01 * Math.sin(t + i), DH / 2 + R0 * 0.75 + f * 0.14, -R0); m.scale.setScalar(0.25 + f * 0.45); });
+  mMist.opacity = 0.07; // r2: big grey discs covered the captions in the close-ups
   // guest: walk in (s1), wait (s2-s3), walk to stand in front of the thermostat (s4), flashlight (s5-s6)
   const w = walkPath(START, SPOT1, 0.05, tArr, t);
   const go = walkPath(SPOT1, STAND, T.stand - 0.2, T.s5 - 0.1, t);
