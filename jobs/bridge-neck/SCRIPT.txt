@@ -1,0 +1,8 @@
+s1|In bridge pose? Never turn your head to look around.
+s2|Your weight rests on your shoulders, and your neck is bent.
+s3|Turn your head now, and you twist your neck under that load.
+s4|Instead, keep your eyes on the ceiling.
+s5|Press your feet and arms down. Lift your hips.
+s6|Want to look around? Lower your hips first, then turn.
+s7|Head still in bridge. Come down, then look.
+s8|Download YogaFlow. The link is in our bio.
