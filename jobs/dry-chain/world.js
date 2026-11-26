@@ -166,7 +166,7 @@ function brush(X, Y, ang, k) {
 }
 function can(X, Y, ang, k, spray, t) {
   if (k <= 0) return;
-  x.save(); x.globalAlpha = k; x.translate(X, Y); x.rotate(ang);
+  x.save(); x.globalAlpha = k; x.translate(X, Y); x.rotate(ang); x.scale(0.75, 0.75);
   const g = x.createLinearGradient(-40, 0, 40, 0); g.addColorStop(0, "#5b3fd1"); g.addColorStop(0.45, "#b9a6ff"); g.addColorStop(1, "#3a2896");
   x.fillStyle = g; x.beginPath(); x.roundRect(-40, 0, 80, 190, 16); x.fill();
   x.fillStyle = "#1b1233"; x.fillRect(-26, -26, 52, 30); x.fillStyle = "#e8e4ff"; x.fillRect(-4, -60, 8, 38);  // cap + straw nozzle
@@ -255,8 +255,8 @@ const CAM = {
   s1: [[0, 140, -170, 2.4], [3, 230, -150, 2.1]],
   s2: [[0, 300, 0, 1.15], [3.2, 280, 10, 1.05]],
   s3: [[0, -40, -110, 1.9], [1.6, -20, -60, 1.6], [3.6, 260, 60, 1.1]],
-  s4: [[0, 200, -150, 1.9], [3.5, 260, -120, 1.7]],
-  s5: [[0, 150, 110, 1.8], [2.4, 220, 140, 1.6], [3.8, 320, 150, 1.5]],
+  s4: [[0, 200, -235, 1.9], [3.5, 260, -215, 1.7]],          // r2: lower, the brush stays under the title
+  s5: [[0, 160, 30, 1.35], [2.4, 210, 40, 1.3], [3.8, 260, 40, 1.25]],   // r2: wider, sprocket clear of the title
   s6: [[0, 290, 60, 1.25], [3.0, 290, 90, 1.4]],
   s7: [[0, 290, 0, 1.0], [3, 290, 0, 0.95]],
   s8: [[0, 290, 0, 0.95], [3.2, 290, 0, 0.9]],
@@ -327,7 +327,7 @@ function frame(t) {
     sag = 18 - 26 * push; rlHi = sm(Nu - 0.1, Nu + 0.2, u); mn = back(Nu - 0.15, Nu + 0.2, u);
     L.push(() => tag("CHECK THE SLACK", CX - 60, 1120, GREEN, sm(Sl - 0.1, Sl + 0.2, u) * (1 - sm(Nu - 0.2, Nu - 0.05, u))));
     L.push(() => tag("MATCH YOUR MANUAL", CX - 40, 1120, VIOLET, sm(Nu - 0.1, Nu + 0.2, u)));
-    L.push(() => stamp("v", 790, 600, back(Ma, Ma + 0.3, u) * 0.8, GREEN));
+    L.push(() => stamp("v", 715, 980, back(Ma, Ma + 0.3, u) * 0.7, GREEN));
   }
   if (id === "s7" || id === "s8") shine = 0.8;
 
@@ -350,7 +350,7 @@ function frame(t) {
     x.fillStyle = `rgba(164,81,42,${grime * (1 - q)})`; x.beginPath(); x.arc(160 + brX + (rnd(i) - 0.5) * 160 * q, -R - 10 - q * 160, 5, 0, Math.PI * 2); x.fill();
   }
   brush(170 + brX, -R - 14, 0, br);
-  can(300, R + 190, -0.55, cn, spray, t);
+  can(220, 54, -2.6, cn, spray, t);   // r2: inside the loop, nozzle down onto the inner side of the lower run
   rag(140 + rgX, R + 12, rg);
   if (rl > 0) { ruler(D / 2 + 20, R * 0.9 + 6, rl, rlHi); finger(D / 2 - 30, R + sag + 22, fg); }
   x.restore();
@@ -358,8 +358,8 @@ function frame(t) {
   // screen-space effects
   if (noise > 0) { const [wx, wy] = W2S(c, [D / 2, -R]); waves(cl(wx, 160, 880), cl(wy, 560, 1300), noise, t, RED); }
   th > 0 && thermo(800, 640, th, ORANGE);
-  mn > 0 && manual(800, 650, mn * 0.9, VIOLET);
-  od > 0 && odo(720, 650, od, t);
+  mn > 0 && manual(850, 960, mn * 0.85, VIOLET);
+  od > 0 && odo(700, 690, od, t);
 
   L.forEach((f) => f());
 
