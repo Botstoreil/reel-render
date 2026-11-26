@@ -68,7 +68,7 @@ th.add(box(0.025, 0.008, 0.004, 0.055, -0.175, 0.016, mLed, false)); // power LE
 // highlight frame (violet) around the whole fan in s4-s6 (in front of it, hidden until it lights)
 const thRing = new THREE.Group(); th.add(thRing);
 const mRing = glow(VIOLET, 0.0);
-const RW = 0.34, RH = 0.42, RY = -0.03;
+const RW = 0.34, RH = 0.34, RY = 0.0; // r2: at RH 0.42 / RY -0.03 the bottom edge sank into the chest (open "goalpost")
 for (const [w, h, x, y] of [[RW, 0.012, 0, RY + RH / 2], [RW, 0.012, 0, RY - RH / 2], [0.012, RH, RW / 2, RY], [0.012, RH, -RW / 2, RY]])
   thRing.add(box(w, h, 0.004, x, y, 0.04, mRing, false));
 thRing.material = mRing;
