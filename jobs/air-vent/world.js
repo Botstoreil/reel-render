@@ -145,7 +145,7 @@ const SH = [
   // s6 "touch": side view of the guest, phone up
   { at: T.touch - 0.1, K: st([2.9, 1.95, -0.2, 0.8, 2.25, -1.9, 54], [2.8, 1.98, -0.4, 0.8, 2.25, -1.9, 54]) },
   // s7-s8: calm wide
-  { at: T.s7 - 0.15, calm: 1, K: [[0, [0.3, 2.4, 4.2, -0.2, 1.55, -1.8, 52]], [5, [0.3, 2.5, 4.8, -0.2, 1.55, -1.8, 52]]] },
+  { at: T.s7 - 0.15, calm: 1, K: [[0, [0.3, 2.5, 4.2, -0.2, 0.55, -1.8, 52]], [5, [0.3, 2.6, 4.8, -0.2, 0.55, -1.8, 52]]] },
 ];
 
 run("air-vent", (t) => {
@@ -190,7 +190,7 @@ run("air-vent", (t) => {
   const prox = Math.exp(-tg.distanceToSquared(LENS) / 0.01) * on;
   const a = 0.4 * prox * (0.75 + 0.6 * flash(t, T.glint + 0.1));
   glD.visible = a > 0.02; glD.scale.setScalar(Math.max(0.01, a * (1 + 0.15 * Math.sin(t * 17)))); glD.rotation.z = 0.3 * Math.sin(t * 1.3);
-  const top = P.top(0.3);
+  const top = P.top(0.45);
   pop(icTouch, top, sm(T.touch - 0.1, T.touch + 0.2, t) * (1 - sm(T.photo - 0.1, T.photo + 0.1, t)));
   pop(icCheck, top, sm(T.report - 0.1, T.report + 0.2, t) * (1 - sm(T.s7 - 0.1, T.s7 + 0.2, t)));
 
