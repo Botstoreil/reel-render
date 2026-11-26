@@ -189,7 +189,10 @@ run("wall-speaker", (t) => {
   const dim = 1 - 0.6 * sm(T.off - 0.1, T.off + 0.3, t) + 0.4 * sm(T.s7 - 0.2, T.s7 + 0.4, t);
   for (const [l, i0] of LIGHTS) l.intensity = i0 * dim;
   mLamp.color.set(0xffd8a0).multiplyScalar(1.3 * (0.25 + 0.75 * dim));
-  thRing.material.color.set(VIOLET).multiplyScalar(0.9 * sm(T.front - 0.1, T.front + 0.2, t) * (1 - sm(T.s7 - 0.2, T.s7, t)));
+  // r2: the frame is in front of the speaker (the clock's ring hid behind the face) - at zero it drew as a black box in s3
+  const ringK = 0.9 * sm(T.front - 0.1, T.front + 0.2, t) * (1 - sm(T.s7 - 0.2, T.s7, t));
+  thRing.visible = ringK > 0.02;
+  thRing.material.color.set(VIOLET).multiplyScalar(ringK);
 
   // flashlight
   ph.updateWorldMatrix(true, false); ph.getWorldPosition(hp);
