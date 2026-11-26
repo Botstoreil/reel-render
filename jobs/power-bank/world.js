@@ -67,7 +67,7 @@ const thRing = new THREE.Group(); th.add(thRing);
 const mRing = glow(VIOLET, 0.0);
 const RW = 0.17, RH = 0.25, RY = 0;
 for (const [w, h, x, y] of [[RW, 0.008, 0, RY + RH / 2], [RW, 0.008, 0, RY - RH / 2], [0.008, RH, RW / 2, RY], [0.008, RH, -RW / 2, RY]])
-  thRing.add(box(w, h, 0.003, x, y, 0.045, mRing, false));
+  thRing.add(box(w, h, 0.003, x, y, 0.017, mRing, false));
 thRing.material = mRing;
 // the lens: a tiny dot in the dark strip
 const LENS = W(0, 0.055, 0.02);
@@ -75,7 +75,7 @@ const lensMat = new THREE.MeshBasicMaterial({ color: 0x050410, toneMapped: false
 { const l = new THREE.Mesh(new THREE.SphereGeometry(0.0065, 16, 12), lensMat); l.position.set(0, 0.055, 0.019); th.add(l); }
 const mGl = new THREE.MeshBasicMaterial({ color: new THREE.Color(WHITE).multiplyScalar(2.4), toneMapped: false, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false });
 const glD = new THREE.Group(); glD.position.set(0, 0.055, 0.045); th.add(glD);
-glD.add(new THREE.Mesh(new THREE.SphereGeometry(0.024, 12, 10), mGl), new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.008, 0.002), mGl), new THREE.Mesh(new THREE.BoxGeometry(0.008, 0.36, 0.002), mGl));
+glD.add(new THREE.Mesh(new THREE.SphereGeometry(0.024, 12, 10), mGl), new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.006, 0.002), mGl), new THREE.Mesh(new THREE.BoxGeometry(0.006, 0.22, 0.002), mGl));
 glD.visible = false;
 
 // ---------- cones and patches ----------
@@ -149,7 +149,8 @@ const SH = [
   // hook: guest walks in, camera pushes toward the chest
   { at: 0, K: [[0, [0.2, 2.2, 4.6, -1.2, 1.25, -2.3, 52]], [2.2, [-0.3, 2.0, 3.6, -1.4, 1.25, -2.4, 52]]] },
   // s2: the chest, the bank on it and the bed
-  { at: T.s2, K: st([-0.6, 1.75, 0.8, -1.6, 1.15, -2.5, 50], [-0.7, 1.72, 0.5, -1.6, 1.15, -2.5, 50]) },
+  // (camera left of the guest, who waits at SPOT1 x -0.6: round 1 sat inside his head)
+  { at: T.s2, K: st([-2.7, 1.75, 0.4, -1.8, 1.2, -2.6, 50], [-2.65, 1.72, 0.1, -1.8, 1.2, -2.6, 50]) },
   // s3 "hidden cameras": close on the bank, the lens in the dark strip
   { at: T.small - 0.1, K: CLOSE },
   // "aimed at the bed": wide from the right front, the red cone from the bank onto the bed
@@ -157,9 +158,9 @@ const SH = [
   // s4: from the right front, lights go down, guest walks to stand in front of it
   { at: T.s4, K: st([1.6, 1.9, 1.8, -1.5, 1.2, -2.3, 52], [1.45, 1.9, 1.55, -1.5, 1.2, -2.3, 52]) },
   // s5: behind and to the side of the guest, beam onto the bank
-  { at: T.s5, K: st(shotAt(1.9, 0.5, 0.45, 50), shotAt(1.75, 0.45, 0.42, 50)) },
-  // "slowly": close on the bank from its left side, away from the guest
-  { at: T.slowly - 0.1, K: st(shotAt(0.3, 0.6, 0.08, 40), shotAt(0.28, 0.52, 0.07, 40)) },
+  { at: T.s5, K: st(shotAt(1.9, 0.9, 0.45, 50), shotAt(1.75, 0.85, 0.42, 50)) },
+  // "slowly": close on the bank from its left front, away from the guest (front with dots must read)
+  { at: T.slowly - 0.1, K: st(shotAt(0.5, 0.42, 0.08, 40), shotAt(0.46, 0.38, 0.07, 40)) },
   // s6 "touch": side view of the guest, phone up
   { at: T.touch - 0.1, K: st([0.6, 1.8, -0.3, -1.6, 1.4, -2.4, 54], [0.5, 1.82, -0.5, -1.6, 1.4, -2.4, 54]) },
   // s7-s8: calm wide
