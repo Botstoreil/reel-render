@@ -216,14 +216,15 @@ run("high-and-low", (t) => {
   ph.updateWorldMatrix(true, false); ph.getWorldPosition(hp);
   const tg = target(t);
   beamCone.set(hp, tg, 0.22, 0.13 * on);
-  spotDisk.visible = on > 0.01; spotDisk.position.copy(tg).add(V3(0, 0, 0.02)); spotDisk.lookAt(hp); spotDisk.material.opacity = 0.28 * on;
-  spot.intensity = (t > T.s4 && t < T.s6 ? 2.2 : 4) * on; spot.position.copy(hp); spot.target.position.copy(tg); spot.target.updateMatrixWorld();
+  spotDisk.visible = on > 0.01; spotDisk.position.copy(tg).add(V3(0, 0, 0.02)); spotDisk.lookAt(hp); spotDisk.material.opacity = (t > T.s5 - 0.1 && t < T.s6 ? 0.12 : 0.28) * on;
+  // fix (Ofir 25.11): the beam blew the socket out to white. s5 is close to the wall: a much softer spot there.
+  spot.intensity = (t > T.s5 - 0.1 && t < T.s6 ? 0.7 : t > T.s4 && t < T.s6 ? 2.2 : 4) * on; spot.position.copy(hp); spot.target.position.copy(tg); spot.target.updateMatrixWorld();
 
   // glints: each lens throws the flashlight back; both stay lit on the end card
   const endG = 0;
-  for (const [gq, L, w0] of [[glD, LENS, T.det], [glS, SLENS, T.sockets]]) {
+  for (const [gq, L, w0, gk] of [[glD, LENS, T.det, 1], [glS, SLENS, T.sockets, 0.35]]) {
     const prox = Math.exp(-tg.distanceToSquared(L) / 0.02) * on;
-    const a = Math.max(prox * (0.75 + 0.6 * flash(t, w0 + 0.1)), endG);
+    const a = Math.max(gk * prox * (0.75 + 0.6 * flash(t, w0 + 0.1)), endG);
     gq.visible = a > 0.02; gq.scale.setScalar(Math.max(0.01, a * (1 + 0.15 * Math.sin(t * 17))));
     gq.rotation.z = 0.3 * Math.sin(t * 1.3);
   }
