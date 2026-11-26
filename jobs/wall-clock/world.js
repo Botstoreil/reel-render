@@ -145,7 +145,9 @@ const SH = [
   // s5: behind and right of the guest, beam onto the thermostat
   { at: T.s5, K: st([0.4, 1.8, -0.5, -1.9, 1.4, -2.9, 50], [0.25, 1.8, -0.7, -1.9, 1.4, -2.9, 50]) },
   // "slowly": close on the thermostat FROM ITS LEFT (r3: the CLOSE camera sat behind the guest, whose body filled the frame)
-  { at: T.slowly - 0.1, K: st([-2.75, 1.55, -1.95, -2.08, 1.4, -2.92, 40], [-2.65, 1.52, -2.1, -2.08, 1.4, -2.92, 40]) },
+  // wall-clock r2: pulled back to the s3 CLOSE distance (~1.6 m) - the round clock is bigger than the thermostat and
+  // filled the top, so the violet s6 caption sat on the white face and could not be read
+  { at: T.slowly - 0.1, K: st([-3.0, 1.5, -1.55, -2.08, 1.42, -2.92, 40], [-2.92, 1.48, -1.7, -2.08, 1.42, -2.92, 40]) },
   // s6 "touch": side view of the guest, phone up
   { at: T.touch - 0.1, K: st([0.6, 1.7, -0.3, -1.7, 1.5, -2.3, 54], [0.5, 1.72, -0.5, -1.7, 1.5, -2.3, 54]) },
   // s7-s8: calm wide
@@ -154,7 +156,8 @@ const SH = [
 
 run("wall-clock", (t) => {
   // the clock runs: minute hand sweeps slowly, hour hand creeps
-  handM.rotation.z = -0.9 - t * 0.12; handH.rotation.z = -2.1 - t * 0.01;
+  // r2: slower sweep - at 0.12 rad/s the minute hand reached the "6" (the lens) right at the glint
+  handM.rotation.z = -0.9 - t * 0.03; handH.rotation.z = -2.1 - t * 0.005;
   // guest: walk in (s1), wait (s2-s3), walk to stand in front of the thermostat (s4), flashlight (s5-s6)
   const w = walkPath(START, SPOT1, 0.05, tArr, t);
   const go = walkPath(SPOT1, STAND, T.stand - 0.2, T.s5 - 0.1, t);
