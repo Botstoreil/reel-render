@@ -1,0 +1,8 @@
+s1|Parking on grass or hot tar? Never trust soft ground.
+s2|You leave the bike on its side stand and walk away.
+s3|The stand sinks slowly, and the bike tips over.
+s4|Instead, park on firm, flat ground whenever you can.
+s5|If you can't, put a flat plate or a can lid under the stand.
+s6|Leave it in gear, and check it is steady before you walk away.
+s7|Soft ground sinks. Use a plate.
+s8|Download Apex. Three full rides a month are free.
