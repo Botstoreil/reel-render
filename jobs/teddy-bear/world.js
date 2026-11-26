@@ -120,7 +120,8 @@ const hp = V3(0, 0, 0);
 // flashlight path: s5 sweeps across the front, s6 settles on the hole
 // r2: the sweep stays left of the lens (it reached x 0.17 and the glint fired during "slowly", before s6)
 // teddy: the sweep crosses the muzzle and the plain left eye, and reaches the lens eye only in s6
-const FL = LENS.clone().add(V3(-0.17, -0.05, 0.03)), FR = LENS.clone().add(V3(-0.09, 0.03, 0.03));
+// r2: FR at -0.09 lit the lens eye faintly at "slowly" (prox ~0.2); -0.145 keeps it under 0.03 until s6
+const FL = LENS.clone().add(V3(-0.19, -0.05, 0.03)), FR = LENS.clone().add(V3(-0.145, 0.03, 0.03));
 const TK = [
   [T.shine, FL], [T.slowly, FR], [T.side + 0.15, FL], [T.s6 - 0.35, FR], [T.s6 + 0.05, LENS], [T.s7, LENS],
 ];
