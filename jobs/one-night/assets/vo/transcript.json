@@ -1,0 +1,56 @@
+[
+  {
+    "text": "Save",
+    "start": 0.07,
+    "end": 0.24,
+    "id": "w0"
+  },
+  {
+    "text": "this",
+    "start": 0.24,
+    "end": 0.44,
+    "id": "w1"
+  },
+  {
+    "text": "for",
+    "start": 0.52,
+    "end": 0.66,
+    "id": "w2"
+  },
+  {
+    "text": "your",
+    "start": 0.66,
+    "end": 0.86,
+    "id": "w3"
+  },
+  {
+    "text": "next",
+    "start": 0.93,
+    "end": 1.14,
+    "id": "w4"
+  },
+  {
+    "text": "stay,",
+    "start": 1.14,
+    "end": 1.56,
+    "id": "w5"
+  },
+  {
+    "text": "download",
+    "start": 1.62,
+    "end": 2.06,
+    "id": "w6"
+  },
+  {
+    "text": "Hidden",
+    "start": 2.09,
+    "end": 2.47,
+    "id": "w7"
+  },
+  {
+    "text": "Cam.",
+    "start": 2.47,
+    "end": 2.71,
+    "id": "w8"
+  }
+]
