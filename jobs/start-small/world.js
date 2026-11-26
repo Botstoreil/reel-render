@@ -116,7 +116,7 @@ const SH = [
   // s5: medium side while the body lowers
   { at: T.s5, K: st([2.8, 0.9, -0.2, 0, 0.55, -0.2, 46], [2.6, 0.85, -0.2, 0, 0.5, -0.2, 46]) },
   // s6: the back of the thigh, calm green
-  { at: T.s6, K: st([2.2, 0.6, 1.0, 0, 0.5, 0.0, 46], [2.05, 0.6, 0.95, 0, 0.5, 0.0, 46]) },
+  { at: T.s6, K: st([2.5, 0.4, 0.15, 0, 0.4, 0.0, 42], [2.35, 0.4, 0.12, 0, 0.4, 0.0, 42]) },
   { at: T.s7, calm: 1, K: [[0, [3.6, 1.7, 0.1, 0, 1.0, -0.15, 48]], [5, [4.0, 1.85, 0.1, 0, 1.05, -0.15, 48]]] },
 ];
 
@@ -164,9 +164,13 @@ run("start-small", (t) => {
     s.material.opacity = sm(stT[i] - 0.1, stT[i] + 0.1, t) * stOn * 0.9;
     s.scale.setScalar(1.3 * (1 + 0.6 * flash(t, stT[i])));
   });
-  okRing.position.copy(HAM); okRing.lookAt(HAM.x + 1, HAM.y, HAM.z);
+  // fix (Ofir 25.11): the ring read as on the back. Put it low on the thigh (near the knee, below the torso
+  // slab), draw it on top, and film s6 from the pure side so it sits on the leg.
+  okRing.position.lerpVectors(HIP, KNEE, 0.78); okRing.position.z += 0.06; okRing.position.add(OFF);
+  okRing.material.depthTest = false; okRing.renderOrder = 22;
+  okRing.lookAt(okRing.position.x + 1, okRing.position.y, okRing.position.z);
   okRing.material.opacity = sm(T.stop - 0.1, T.stop + 0.2, t) * (1 - sm(T.s7 - 0.1, T.s7 + 0.2, t)) * (0.75 + 0.25 * Math.sin(t * 3));
-  okRing.scale.setScalar(1 + 0.3 * flash(t, T.stretch));
+  okRing.scale.setScalar(0.85 * (1 + 0.3 * flash(t, T.stretch)));
 
   const { punch } = shoot(SH, t);
   unclip();
