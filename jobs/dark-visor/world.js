@@ -28,7 +28,7 @@ const CX = 510;
 const FONT = (px) => `900 ${px}px Inter, Arial, sans-serif`;
 const hx = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
 function mix(a, b, k) { const A = hx(a), B = hx(b); return "#" + A.map((v, i) => Math.round(lerp(v, B[i], cl(k))).toString(16).padStart(2, "0")).join(""); }
-function rr(c, X, Y, w, h, r) { c.beginPath(); c.moveTo(X + r, Y); c.arcTo(X + w, Y, X + w, Y + h, r); c.arcTo(X + w, Y + h, X, Y + h, r); c.arcTo(X, Y + h, X, Y, r); c.arcTo(X, Y, X + w, Y, r); c.closePath(); }
+function rr(c, X, Y, w, h, r, keep = false) { if (!keep) c.beginPath(); c.moveTo(X + r, Y); c.arcTo(X + w, Y, X + w, Y + h, r); c.arcTo(X + w, Y + h, X, Y + h, r); c.arcTo(X, Y + h, X, Y, r); c.arcTo(X, Y, X + w, Y, r); c.closePath(); }
 
 // ---------- text ----------
 let curU = 0;
@@ -81,7 +81,7 @@ function stamp(kind, X, Y, s, c) {
 const HY = 780;                       // horizon
 const EY0 = 170, EY1 = 1590;          // eyeport top / bottom
 const RW = 620;                       // road half width (px at the bottom row)
-const TY = 1192;                      // tag row
+const TY = 1160;                      // tag row
 const sy = (z) => HY + 1140 / z;      // depth -> screen row
 const sx = (wx, y, rx) => 540 + (wx - rx) * (y - HY) / 1140;
 
@@ -218,7 +218,7 @@ function cockpit(t, rx, glow) {
 function helmetRim() {
   x.save();
   x.beginPath(); x.rect(0, 0, 1080, 1920);
-  rr(x, 30, EY0, 1020, EY1 - EY0, 230);
+  rr(x, 30, EY0, 1020, EY1 - EY0, 230, true);
   x.fillStyle = "#050409"; x.fill("evenodd");
   rr(x, 30, EY0, 1020, EY1 - EY0, 230); x.strokeStyle = "#2a2733"; x.lineWidth = 16; x.stroke();
   rr(x, 44, EY0 + 14, 992, EY1 - EY0 - 28, 216); x.strokeStyle = "rgba(0,0,0,0.55)"; x.lineWidth = 30; x.stroke();
@@ -230,7 +230,7 @@ function visorIcon(cx, cy, s, a) {
   if (a <= 0) return;
   x.save(); x.translate(cx, cy); x.scale(s, s); x.globalAlpha = cl(a);
   x.beginPath(); x.moveTo(-150, 40); x.quadraticCurveTo(-160, -90, 0, -100); x.quadraticCurveTo(160, -90, 150, 40); x.quadraticCurveTo(0, 0, -150, 40); x.closePath();
-  x.fillStyle = "rgba(170,225,255,0.22)"; x.fill(); x.strokeStyle = "#bfe6ff"; x.lineWidth = 9; x.stroke();
+  x.fillStyle = "rgba(170,225,255,0.5)"; x.fill(); x.strokeStyle = "#dff3ff"; x.lineWidth = 9; x.stroke();
   x.strokeStyle = "rgba(255,255,255,0.8)"; x.lineWidth = 7; x.lineCap = "round";
   x.beginPath(); x.moveTo(-90, -40); x.lineTo(-50, -75); x.moveTo(-60, -20); x.lineTo(-30, -45); x.stroke();
   x.restore();
