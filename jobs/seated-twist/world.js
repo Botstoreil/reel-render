@@ -171,7 +171,7 @@ function seated(X, Y, s, color, o = {}) {
   line(color, 24, hip, knL, [45, -24]);
   line(color, 24, hip, knR, [-45, -30]);
   // back arm (viewer left): rests on the left knee, moves behind to the floor
-  const eF = [lerp(-185, -215, arm), lerp(-205, -160, arm)], hF = [lerp(-150, -250, arm), lerp(-72, -14, arm)];
+  const eF = [lerp(-168, -215, arm), lerp(-195, -160, arm)], hF = [lerp(-150, -250, arm), lerp(-72, -14, arm)];
   line(arm > 0.5 ? far : color, 22, shF, eF, hF);
   // torso: the spine and a shoulder line that narrows as the chest turns
   line(color, 30, hip, [shift * 0.5, -200 + 25 * slump], [shift, neckY]);
@@ -186,7 +186,7 @@ function seated(X, Y, s, color, o = {}) {
   band(-160 + 20 * slump, 105, tb, color);
   band(neckY + 70, 120, tc, color);
   // front arm (viewer right): rests on its own knee, crosses to the opposite (viewer-left) knee
-  const eN0 = [185, -205], hN0 = [150, -72];
+  const eN0 = [168, -195], hN0 = [150, -72];
   const eN1 = [lerp(30, 120, pull), lerp(-185, -150, pull)], hN1 = [-140, -78];
   line(color, 22, shN, [lerp(eN0[0], eN1[0], arm), lerp(eN0[1], eN1[1], arm)], [lerp(hN0[0], hN1[0], arm), lerp(hN0[1], hN1[1], arm)]);
   // head: circle, a nose and two eyes that slide with the head turn
@@ -220,7 +220,7 @@ function drawInk(t) {
   const z = 1 + 0.035 * cl(u / Math.max(1, d)) + 0.05 * cut * cut;
   x.save(); x.translate(CX, 900); x.scale(z, z); x.translate(-CX, -900);
 
-  const FY = 1290, SC = 1.45;
+  const FY = 1170, SC = 1.3; // r2: above the caption pill (~1265-1320)
   if (id === "s1") {
     // sitting in a twist; on "crank" the arm levers the body round, hunched
     const Cr = on("s1", "crank", u, 0.05, 0.35);
@@ -238,7 +238,7 @@ function drawInk(t) {
     const B = seated(CX, FY, SC, RED, { tb: 0.2, tc: 1.15 + 0.3 * Fo, th: 1.25 + 0.25 * Fo, arm: 1, pull: 1, slump: 0.6 });
     arrow(B.hand[0] + 20, B.hand[1] - 10, B.elbow[0] + 40 + 10 * Pl, B.elbow[1] - 10, RED, on("s2", "pulling", u, 0.05, 0.3), 14);
     ring(B.knL[0], B.knL[1], 46, RED, on("s2", "knee", u), 8);
-    tag("PULLING", 230, 1420 - 100, RED, on("s2", "pulling", u), 42);
+    tag("PULLING", 230, 760, RED, on("s2", "pulling", u), 42);
     turnArrow(B.chest[0], B.chest[1], 230, 46, RED, on("s2", "spine", u, 0.05, 0.4), 12);
     tag("TOO FAR", 790, 800, RED, on("s2", "past", u), 46);
   }
@@ -248,8 +248,8 @@ function drawInk(t) {
     mat(CX, FY, 760, 1);
     const B = seated(CX, FY, SC, RED, { tb: 0.2, tc: 1.45, th: 1.5, arm: 1, pull: 1, slump: 0.6 });
     strain(B.low[0], B.low[1], 95, St, u);
-    tag("LOWER BACK", 790, 1060, RED, on("s3", "lower", u), 42);
-    cross(230, 900, 46, sm(at("s3", "back"), at("s3", "back") + 0.4, u));
+    tag("LOWER BACK", 790, 900, RED, on("s3", "lower", u), 42);
+    cross(230, 770, 46, sm(at("s3", "back"), at("s3", "back") + 0.4, u));
   }
   if (id === "s4") {
     // untwisted, sit tall, inhale and lengthen up through the spine
@@ -267,11 +267,11 @@ function drawInk(t) {
     const Ch = on("s5", "chest", u, 0.1, 0.6);
     mat(CX, FY, 760, 1, GREEN);
     const B = seated(CX, FY, SC, GREEN, { slump: -0.25, tb: 0.9 * Bl + 0.1 * Ch, tc: 0.35 * Bl + 0.6 * Ch, th: 0.3 * Ch, arm: 0.5 * Bl + 0.5 * Ch });
-    tag("EXHALE", 790, 800, VIOLET, on("s5", "breathe", u) * (1 - Ch), 44);
+    tag("EXHALE", 230, 760, VIOLET, on("s5", "breathe", u) * (1 - Ch), 44);
     turnArrow(B.belly[0], B.belly[1], 200, 40, GREEN, Bl, 12);
-    tag("1. BELLY", 230, 1180, GREEN, on("s5", "belly", u), 42);
+    tag("1. BELLY", 790, 1000, GREEN, on("s5", "belly", u), 42);
     turnArrow(B.chest[0], B.chest[1], 230, 46, GREEN, Ch, 12);
-    tag("2. CHEST", 790, 900, GREEN, on("s5", "chest", u), 42);
+    tag("2. CHEST", 790, 840, GREEN, on("s5", "chest", u), 42);
   }
   if (id === "s6") {
     // the head turns last; the front hand only rests on the knee
@@ -282,12 +282,12 @@ function drawInk(t) {
     tag("3. HEAD LAST", 230, 760, GREEN, on("s6", "head", u), 42);
     turnArrow(B.head[0], B.head[1] + 30, 120, 30, GREEN, Hd * (1 - Hn), 10);
     ring(B.hand[0], B.hand[1], 52, VIOLET, Hn, 8);
-    tag("JUST RESTS", 790, 1040, VIOLET, on("s6", "rests", u), 42);
-    check(800, 1180, 0.5, sm(at("s6", "knee"), at("s6", "knee") + 0.3, u));
+    tag("JUST RESTS", 790, 980, VIOLET, on("s6", "rests", u), 42);
+    check(830, 1120, 0.45, sm(at("s6", "knee"), at("s6", "knee") + 0.3, u));
   }
   if (id === "s7") {
-    mat(CX, 1360, 520, 0.7, GREEN);
-    x.save(); x.globalAlpha = 0.85; seated(CX, 1360, 0.62, GREEN, { slump: -0.25, tb: 1, tc: 0.95, th: 1, arm: 1 }); x.restore();
+    mat(CX, 1210, 480, 0.7, GREEN);
+    x.save(); x.globalAlpha = 0.85; seated(CX, 1210, 0.5, GREEN, { slump: -0.25, tb: 1, tc: 0.95, th: 1, arm: 1 }); x.restore();
   }
   x.restore();
 
