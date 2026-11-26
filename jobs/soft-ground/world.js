@@ -91,7 +91,7 @@ function stamp(kind, X, Y, s, c) {
 }
 
 // ---------- paper + ground ----------
-const GY = 1130, SC = 1.15, TY = 1200;
+const GY = 1130, SC = 0.95, TY = 1200;
 function paper() {
   x.fillStyle = PAPER; x.fillRect(0, 0, 1080, 1920);
   for (let i = 0; i < 160; i++) { x.fillStyle = `rgba(120,95,60,${0.03 + rnd(i) * 0.04})`; x.beginPath(); x.arc(rnd(i + 1) * 1080, rnd(i + 2) * 1920, 1 + rnd(i + 3) * 3, 0, Math.PI * 2); x.fill(); }
@@ -124,33 +124,40 @@ function ground(kind, a, sx, dent = 0) {
 // ---------- the bike from behind (local units, tyre contact at 0,0, y up negative) ----------
 const PIV = [-48, -170];   // side stand pivot (rider's left = screen left from behind)
 // th: lean in radians (negative = top to the left). Returns the world point of a local point.
-function W2(p, th, s = SC, ox = CX) { const c = Math.cos(th), si = Math.sin(th); return [ox + (p[0] * c - p[1] * si) * s, GY + (p[0] * si + p[1] * c) * s]; }
+// OY lifts the whole bike so its lowest point never goes under the ground line (matters once it lies on its side)
+let OY = 0;
+function W2(p, th, s = SC, ox = CX) { const c = Math.cos(th), si = Math.sin(th); return [ox + (p[0] * c - p[1] * si) * s, GY + OY + (p[0] * si + p[1] * c) * s]; }
+const LOW = [[-165, -560], [-150, -472], [-100, -150], [-96, -420], [-66, -262], [-34, 0], [34, 0], [100, -150], [150, -472], [165, -560]];
+function liftFor(th) { OY = 0; let m = 0; for (const p of LOW) m = Math.max(m, W2(p, th)[1] - GY); return -m; }
+// one connected outline: tyre goes up into the fender, the tail is a trapezoid that holds the plate and the light,
+// seat and tank continue it, bars are shoulder-wide on a stem, pegs hang from the body
+const BODY = [[-34, -196], [-46, -236], [-64, -262], [-80, -362], [-96, -420], [-62, -428], [-52, -458], [52, -458], [62, -428], [96, -420], [80, -362], [64, -262], [46, -236], [34, -196]];
 function bike(th, o = {}) {
   const ox = o.ox ?? CX, s = o.s ?? SC;
-  x.save(); x.translate(ox, GY); x.rotate(th); x.scale(s, s);
+  x.save(); x.translate(ox, GY + OY); x.rotate(th); x.scale(s, s);
   // tyre
   wash(() => rr(-34, -230, 68, 230, 30), INK, 0.55);
-  pen([[-34, -200], [-34, -20], [-20, 0], [20, 0], [34, -20], [34, -200], [20, -230], [-20, -230]], INK, 8, true);
-  for (let k = 0; k < 5; k++) pen([[-18, -40 - k * 38], [18, -55 - k * 38]], INK, 4);
-  // rear fender + number plate
-  pen([[-50, -250], [0, -275], [50, -250]], INK, 7);
-  wash(() => rr(-56, -312, 112, 46, 6), WHITE, 0.9);
-  pen([[-56, -312], [56, -312], [56, -266], [-56, -266]], INK, 6, true);
-  // tail light
-  wash(() => rr(-40, -352, 80, 26, 8), RED, 0.75);
-  pen([[-40, -352], [40, -352], [40, -326], [-40, -326]], INK, 5, true);
-  // seat / body block
-  pen([[-80, -360], [-95, -420], [95, -420], [80, -360]], INK, 8, true);
-  wash(() => { x.beginPath(); x.moveTo(-80, -360); x.lineTo(-95, -420); x.lineTo(95, -420); x.lineTo(80, -360); x.closePath(); }, o.body || GREY, 0.3);
-  // exhaust on the right
-  pen([[52, -170], [118, -200], [130, -235]], INK, 9);
-  // tank top, bars and mirrors
-  pen([[-60, -420], [-50, -455], [50, -455], [60, -420]], INK, 7);
-  pen([[-190, -470], [-60, -462], [60, -462], [190, -470]], INK, 9);
-  pen([[-175, -470], [-200, -530]], INK, 5); penCircle(-205, -548, 20, INK, 5);
-  pen([[175, -470], [200, -530]], INK, 5); penCircle(205, -548, 20, INK, 5);
-  // footpegs
-  pen([[-34, -150], [-90, -150]], INK, 7); pen([[34, -150], [90, -150]], INK, 7);
+  pen([[-34, -196], [-34, -20], [-20, 0], [20, 0], [34, -20], [34, -196]], INK, 8);
+  for (let k = 0; k < 4; k++) pen([[-18, -40 - k * 38], [18, -55 - k * 38]], INK, 4);
+  // exhaust on the right, bolted to the tail
+  pen([[64, -262], [104, -222]], INK, 6);
+  pen([[40, -176], [112, -204], [126, -240]], INK, 10);
+  // footpeg hangers + pegs
+  pen([[-66, -262], [-74, -150], [-100, -150]], INK, 7); pen([[66, -262], [74, -150], [100, -150]], INK, 7);
+  // body silhouette
+  wash(() => { x.beginPath(); BODY.forEach((p, i) => (i ? x.lineTo(p[0], p[1]) : x.moveTo(p[0], p[1]))); x.closePath(); }, o.body || GREY, 0.35);
+  pen(BODY, INK, 8, true);
+  pen([[-90, -400], [90, -400]], INK, 5);   // seat seam
+  // number plate and tail light inside the tail
+  wash(() => rr(-46, -306, 92, 40, 5), WHITE, 0.95);
+  pen([[-46, -306], [46, -306], [46, -266], [-46, -266]], INK, 5, true);
+  wash(() => rr(-38, -350, 76, 24, 8), RED, 0.8);
+  pen([[-38, -350], [38, -350], [38, -326], [-38, -326]], INK, 5, true);
+  // stem, bars and mirrors
+  pen([[0, -458], [0, -470]], INK, 9);
+  pen([[-150, -472], [-40, -470], [40, -470], [150, -472]], INK, 9);
+  pen([[-132, -472], [-155, -525]], INK, 5); penCircle(-160, -542, 18, INK, 5);
+  pen([[132, -472], [155, -525]], INK, 5); penCircle(160, -542, 18, INK, 5);
   x.restore();
 }
 // stand from the pivot (on the bike) to a tip in world space
@@ -167,7 +174,7 @@ function standTipFor(th, depth) {
   const dx = Math.sqrt(Math.max(0, SL * SL - dy * dy));
   return [p[0] - dx, GY + depth];
 }
-const LEAN = -0.2;
+const LEAN = -0.28;
 // a walker seen from the side (s2/s6), going right
 function walker(X, c, k) {
   if (k <= 0) return;
@@ -260,6 +267,7 @@ function frame(t) {
   }
   if (id === "s7" || id === "s8") { kind = "tar"; sc = GREEN; bodyC = GREEN; depth = -14; L.push((tip) => plate(tip[0], GY, GREEN, 1)); }
 
+  OY = 0;
   ground(kind, gA, standTipFor(th, Math.max(0, depth))[0], Math.max(0, depth));
   let tip = standTipFor(th, depth);
   if (id === "s3") {
@@ -267,7 +275,9 @@ function frame(t) {
     const Ti = at("s3", "tips"), th0 = LEAN - 0.22, t0 = standTipFor(th0, 46);
     if (u > Ti - 0.05) {
       const c = Math.cos(th0), si = Math.sin(th0), dx = (t0[0] - CX) / SC, dy = (t0[1] - GY) / SC;
+      OY = liftFor(th);
       tip = W2([dx * c + dy * si, -dx * si + dy * c], th);
+      tip[1] = Math.min(tip[1], GY);   // the stand tip never goes under the ground once it has fallen
     }
   }
   L.filter((f, i) => i === 0 && (id === "s5" || id === "s6" || id === "s7" || id === "s8")).forEach((f) => f(tip));
