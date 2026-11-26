@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <script type="importmap">
+      { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.181.2/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.181.2/examples/jsm/"
+      } }
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #080622; }
+      #world { position: absolute; inset: 0; width: 1080px; height: 1920px; display: block; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="27.828" data-width="1080" data-height="1920">
+      <div id="stage" class="clip" data-start="0" data-duration="27.828" data-track-index="1" style="position:absolute;inset:0"><canvas id="world" width="1080" height="1920" data-layout-allow-overflow></canvas></div>
+      <div id="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="27.828" data-track-index="2" data-track-kind="captions" data-width="1080" data-height="1920" style="z-index: 10"></div>
+      <audio id="vo-s1" class="clip" src="assets/vo/s1.wav" data-start="0.050" data-duration="3.3706666666666667" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s2" class="clip" src="assets/vo/s2.wav" data-start="3.591" data-duration="2.6666666666666665" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s3" class="clip" src="assets/vo/s3.wav" data-start="6.428" data-duration="3.84" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s4" class="clip" src="assets/vo/s4.wav" data-start="10.438" data-duration="2.6666666666666665" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s5" class="clip" src="assets/vo/s5.wav" data-start="13.275" data-duration="3.3706666666666667" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s6" class="clip" src="assets/vo/s6.wav" data-start="16.816" data-duration="4.416" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s7" class="clip" src="assets/vo/s7.wav" data-start="21.402" data-duration="2.2186666666666666" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s8" class="clip" src="assets/vo/s8.wav" data-start="23.791" data-duration="2.8373333333333335" data-track-index="3" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__EV = {"S":{"s1":[0,3.541],"s2":[3.541,2.837],"s3":[6.378,4.01],"s4":[10.388,2.837],"s5":[13.225,3.541],"s6":[16.766,4.586],"s7":[21.352,2.389],"s8":[23.741,4.087]},"W":{"s1":{"dur":3.3706666666666667,"words":[{"text":"Speaker","start":0,"end":0.467},{"text":"on","start":0.467,"end":0.601},{"text":"the","start":0.601,"end":0.801},{"text":"shelf","start":0.801,"end":1.135},{"text":"in","start":1.135,"end":1.268},{"text":"your","start":1.268,"end":1.535},{"text":"rental","start":1.535,"end":1.936},{"text":"bedroom?","start":1.936,"end":2.47},{"text":"Never","start":2.47,"end":2.803},{"text":"skip","start":2.803,"end":3.07},{"text":"it.","start":3.07,"end":3.271}]},"s2":{"dur":2.6666666666666665,"words":[{"text":"Guests","start":0,"end":0.395},{"text":"use","start":0.395,"end":0.592},{"text":"it","start":0.592,"end":0.724},{"text":"for","start":0.724,"end":0.921},{"text":"music,","start":0.921,"end":1.316},{"text":"then","start":1.316,"end":1.579},{"text":"never","start":1.579,"end":1.909},{"text":"look","start":1.909,"end":2.172},{"text":"again.","start":2.172,"end":2.567}]},"s3":{"dur":3.84,"words":[{"text":"But","start":0,"end":0.22},{"text":"a","start":0.22,"end":0.294},{"text":"speaker","start":0.294,"end":0.81},{"text":"grille","start":0.81,"end":1.177},{"text":"can","start":1.177,"end":1.398},{"text":"hide","start":1.398,"end":1.692},{"text":"a","start":1.692,"end":1.766},{"text":"tiny","start":1.766,"end":2.06},{"text":"lens","start":2.06,"end":2.354},{"text":"that","start":2.354,"end":2.585},{"text":"watches","start":2.585,"end":2.989},{"text":"the","start":2.989,"end":3.163},{"text":"whole","start":3.163,"end":3.451},{"text":"room.","start":3.451,"end":3.74}]},"s4":{"dur":2.6666666666666665,"words":[{"text":"Turn","start":0,"end":0.25},{"text":"off","start":0.25,"end":0.438},{"text":"the","start":0.438,"end":0.626},{"text":"room","start":0.626,"end":0.876},{"text":"lights","start":0.876,"end":1.315},{"text":"and","start":1.315,"end":1.502},{"text":"stand","start":1.502,"end":1.815},{"text":"in","start":1.815,"end":1.941},{"text":"front","start":1.941,"end":2.254},{"text":"of","start":2.254,"end":2.379},{"text":"it.","start":2.379,"end":2.567}]},"s5":{"dur":3.3706666666666667,"words":[{"text":"Shine","start":0,"end":0.32},{"text":"your","start":0.32,"end":0.577},{"text":"flashlight","start":0.577,"end":1.219},{"text":"across","start":1.219,"end":1.603},{"text":"the","start":1.603,"end":1.796},{"text":"grille,","start":1.796,"end":2.116},{"text":"slowly,","start":2.116,"end":2.501},{"text":"from","start":2.501,"end":2.757},{"text":"the","start":2.757,"end":2.95},{"text":"side.","start":2.95,"end":3.271}]},"s6":{"dur":4.416,"words":[{"text":"See","start":0,"end":0.212},{"text":"a","start":0.212,"end":0.283},{"text":"tiny","start":0.283,"end":0.566},{"text":"glint","start":0.566,"end":0.919},{"text":"that","start":0.919,"end":1.203},{"text":"stays","start":1.203,"end":1.557},{"text":"put?","start":1.557,"end":1.84},{"text":"Don't","start":1.84,"end":2.193},{"text":"touch","start":2.193,"end":2.547},{"text":"it.","start":2.547,"end":2.759},{"text":"Take","start":2.759,"end":3.043},{"text":"a","start":3.043,"end":3.113},{"text":"photo","start":3.113,"end":3.467},{"text":"and","start":3.467,"end":3.679},{"text":"report","start":3.679,"end":4.104},{"text":"it.","start":4.104,"end":4.316}]},"s7":{"dur":2.2186666666666666,"words":[{"text":"Check","start":0,"end":0.332},{"text":"the","start":0.332,"end":0.53},{"text":"shelf","start":0.53,"end":0.927},{"text":"speaker.","start":0.927,"end":1.457},{"text":"Every","start":1.457,"end":1.788},{"text":"stay.","start":1.788,"end":2.119}]},"s8":{"dur":2.8373333333333335,"words":[{"text":"Download","start":0,"end":0.608},{"text":"Hidden","start":0.608,"end":1.065},{"text":"Cam.","start":1.065,"end":1.369},{"text":"The","start":1.369,"end":1.596},{"text":"link","start":1.596,"end":1.9},{"text":"is","start":1.9,"end":2.053},{"text":"in","start":2.053,"end":2.206},{"text":"our","start":2.206,"end":2.433},{"text":"bio.","start":2.433,"end":2.737}]}},"LEAD":0.05,"BRAND":{"cta":["DOWNLOAD","HIDDEN CAM"],"sub":"LINK IN BIO"}};
+      const tl = gsap.timeline({ paused: true });
+      tl.set({}, {}, 27.828);
+      window.__timelines["main"] = tl;
+    </script>
+    <script type="module" src="world.js"></script>
+  </body>
+</html>
