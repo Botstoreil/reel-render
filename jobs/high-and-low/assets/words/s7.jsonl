@@ -1,1 +1,2 @@
-{"type":"words","model":"small.en","words":[{"text":"Look","start":0,"end":0.233},{"text":"high,","start":0.233,"end":0.525},{"text":"look","start":0.525,"end":0.758},{"text":"low,","start":0.758,"end":0.991},{"text":"then","start":0.991,"end":1.224},{"text":"straight","start":1.224,"end":1.69},{"text":"ahead.","start":1.69,"end":2.04}],"through":2.04}
+{"type":"words","model":"small.en","words":[{"text":"Look","start":0,"end":0.24},{"text":"high,","start":0.24,"end":0.54},{"text":"look","start":0.54,"end":0.78},{"text":"low,","start":0.78,"end":1.02},{"text":"then","start":1.02,"end":1.26},{"text":"straight","start":1.26,"end":1.74},{"text":"ahead.","start":1.74,"end":2.1}],"through":2.1}
+{"type":"words","model":"small.en","words":[],"through":2.1144375}
