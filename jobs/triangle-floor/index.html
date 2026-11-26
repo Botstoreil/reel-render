@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <script type="importmap">
+      { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.181.2/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.181.2/examples/jsm/"
+      } }
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #080622; }
+      #world { position: absolute; inset: 0; width: 1080px; height: 1920px; display: block; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="24.114" data-width="1080" data-height="1920">
+      <div id="stage" class="clip" data-start="0" data-duration="24.114" data-track-index="1" style="position:absolute;inset:0"><canvas id="world" width="1080" height="1920" data-layout-allow-overflow></canvas></div>
+      <div id="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="24.114" data-track-index="2" data-track-kind="captions" data-width="1080" data-height="1920" style="z-index: 10"></div>
+      <audio id="vo-s1" class="clip" src="assets/vo/s1.wav" data-start="0.050" data-duration="3.6266666666666665" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s2" class="clip" src="assets/vo/s2.wav" data-start="3.847" data-duration="2.816" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s3" class="clip" src="assets/vo/s3.wav" data-start="6.833" data-duration="2.8373333333333335" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s4" class="clip" src="assets/vo/s4.wav" data-start="9.840" data-duration="2.624" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s5" class="clip" src="assets/vo/s5.wav" data-start="12.634" data-duration="2.9013333333333335" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s6" class="clip" src="assets/vo/s6.wav" data-start="15.705" data-duration="2.7733333333333334" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s7" class="clip" src="assets/vo/s7.wav" data-start="18.648" data-duration="1.536" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s8" class="clip" src="assets/vo/s8.wav" data-start="20.354" data-duration="2.56" data-track-index="3" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__EV = {"S":{"s1":[0,3.797],"s2":[3.797,2.986],"s3":[6.783,3.007],"s4":[9.79,2.794],"s5":[12.584,3.071],"s6":[15.655,2.943],"s7":[18.598,1.706],"s8":[20.304,3.81]},"W":{"s1":{"dur":3.6266666666666665,"words":[{"text":"Triangle","start":0,"end":0.753},{"text":"pose?","start":0.753,"end":1.224},{"text":"Never","start":1.224,"end":1.498},{"text":"force","start":1.498,"end":1.772},{"text":"your","start":1.772,"end":1.991},{"text":"hand","start":1.991,"end":2.21},{"text":"all","start":2.21,"end":2.375},{"text":"the","start":2.375,"end":2.54},{"text":"way","start":2.54,"end":2.704},{"text":"down","start":2.704,"end":2.924},{"text":"to","start":2.924,"end":3.033},{"text":"the","start":3.033,"end":3.197},{"text":"floor.","start":3.197,"end":3.527}]},"s2":{"dur":2.816,"words":[{"text":"You","start":0,"end":0.178},{"text":"reach","start":0.178,"end":0.472},{"text":"for","start":0.472,"end":0.65},{"text":"the","start":0.65,"end":0.826},{"text":"floor,","start":0.826,"end":1.122},{"text":"and","start":1.122,"end":1.299},{"text":"your","start":1.299,"end":1.536},{"text":"side","start":1.536,"end":1.771},{"text":"waist","start":1.771,"end":2.066},{"text":"crunches","start":2.066,"end":2.538},{"text":"up.","start":2.538,"end":2.716}]},"s3":{"dur":2.8373333333333335,"words":[{"text":"Your","start":0,"end":0.233},{"text":"chest","start":0.233,"end":0.524},{"text":"turns","start":0.524,"end":0.816},{"text":"to","start":0.816,"end":0.932},{"text":"the","start":0.932,"end":1.106},{"text":"mat,","start":1.106,"end":1.281},{"text":"and","start":1.281,"end":1.456},{"text":"your","start":1.456,"end":1.689},{"text":"back","start":1.689,"end":1.922},{"text":"starts","start":1.922,"end":2.271},{"text":"to","start":2.271,"end":2.388},{"text":"round.","start":2.388,"end":2.737}]},"s4":{"dur":2.624,"words":[{"text":"Instead,","start":0,"end":0.492},{"text":"rest","start":0.492,"end":0.739},{"text":"your","start":0.739,"end":0.985},{"text":"hand","start":0.985,"end":1.232},{"text":"on","start":1.232,"end":1.354},{"text":"your","start":1.354,"end":1.6},{"text":"shin,","start":1.6,"end":1.847},{"text":"or","start":1.847,"end":1.97},{"text":"on","start":1.97,"end":2.094},{"text":"a","start":2.094,"end":2.154},{"text":"block.","start":2.154,"end":2.524}]},"s5":{"dur":2.9013333333333335,"words":[{"text":"Keep","start":0,"end":0.238},{"text":"both","start":0.238,"end":0.477},{"text":"sides","start":0.477,"end":0.775},{"text":"of","start":0.775,"end":0.894},{"text":"your","start":0.894,"end":1.133},{"text":"waist","start":1.133,"end":1.431},{"text":"long,","start":1.431,"end":1.728},{"text":"like","start":1.728,"end":1.967},{"text":"a","start":1.967,"end":2.026},{"text":"straight","start":2.026,"end":2.503},{"text":"line.","start":2.503,"end":2.801}]},"s6":{"dur":2.7733333333333334,"words":[{"text":"Stack","start":0,"end":0.273},{"text":"your","start":0.273,"end":0.491},{"text":"shoulders,","start":0.491,"end":0.982},{"text":"and","start":0.982,"end":1.146},{"text":"reach","start":1.146,"end":1.419},{"text":"your","start":1.419,"end":1.637},{"text":"top","start":1.637,"end":1.8},{"text":"arm","start":1.8,"end":1.964},{"text":"to","start":1.964,"end":2.073},{"text":"the","start":2.073,"end":2.237},{"text":"ceiling.","start":2.237,"end":2.673}]},"s7":{"dur":1.536,"words":[{"text":"Length","start":0,"end":0.375},{"text":"first.","start":0.375,"end":0.749},{"text":"Depth","start":0.749,"end":1.061},{"text":"later.","start":1.061,"end":1.436}]},"s8":{"dur":2.56,"words":[{"text":"Download","start":0,"end":0.6},{"text":"YogaFlow.","start":0.6,"end":1.276},{"text":"The","start":1.276,"end":1.473},{"text":"link","start":1.473,"end":1.737},{"text":"is","start":1.737,"end":1.868},{"text":"in","start":1.868,"end":1.999},{"text":"our","start":1.999,"end":2.197},{"text":"bio.","start":2.197,"end":2.46}]}},"LEAD":0.05,"BRAND":{"cta":["DOWNLOAD","YOGAFLOW"],"sub":"LINK IN BIO"}};
+      const tl = gsap.timeline({ paused: true });
+      tl.set({}, {}, 24.114);
+      window.__timelines["main"] = tl;
+    </script>
+    <script type="module" src="world.js"></script>
+  </body>
+</html>
