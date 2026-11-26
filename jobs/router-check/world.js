@@ -58,9 +58,10 @@ const mLed = LEDS[0];
 // highlight frame (violet) around the router and antennas in s4-s6 (in front of it, hidden until it lights)
 const thRing = new THREE.Group(); th.add(thRing);
 const mRing = glow(VIOLET, 0.0);
-const RW = SPW + 0.08, RH = 0.38, RY = 0.13;
+// r2: the frame hugs the front face only (around the antennas it looked crooked from the side camera)
+const RW = SPW + 0.06, RH = SPH + 0.06, RY = 0;
 for (const [w, h, x, y] of [[RW, 0.012, 0, RY + RH / 2], [RW, 0.012, 0, RY - RH / 2], [0.012, RH, RW / 2, RY], [0.012, RH, -RW / 2, RY]])
-  thRing.add(box(w, h, 0.004, x, y, 0.03, mRing, false));
+  thRing.add(box(w, h, 0.004, x, y, 0.01, mRing, false));
 thRing.material = mRing;
 const LENS = DET.clone().add(V3(0.135, 0.002, 0.012));
 { const hole = new THREE.Mesh(new THREE.CircleGeometry(0.014, 20), new THREE.MeshBasicMaterial({ color: 0x000000 })); hole.position.copy(LENS).add(V3(0, 0, -0.001)); scene.add(hole); }
@@ -105,7 +106,8 @@ const tArr = S.s1[0] + 2.0;
 const hp = V3(0, 0, 0);
 
 // flashlight path: s5 sweeps across the front, s6 settles on the hole
-const FL = DET.clone().add(V3(-0.17, 0.03, 0.03)), FR = DET.clone().add(V3(0.17, -0.01, 0.03));
+// r2: the sweep stays left of the lens (it reached x 0.17 and the glint fired during "slowly", before s6)
+const FL = DET.clone().add(V3(-0.17, 0.03, 0.03)), FR = DET.clone().add(V3(0.02, 0.03, 0.03));
 const TK = [
   [T.shine, FL], [T.slowly, FR], [T.side + 0.15, FL], [T.s6 - 0.35, FR], [T.s6 + 0.05, LENS], [T.s7, LENS],
 ];
@@ -151,7 +153,8 @@ const SH = [
   // "slowly": close on the thermostat FROM ITS LEFT (r3: the CLOSE camera sat behind the guest, whose body filled the frame)
   // wall-clock r2: pulled back to the s3 CLOSE distance (~1.6 m) - the round clock is bigger than the thermostat and
   // filled the top, so the violet s6 caption sat on the white face and could not be read
-  { at: T.slowly - 0.1, K: st([-3.0, 1.5, -1.55, -2.08, 1.42, -2.92, 40], [-2.92, 1.48, -1.7, -2.08, 1.42, -2.92, 40]) },
+  // router r2: look target moved right onto the lens (the glint sat cut at the frame edge)
+  { at: T.slowly - 0.1, K: st([-3.0, 1.5, -1.55, -1.98, 1.4, -2.85, 40], [-2.92, 1.48, -1.7, -1.98, 1.4, -2.85, 40]) },
   // s6 "touch": side view of the guest, phone up
   { at: T.touch - 0.1, K: st([0.6, 1.7, -0.3, -1.7, 1.5, -2.3, 54], [0.5, 1.72, -0.5, -1.7, 1.5, -2.3, 54]) },
   // s7-s8: calm wide
@@ -197,7 +200,7 @@ run("router-check", (t) => {
   ph.updateWorldMatrix(true, false); ph.getWorldPosition(hp);
   const tg = target(t);
   beamCone.set(hp, tg, 0.1, 0.07 * on);
-  spotDisk.visible = on > 0.01; spotDisk.position.copy(tg).add(V3(0, 0, 0.03)); spotDisk.lookAt(hp); spotDisk.material.opacity = (t > T.s6 - 0.2 ? 0.05 : 0.14) * on;
+  spotDisk.visible = on > 0.01; spotDisk.position.copy(tg).add(V3(0, 0, 0.03)); spotDisk.lookAt(hp); spotDisk.material.opacity = 0.05 * on; // r2: at 0.14 it read as a grey card beside the router in the side close-up
   spot.intensity = (t > T.s6 - 0.2 ? 0.4 : 1.0) * on;
   spot.position.copy(hp); spot.target.position.copy(tg); spot.target.updateMatrixWorld();
 
