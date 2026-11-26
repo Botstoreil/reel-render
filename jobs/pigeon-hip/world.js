@@ -259,7 +259,7 @@ function drawInk(t) {
   const z = 1 + 0.035 * cl(u / Math.max(1, d)) + 0.05 * cut * cut;
   x.save(); x.translate(CX, 900); x.scale(z, z); x.translate(-CX, -900);
 
-  const FY = 1110, PX = 470, SC = 0.85;   // floor high enough that every tag clears the caption pills (1240+)
+  const FY = 1110, PX = 470, SC = 0.72;   // r2: was 0.85, the head ran into the title   // floor high enough that every tag clears the caption pills (1240+)
   const shk = (k) => k * 5 * Math.sin(u * 47) + k * 3 * Math.sin(u * 71);
   const gap = (J, c, k) => { const [hx, hy] = J("hip"); line2([hx, hy + 24], [hx, FY - 8], c, k, 10); };
   if (id === "s1") {
@@ -338,7 +338,7 @@ function drawInk(t) {
     check(800, 640, 0.5, sm(at("s6", "knee"), at("s6", "knee") + 0.3, u));
   }
   if (id === "s7") {
-    const s = 0.7, X = CX + 60, Y = 1180;
+    const s = 0.48, X = CX + 40, Y = 1200;   // r2: was 0.7, covered PROTECT THE KNEE
     block(X - 10 * s, Y, s, GREEN, 0.85, 150, 116);
     pigeon(X, Y, Q.block, s, GREEN, { a: 0.85, flex: 1 });
   }
