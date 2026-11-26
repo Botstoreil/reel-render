@@ -162,9 +162,10 @@ Q.lie = { head: [-340, -46], sh: [-262, -42], eL: [-140, -36], hL: [-24, -30], e
 // jolted straight up to sitting, legs still straight (wrong)
 Q.sitUp = Object.assign({}, Q.lie, { head: [26, -440], sh: [40, -356], eL: [14, -210], hL: [-30, -60], eR: [28, -214], hR: [-14, -64] });
 // knees hugged to the chest, still on the back
-Q.hug = Object.assign({}, Q.lie, { kL: [120, -250], fL: [250, -170], kR: [132, -252], fR: [262, -172], eL: [-130, -150], hL: [90, -230], eR: [-120, -156], hR: [100, -236] });
-// curled on the right side, knees bent, head resting on the bottom arm
-Q.side = { head: [-330, -60], sh: [-250, -64], eR: [-300, -16], hR: [-410, -18], eL: [-150, -120], hL: [-110, -18], hip: [60, -70], kL: [210, -170], fL: [330, -40], kR: [222, -160], fR: [342, -36] };
+// r2: a tight ball - knees pulled in over the chest, hands around them
+Q.hug = Object.assign({}, Q.lie, { kL: [-30, -210], fL: [120, -225], kR: [-20, -214], fR: [130, -230], eL: [-190, -130], hL: [-50, -200], eR: [-180, -135], hR: [-40, -205] });
+// r2: curled LOW on the right side: head on the bottom arm, knees in front of the chest near the floor (not a tent)
+Q.side = { head: [-310, -64], sh: [-232, -72], eR: [-330, -22], hR: [-430, -20], eL: [-120, -150], hL: [-40, -100], hip: [60, -70], kL: [-60, -120], fL: [110, -70], kR: [-50, -116], fR: [120, -66] };
 // pressed up to sitting with the hands, knees still bent (right)
 Q.up = { head: [-150, -380], sh: [-110, -300], eR: [-190, -150], hR: [-230, -12], eL: [-150, -160], hL: [-200, -12], hip: [60, -70], kL: [210, -170], fL: [330, -30], kR: [222, -160], fR: [342, -26] };
 function body(X, Y, p, s, color, o = {}) {
@@ -279,9 +280,9 @@ function drawInk(t) {
     const J = body(PX, FY, p, SC, GREEN);
     const [kx, ky] = J("kL");
     ring(kx, ky, 50, GREEN, Hg * (1 - Rl), 9);
-    tag("HUG YOUR KNEES", 330, 820, GREEN, Hg * (1 - Rl * 0.6), 42);
+    tag("HUG YOUR KNEES", 330, 820, GREEN, Hg * (1 - Rl), 42);
     arcArrow(PX + 60, FY - 150, 180, -2.4, -0.6, VIOLET, on("s5", "roll", u, 0.05, 0.6), 12);
-    tag("ROLL TO YOUR SIDE", 600, 940, GREEN, on("s5", "side", u), 40);
+    tag("ON YOUR RIGHT SIDE", 600, 740, GREEN, on("s5", "right", u), 40); // r2: above the arc, not on it
   }
   if (id === "s6") {
     // rest on the side for a breath, then press up with the hands
@@ -291,7 +292,7 @@ function drawInk(t) {
     const J = body(PX, FY, pose(Q.side, Q.up, Pr), SC, GREEN);
     const [sx, sy] = J("sh"), [ax, ay] = J("hL");
     ring(sx + 120, sy - 30, 70 + 14 * Math.sin(u * 3), VIOLET, Br, 8);
-    tag("ONE BREATH", 330, 820, VIOLET, on("s6", "breath", u) * (1 - Pr * 0.7), 42);
+    tag("ONE BREATH", 300, 760, VIOLET, on("s6", "breath", u) * (1 - Pr), 42); // r2: fully gone before the head rises into it
     arrow(ax + 30, ay - 260, ax + 30, ay - 60, GREEN, on("s6", "hands", u, 0.05, 0.3), 12);
     tag("PRESS UP", 760, 820, GREEN, on("s6", "press", u), 44);
     check(800, 980, 0.55, sm(at("s6", "hands"), at("s6", "hands") + 0.3, u));
