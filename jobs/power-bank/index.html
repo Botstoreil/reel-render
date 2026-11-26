@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <script type="importmap">
+      { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.181.2/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.181.2/examples/jsm/"
+      } }
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #080622; }
+      #world { position: absolute; inset: 0; width: 1080px; height: 1920px; display: block; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="28.659" data-width="1080" data-height="1920">
+      <div id="stage" class="clip" data-start="0" data-duration="28.659" data-track-index="1" style="position:absolute;inset:0"><canvas id="world" width="1080" height="1920" data-layout-allow-overflow></canvas></div>
+      <div id="captions" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="28.659" data-track-index="2" data-track-kind="captions" data-width="1080" data-height="1920" style="z-index: 10"></div>
+      <audio id="vo-s1" class="clip" src="assets/vo/s1.wav" data-start="0.050" data-duration="3.072" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s2" class="clip" src="assets/vo/s2.wav" data-start="3.292" data-duration="3.1786666666666665" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s3" class="clip" src="assets/vo/s3.wav" data-start="6.641" data-duration="4.608" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s4" class="clip" src="assets/vo/s4.wav" data-start="11.419" data-duration="2.6666666666666665" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s5" class="clip" src="assets/vo/s5.wav" data-start="14.256" data-duration="3.4133333333333336" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s6" class="clip" src="assets/vo/s6.wav" data-start="17.839" data-duration="4.416" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s7" class="clip" src="assets/vo/s7.wav" data-start="22.425" data-duration="2.026666666666667" data-track-index="3" data-volume="1"></audio>
+      <audio id="vo-s8" class="clip" src="assets/vo/s8.wav" data-start="24.622" data-duration="2.8373333333333335" data-track-index="3" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__EV = {"S":{"s1":[0,3.242],"s2":[3.242,3.349],"s3":[6.591,4.778],"s4":[11.369,2.837],"s5":[14.206,3.583],"s6":[17.789,4.586],"s7":[22.375,2.197],"s8":[24.572,4.087]},"W":{"s1":{"dur":3.072,"words":[{"text":"Power","start":0,"end":0.363},{"text":"bank","start":0.363,"end":0.652},{"text":"charging","start":0.652,"end":1.232},{"text":"by","start":1.232,"end":1.377},{"text":"your","start":1.377,"end":1.667},{"text":"bed?","start":1.667,"end":1.957},{"text":"Never","start":1.957,"end":2.32},{"text":"ignore","start":2.32,"end":2.755},{"text":"it.","start":2.755,"end":2.972}]},"s2":{"dur":3.1786666666666665,"words":[{"text":"It","start":0,"end":0.118},{"text":"looks","start":0.118,"end":0.414},{"text":"like","start":0.414,"end":0.651},{"text":"something","start":0.651,"end":1.184},{"text":"a","start":1.184,"end":1.243},{"text":"guest","start":1.243,"end":1.539},{"text":"forgot,","start":1.539,"end":1.954},{"text":"so","start":1.954,"end":2.072},{"text":"nobody","start":2.072,"end":2.427},{"text":"looks","start":2.427,"end":2.723},{"text":"twice.","start":2.723,"end":3.079}]},"s3":{"dur":4.608,"words":[{"text":"But","start":0,"end":0.201},{"text":"some","start":0.201,"end":0.471},{"text":"hidden","start":0.471,"end":0.875},{"text":"cameras","start":0.875,"end":1.345},{"text":"are","start":1.345,"end":1.548},{"text":"sold","start":1.548,"end":1.816},{"text":"inside","start":1.816,"end":2.22},{"text":"fake","start":2.22,"end":2.489},{"text":"power","start":2.489,"end":2.825},{"text":"banks,","start":2.825,"end":3.229},{"text":"aimed","start":3.229,"end":3.567},{"text":"right","start":3.567,"end":3.903},{"text":"at","start":3.903,"end":4.037},{"text":"the","start":4.037,"end":4.239},{"text":"bed.","start":4.239,"end":4.508}]},"s4":{"dur":2.6666666666666665,"words":[{"text":"Turn","start":0,"end":0.25},{"text":"off","start":0.25,"end":0.438},{"text":"the","start":0.438,"end":0.626},{"text":"room","start":0.626,"end":0.876},{"text":"lights","start":0.876,"end":1.315},{"text":"and","start":1.315,"end":1.502},{"text":"stand","start":1.502,"end":1.815},{"text":"in","start":1.815,"end":1.941},{"text":"front","start":1.941,"end":2.254},{"text":"of","start":2.254,"end":2.379},{"text":"it.","start":2.379,"end":2.567}]},"s5":{"dur":3.4133333333333336,"words":[{"text":"Shine","start":0,"end":0.278},{"text":"your","start":0.278,"end":0.501},{"text":"flashlight","start":0.501,"end":1.057},{"text":"across","start":1.057,"end":1.39},{"text":"its","start":1.39,"end":1.557},{"text":"front,","start":1.557,"end":1.891},{"text":"slowly,","start":1.891,"end":2.365},{"text":"from","start":2.365,"end":2.681},{"text":"the","start":2.681,"end":2.918},{"text":"side.","start":2.918,"end":3.313}]},"s6":{"dur":4.416,"words":[{"text":"See","start":0,"end":0.216},{"text":"a","start":0.216,"end":0.287},{"text":"tiny","start":0.287,"end":0.576},{"text":"glint","start":0.576,"end":0.935},{"text":"in","start":0.935,"end":1.079},{"text":"a","start":1.079,"end":1.151},{"text":"dark","start":1.151,"end":1.439},{"text":"spot?","start":1.439,"end":1.798},{"text":"Don't","start":1.798,"end":2.158},{"text":"touch","start":2.158,"end":2.518},{"text":"it.","start":2.518,"end":2.734},{"text":"Take","start":2.734,"end":3.021},{"text":"a","start":3.021,"end":3.093},{"text":"photo","start":3.093,"end":3.453},{"text":"and","start":3.453,"end":3.669},{"text":"report","start":3.669,"end":4.1},{"text":"it.","start":4.1,"end":4.316}]},"s7":{"dur":2.026666666666667,"words":[{"text":"Check","start":0,"end":0.402},{"text":"the","start":0.402,"end":0.643},{"text":"chargers.","start":0.643,"end":1.204},{"text":"Every","start":1.204,"end":1.606},{"text":"stay.","start":1.606,"end":1.927}]},"s8":{"dur":2.8373333333333335,"words":[{"text":"Download","start":0,"end":0.608},{"text":"Hidden","start":0.608,"end":1.065},{"text":"Cam.","start":1.065,"end":1.369},{"text":"The","start":1.369,"end":1.596},{"text":"link","start":1.596,"end":1.9},{"text":"is","start":1.9,"end":2.053},{"text":"in","start":2.053,"end":2.206},{"text":"our","start":2.206,"end":2.433},{"text":"bio.","start":2.433,"end":2.737}]}},"LEAD":0.05,"BRAND":{"cta":["DOWNLOAD","HIDDEN CAM"],"sub":"LINK IN BIO"}};
+      const tl = gsap.timeline({ paused: true });
+      tl.set({}, {}, 28.659);
+      window.__timelines["main"] = tl;
+    </script>
+    <script type="module" src="world.js"></script>
+  </body>
+</html>
