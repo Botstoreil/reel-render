@@ -207,9 +207,7 @@ function matSide(X, Y, s, k, c, a = 1) {
   const th = Math.PI * cl(k);
   const flap = () => { x.beginPath(); x.moveTo(H, Y0); for (let i = 1; i <= 16; i++) { const d = (E * i) / 16; x.lineTo(H + d * Math.cos(th), Y0 - d * Math.sin(th) - 26 * s * cl(k)); } x.stroke(); };
   flap();
-  x.strokeStyle = "#24432f"; x.lineWidth = 5 * s; x.globalAlpha = a * 0.6;
-  x.beginPath(); x.moveTo(L + 10 * s, Y0); x.lineTo(H, Y0); x.stroke(); flap();
-  x.globalAlpha = a; x.strokeStyle = c;
+  // r3: no dark inner stroke (it split the band into two thin lines on the sheets)
   if (k > 0.9) { x.lineWidth = 10 * s; x.beginPath(); x.arc(H + 6 * s, Y0 - 13 * s, 14 * s, -Math.PI / 2, Math.PI / 2); x.stroke(); }
   x.restore();
 }
@@ -291,8 +289,8 @@ function drawInk(t) {
     strain(kx - 12, ky - 10, Ak, u, 48);
     tag("PRESSES", 300, 760, RED, on("s3", "presses", u, 0.05, 0.2) * (1 - Ru), 44);
     tag("ACHES", 800, 780, RED, on("s3", "aches", u, 0.05, 0.2) * (1 - Ru), 46);
-    arrow(kx + 40, ky - 150, kx + 40, ky - 320, RED, Ru, 12);
-    tag("OUT OF THE POSE", 790, 770, RED, on("s3", "out", u, 0.05, 0.2), 42);
+    arrow(kx + 10, ky - 120, kx + 10, ky - 260, RED, Ru, 12);
+    tag("OUT OF THE POSE", 820, 760, RED, on("s3", "out", u, 0.05, 0.2), 36);
     cross(820, 900, 46, on("s3", "pose", u, 0.05, 0.4));
   }
   if (id === "s4") {
@@ -342,7 +340,7 @@ function drawInk(t) {
     tag("BEHIND THE HIP", 770, 700, GREEN, on("s6", "behind", u, 0.05, 0.2), 40);
     const tx = lerp(kx, hx, 0.2), ty = lerp(ky, hy, 0.2);
     ring(tx, ty, 44, GREEN, Ab, 9);
-    tag("JUST ABOVE KNEECAP", 760, 830, GREEN, Ab, 32);
+    tag("ABOVE KNEECAP", 800, 830, GREEN, Ab, 38);
     check(290, 760, 0.5, sm(at("s6", "kneecap"), at("s6", "kneecap") + 0.3, u));
   }
   if (id === "s7") {
