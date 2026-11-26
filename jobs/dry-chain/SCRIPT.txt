@@ -1,0 +1,8 @@
+s1|Chain looking rusty? Never ignore a dry chain.
+s2|You keep riding, and the chain gets dry and noisy.
+s3|It wears out fast, stretches, and takes the sprockets with it.
+s4|Instead, clean and lube the chain every few hundred kilometres.
+s5|Lube it warm, on the inside of the links, and wipe off the extra.
+s6|Check the slack too, against the numbers in your manual.
+s7|A quiet chain is a happy chain. Lube it.
+s8|Download Apex. Three full rides a month are free.
