@@ -78,7 +78,7 @@ function stamp(kind, X, Y, s, c) {
 }
 
 // ---------- scanner background ----------
-const GY = 1250, SC = 1.5;
+const GY = 1120, SC = 1.3, TY = 1192;   // TY: label row between the road and the caption pill
 function scanner(dist, t) {
   x.fillStyle = "#020a10"; x.fillRect(0, 0, 1080, 1920);
   const vg = x.createRadialGradient(540, 980, 150, 540, 980, 1000); vg.addColorStop(0, "rgba(40,170,200,0.22)"); vg.addColorStop(1, "rgba(0,0,0,0)");
@@ -192,7 +192,7 @@ function frame(t) {
   if (id === "s1") {
     const St = at("s1", "stand");
     o.standGlow = flash(u, St) + 0.5 * sm(St - 0.2, St + 0.2, u);
-    L.push((tp) => tag("SIDE STAND DOWN", tp[0] + 60, tp[1] + 70, RED, sm(St - 0.1, St + 0.2, u)));
+    L.push((tp) => tag("SIDE STAND DOWN", tp[0] + 60, TY, RED, sm(St - 0.1, St + 0.2, u)));
   }
   if (id === "s2") {
     const Ju = at("s2", "jump"), Sa = at("s2", "start"), Pu = at("s2", "pull"), Sti = at("s2", "still");
@@ -202,7 +202,7 @@ function frame(t) {
     dist = u > Pu ? 260 * (u - Pu) * (u - Pu) : 0;
     o.standGlow = sm(Sti - 0.2, Sti + 0.1, u);
     L.push(() => engineIcon(790, 640, RED, sm(Sa - 0.1, Sa + 0.15, u) * (1 - sm(Sti - 0.3, Sti - 0.1, u)), false));
-    L.push((tp) => tag("STILL OUT", tp[0] + 40, tp[1] + 80, RED, sm(Sti - 0.1, Sti + 0.2, u)));
+    L.push((tp) => tag("STILL OUT", tp[0] + 40, TY, RED, sm(Sti - 0.1, Sti + 0.2, u)));
   }
   if (id === "s3") {
     const St = at("s3", "stall"), Ot = at("s3", "others"), Dg = at("s3", "digs"), Le = at("s3", "left");
@@ -217,8 +217,8 @@ function frame(t) {
     o.pivot = standTip(A_DOWN - 0.05);
     spark = sm(Dg - 0.05, Dg + 0.1, u) * (1 - sm(Dg + 0.9, Dg + 1.5, u));
     L.push(() => engineIcon(790, 640, RED, sm(St - 0.1, St + 0.15, u) * (1 - sm(Ot - 0.1, Ot + 0.1, u)), true));
-    L.push(() => tag("SOME BIKES STALL", CX, 790, RED, sm(St - 0.1, St + 0.2, u) * (1 - sm(Ot - 0.15, Ot, u))));
-    L.push((tp) => tag("DIGS INTO THE ROAD", tp[0] + 80, tp[1] + 80, RED, sm(Dg - 0.1, Dg + 0.2, u)));
+    L.push(() => tag("SOME BIKES STALL", CX, TY, RED, sm(St - 0.1, St + 0.2, u) * (1 - sm(Ot - 0.15, Ot, u))));
+    L.push((tp) => tag("DIGS INTO THE ROAD", tp[0] + 80, TY, RED, sm(Dg - 0.1, Dg + 0.2, u)));
     L.push(() => stamp("x", 800, 760, back(Le - 0.1, Le + 0.2, u) * 0.7, RED));
   }
   if (id === "s4" || id === "s5" || id === "s6" || id === "s7" || id === "s8") { o.c = VIOLET; o.standC = VIOLET; o.riderA = 1; o.riderC = VIOLET; }
@@ -227,14 +227,14 @@ function frame(t) {
     o.riderA = sm(Si - 0.15, Si + 0.15, u); o.riderDy = -40 * (1 - sm(Si - 0.15, Si + 0.3, u));
     const up = sm(Ki, Ki + 0.35, u);
     o.standA = lerp(A_DOWN, A_UP, up); o.standC = up > 0.5 ? GREEN : VIOLET; o.standGlow = flash(u, Ki + 0.2);
-    L.push(() => tag("SIT ON IT", CX, 640, VIOLET, sm(Si - 0.1, Si + 0.2, u) * (1 - sm(Ki - 0.2, Ki, u))));
-    L.push((tp) => tag("KICK IT UP", tp[0] - 40, tp[1] + 110, GREEN, sm(Ki - 0.05, Ki + 0.25, u)));
+    L.push(() => tag("SIT ON IT", CX, TY, VIOLET, sm(Si - 0.1, Si + 0.2, u) * (1 - sm(Ki - 0.2, Ki, u))));
+    L.push((tp) => tag("KICK IT UP", tp[0] - 40, TY, GREEN, sm(Ki - 0.05, Ki + 0.25, u)));
   }
   if (id === "s5") {
     const Lo = at("s5", "look"), Fo = at("s5", "folded");
     o.standA = A_UP; o.standC = GREEN; o.standGlow = sm(Fo - 0.1, Fo + 0.2, u);
     ring = sm(Lo - 0.1, Lo + 0.3, u); ringOk = sm(Fo - 0.1, Fo + 0.2, u);
-    L.push((tp) => tag("FOLDED UP", tp[0] + 40, tp[1] + 150, GREEN, ringOk));
+    L.push((tp) => tag("FOLDED UP", tp[0] + 40, TY, GREEN, ringOk));
     L.push(() => stamp("v", 800, 760, back(Fo, Fo + 0.3, u) * 0.7, GREEN));
   }
   if (id === "s6") {
