@@ -339,7 +339,7 @@ function frame(t) {
     const Ro = at("s6", "road"), Ed = at("s6", "edges"), Po = at("s6", "potholes"), Ea = at("s6", "easy");
     hiLane = sm(Ro - 0.05, Ro + 0.2, u); hiEdges = sm(Ed - 0.05, Ed + 0.2, u);
     // two potholes ahead, the rider steers round the near one
-    const z1 = lerp(10, 2.2, sm(0, 3.2, u)), z2 = lerp(15, 4.5, sm(0, 3.2, u));
+    const z1 = lerp(10, 3.6, sm(0, 3.2, u)), z2 = lerp(15, 6.5, sm(0, 3.2, u));
     holes2 = [{ wx: -60, z: z1 }, { wx: 330, z: z2 }];
     rx = 170 * sm(Po + 0.1, Po + 1.0, u);
     holeRing = sm(Po - 0.05, Po + 0.2, u); holeC = GREEN;
