@@ -196,8 +196,10 @@ function bike(bx, gy, c, sq, rot, riderA, heat = 0) {
   }
 }
 function boot(X, Y) {   // a boot pointing left, toe at (X, Y)
-  px(X + 14, Y - 70, 14, 60, "#2b2340");          // shin
-  px(X, Y - 14, 30, 14, "#5a3a24"); px(X, Y - 2, 30, 4, "#2a1a10");
+  px(X + 16, Y - 74, 18, 62, "#3f6fd8"); px(X + 16, Y - 74, 4, 62, "#6f9bff");   // jeans leg
+  px(X - 2, Y - 18, 38, 18, "#8a5a32"); px(X - 2, Y - 18, 38, 4, "#b07a46");      // boot
+  px(X - 4, Y - 2, 42, 5, "#2a1a10");                                              // sole
+  if (X < TCX + TR + 8) { px(X - 10, Y - 26, 6, 3, WHITE); px(X - 12, Y - 12, 8, 3, WHITE); px(X - 10, Y + 2, 6, 3, WHITE); } // impact ticks
 }
 function heatWaves(cx, top, k, t) {
   if (k <= 0) return;
@@ -317,8 +319,10 @@ function frame(t) {
       px(hx2 - 2, hy2 - 2, 5, 5, CYAN);
     }
     if (gShow > 0.05) {
-      const gy2 = GYC + Math.round((1 - gShow) * 300);
-      gauge(GX, gy2, GR, gv + 0.01 * Math.sin(t * 9), ring, gUnknown, t);
+      const gs = Math.round(back(0, 1, gShow) * 4) / 4;   // sprite pop in place, never slides through the captions
+      p.save(); p.translate(GX, GYC); p.scale(gs, gs); p.translate(-GX, -GYC);
+      gauge(GX, GYC, GR, gv + 0.01 * Math.sin(t * 9), ring, gUnknown, t);
+      p.restore();
       if (okRing > 0) for (let i = 0; i < 4; i++) { const a = Math.PI * 1.75 + i * 0.12; px(GX + Math.cos(a) * (GR + 9) - 2, GYC + Math.sin(a) * (GR + 9) - 2, 5, 5, GREEN); }
     }
     if (bootK >= 0) boot(TCX + TR + 2 + Math.round((1 - bootK) * 60), GY - 30);
