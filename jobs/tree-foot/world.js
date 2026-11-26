@@ -148,7 +148,7 @@ P.kneeBent = Object.assign({}, P.knee, { kL: [-34, -98], fR: [-16, -100], kR: [1
 // foot on the calf, below the knee (right)
 P.calf = Object.assign({}, P.stand, { kR: [118, -112], fR: [4, -55] });
 // foot high on the inner thigh (right)
-P.tree = Object.assign({}, P.stand, { kR: [130, -185], fR: [8, -162] });
+P.tree = Object.assign({}, P.stand, { kR: [140, -100], fR: [8, -150] });
 P.treeTall = Object.assign({}, P.tree, { head: [0, -425], sh: [0, -348] });
 P.sit = { head: [0, -285], sh: [0, -215], hip: [0, -70], kL: [-100, -38], fL: [30, -18], kR: [100, -38], fR: [-30, -18], eL: [-66, -130], hL: [-88, -50], eR: [66, -130], hR: [88, -50] };
 function pose(a, b, k) { const o = {}; for (const j in a) o[j] = [lerp(a[j][0], b[j][0], k), lerp(a[j][1], b[j][1], k)]; return o; }
@@ -268,7 +268,6 @@ function drawInk(t) {
     mat(PX, FY, 340, 1, GREEN);
     const J = person(PX, FY, pose(P.calf, P.tree, Hi), SC, GREEN);
     const [fx, fy] = J("fR");
-    arrow(fx + 140, fy + 120, fx + 140, fy - 30, GREEN, on("s5", "higher", u, 0.05, 0.3), 12);
     ring(fx, fy, 50 + 4 * Math.sin(u * 6), GREEN, on("s5", "thigh", u), 10);
     tag("INNER THIGH", 760, 760, GREEN, on("s5", "inner", u), 44);
     tag("HIPS READY?", 760, 880, VIOLET, on("s5", "hips", u), 42);
@@ -281,10 +280,10 @@ function drawInk(t) {
     const [fx, fy] = J("fR"), [hx, hy] = J("head");
     const pr = on("s6", "press", u, 0.05, 0.25), lg = on("s6", "leg", u, 0.05, 0.25);
     const pz = 8 * Math.sin(u * 8);
-    arrow(fx + 130, fy - 40, fx + 40 + pz, fy - 40, GREEN, pr, 12);
-    arrow(fx - 120, fy + 40, fx - 34 - pz, fy + 40, GREEN, lg, 12);
-    tag("PRESS", 770, 860, GREEN, pr, 44);
-    arrow(hx, hy - 70, hx, hy - 70 - 190 * Ta, VIOLET, Ta > 0.02 ? 1 : 0, 12);
+    arrow(fx + 150, fy - 30, fx + 36 + pz, fy - 10, GREEN, pr, 12);
+    arrow(fx - 140, fy + 10, fx - 36 - pz, fy + 10, GREEN, lg, 12);
+    tag("PRESS", 790, 900, GREEN, pr, 44);
+    arrow(hx, hy - 66, hx, hy - 66 - 90 * Ta, VIOLET, Ta > 0.02 ? 1 : 0, 12);
     tag("STAND TALL", 760, 700, VIOLET, on("s6", "tall", u), 44);
   }
   if (id === "s7") {
